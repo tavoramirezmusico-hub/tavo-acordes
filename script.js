@@ -1,9 +1,9 @@
 // --- DATOS MUSICALES BÁSICOS ---
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-const STRINGS = ['E', 'A', 'D', 'G', 'B', 'e']; // 6ª a 1ª
-const OPEN_NOTES = ['E', 'A', 'D', 'G', 'B', 'E']; // Nota al aire de cada cuerda
+// Orden de cuerdas: 6ª (E) arriba, 1ª (e) abajo
+const STRINGS = ['E', 'A', 'D', 'G', 'B', 'e'];
+const OPEN_NOTES = ['E', 'A', 'D', 'G', 'B', 'E'];
 
-// Estado actual del mástil (null = no seleccionado, 'X' = mute, 0 = aire, 1-12 = traste)
 let currentFretboard = [null, null, null, null, null, null];
 
 // --- INICIALIZACIÓN ---
@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initCircleOfFifths();
     initSelectors();
     resetFretboard();
+    updateModeInfo();
 });
 
 // --- 1. INTERFAZ DEL MÁSTIL ---
@@ -44,35 +45,45 @@ function updateString(stringIndex, value) {
     detectChord();
 }
 
+// Dibuja el mástil VERTICAL (6ª cuerda arriba, 1ª abajo)
 function drawFretboard() {
     const container = document.querySelector('.fretboard-visual');
-    const width = 300;
-    const height = 200;
-    const stringSpacing = width / 5;
-    const fretSpacing = height / 5;
+    const width = 160;
+    const height = 320;
+    const stringSpacing = width / 5; // 5 espacios para 6 cuerdas
+    const fretSpacing = height / 6;   // Mostramos 5 trastes
 
     let svg = `<svg class="fretboard-svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}">`;
 
-    // Dibujar trastes
-    for (let i = 0; i <= 5; i++) {
+    // Dibujar fondo de madera
+    svg += `<rect x="0" y="0" width="${width}" height="${height}" fill="#2a1f1a" rx="5" />`;
+
+    // Dibujar trastes (líneas horizontales)
+    for (let i = 0; i <= 6; i++) {
         svg += `<line class="fret-line" x1="0" y1="${i * fretSpacing}" x2="${width}" y2="${i * fretSpacing}" />`;
     }
 
-    // Dibujar cuerdas
+    // Dibujar cuerdas (líneas verticales)
+    // i=0 es la 6ª cuerda (arriba), i=5 es la 1ª cuerda (abajo)
     for (let i = 0; i < 6; i++) {
-        svg += `<line class="string-line" x1="${i * stringSpacing}" y1="0" x2="${i * stringSpacing}" y2="${height}" stroke-width="${2 + (i * 0.5)}" />`;
+        const x = i * stringSpacing;
+        const strokeW = 4 - (i * 0.5); // Cuerdas más gruesas arriba
+        svg += `<line class="string-line" x1="${x}" y1="0" x2="${x}" y2="${height}" stroke-width="${strokeW}" />`;
     }
 
     // Dibujar notas seleccionadas
     currentFretboard.forEach((fret, stringIndex) => {
         const x = stringIndex * stringSpacing;
+        // Si es X, dibujar arriba del todo
         if (fret === 'X') {
-            svg += `<text class="mute-mark" x="${x}" y="-5">X</text>`;
+            svg += `<text class="mute-mark" x="${x}" y="12">X</text>`;
         } else if (fret !== null && fret >= 0) {
-            const y = (fret === 0) ? -5 : (fret - 0.5) * fretSpacing;
+            // Si es 0 (al aire), dibujar arriba del todo
+            // Si es traste, dibujar en el espacio del traste
+            const y = (fret === 0) ? 12 : (fret - 0.5) * fretSpacing;
             const noteName = getNoteName(stringIndex, fret);
             svg += `
-                <circle class="note-circle" cx="${x}" cy="${y}" r="12" />
+                <circle class="note-circle" cx="${x}" cy="${y}" r="11" />
                 <text class="note-text" x="${x}" y="${y}">${noteName}</text>
             `;
         }
@@ -106,35 +117,29 @@ function detectChord() {
         return;
     }
 
-    // Lógica simplificada de detección
     const root = uniqueNotes[0];
     const chordName = identifyChord(uniqueNotes, root);
 
     document.getElementById('chord-name').textContent = chordName;
     document.getElementById('chord-alternatives').textContent = `Notas: ${uniqueNotes.join(', ')}`;
 
-    // Actualizar progresiones
     updateProgressions(root, chordName);
 }
 
 function identifyChord(notes, root) {
-    // Esta es una simplificación. En una app real usaríamos un diccionario de voicings.
-    const has = (n) => notes.includes(n);
     const rootIndex = NOTES.indexOf(root);
     const getInterval = (n) => (NOTES.indexOf(n) - rootIndex + 12) % 12;
-
     const intervals = notes.map(getInterval).sort((a, b) => a - b);
 
-    // Detección básica
-    if (intervals.includes(4) && intervals.includes(7)) return root; // Mayor
-    if (intervals.includes(3) && intervals.includes(7)) return root + 'm'; // Menor
-    if (intervals.includes(3) && intervals.includes(6)) return root + 'dim'; // Disminuido
-    if (intervals.includes(4) && intervals.includes(8)) return root + 'aug'; // Aumentado
     if (intervals.includes(4) && intervals.includes(7) && intervals.includes(11)) return root + 'maj7';
     if (intervals.includes(4) && intervals.includes(7) && intervals.includes(10)) return root + '7';
+    if (intervals.includes(4) && intervals.includes(7)) return root;
     if (intervals.includes(3) && intervals.includes(7) && intervals.includes(10)) return root + 'm7';
+    if (intervals.includes(3) && intervals.includes(7)) return root + 'm';
+    if (intervals.includes(3) && intervals.includes(6)) return root + 'dim';
+    if (intervals.includes(4) && intervals.includes(8)) return root + 'aug';
 
-    return root + ' (?)'; // Fallback
+    return root + ' (?)';
 }
 
 // --- 3. BÚSQUEDA ---
@@ -142,11 +147,10 @@ function searchChord() {
     const query = document.getElementById('search-input').value.trim();
     if (!query) return;
 
-    // Simulación de búsqueda: mostramos opciones predefinidas
     const resultsContainer = document.getElementById('search-results');
     resultsContainer.innerHTML = '';
 
-    const commonChords = ['C', 'G', 'Am', 'F', 'Em', 'D', 'A', 'E', 'Dm', 'Bm'];
+    const commonChords = ['C', 'G', 'Am', 'F', 'Em', 'D', 'A', 'E', 'Dm', 'Bm', 'C7', 'G7'];
     const filtered = commonChords.filter(c => c.toLowerCase().includes(query.toLowerCase()));
 
     if (filtered.length === 0) {
@@ -163,38 +167,74 @@ function searchChord() {
     });
 }
 
-// --- 4. REPRODUCCIÓN DE AUDIO (WEB AUDIO API) ---
+// --- 4. REPRODUCCIÓN DE AUDIO REALISTA (SAMPLING) ---
 let audioCtx = null;
+const sampleBaseURL = 'https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@gh-pages/FluidR3_GM/acoustic_guitar_nylon-mp3/';
+const noteSamples = {}; // Caché de buffers
+
+async function loadSample(note) {
+    if (noteSamples[note]) return noteSamples[note];
+    try {
+        const response = await fetch(`${sampleBaseURL}${note}.mp3`);
+        const arrayBuffer = await response.arrayBuffer();
+        const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+        noteSamples[note] = audioBuffer;
+        return audioBuffer;
+    } catch (e) {
+        console.warn(`No se pudo cargar la muestra para ${note}, usando oscilador.`);
+        return null;
+    }
+}
+
+async function playNote(noteName) {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    // Intentar cargar muestra real
+    const buffer = await loadSample(noteName);
+
+    if (buffer) {
+        const source = audioCtx.createBufferSource();
+        source.buffer = buffer;
+
+        // Ajustar velocidad para notas sostenidas (simplificación)
+        // En una app real, se mapearían las notas exactas.
+        // Aquí usamos la muestra base y ajustamos playbackRate.
+        source.playbackRate.value = 1.0;
+
+        const gainNode = audioCtx.createGain();
+        gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.5);
+
+        source.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        source.start();
+    } else {
+        // Fallback a oscilador si falla la carga
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.value = getFrequency(noteName);
+        gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + 0.01);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.5);
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 1.5);
+    }
+}
 
 function playCurrentChord() {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
+    // Reproducir todas las cuerdas pulsadas
     currentFretboard.forEach((fret, i) => {
         if (fret !== null && fret !== 'X') {
             const noteName = getNoteName(i, fret);
-            playNote(noteName);
+            // Añadir un pequeño retardo para simular el rasgueo
+            setTimeout(() => playNote(noteName), i * 50);
         }
     });
-}
-
-function playNote(noteName) {
-    const freq = getFrequency(noteName);
-    const osc = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
-
-    osc.type = 'triangle'; // Sonido más suave
-    osc.frequency.value = freq;
-
-    // Envolvente para simular púa
-    gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
-    gainNode.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + 0.01);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.5);
-
-    osc.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-
-    osc.start();
-    osc.stop(audioCtx.currentTime + 1.5);
 }
 
 function getFrequency(note) {
@@ -202,27 +242,63 @@ function getFrequency(note) {
     return noteMap[note] || 440;
 }
 
-// --- 5. CÍRCULO DE QUINTAS ---
+// --- 5. CÍRCULO DE QUINTAS GRÁFICO ---
 function initCircleOfFifths() {
     const container = document.getElementById('circle-of-fifths');
-    const size = 300;
-    const radius = 120;
+    const size = 320;
     const center = size / 2;
+    const radiusOuter = 140;
+    const radiusInner = 90;
 
-    const keys = ['C', 'G', 'D', 'A', 'E', 'B', 'F#', 'C#', 'G#', 'D#', 'A#', 'F'];
+    const majorKeys = ['C', 'G', 'D', 'A', 'E', 'B', 'F#', 'C#', 'G#', 'D#', 'A#', 'F'];
+    const minorKeys = ['Am', 'Em', 'Bm', 'F#m', 'C#m', 'G#m', 'D#m', 'A#m', 'Fm', 'Cm', 'Gm', 'Dm'];
 
     let svg = `<svg viewBox="0 0 ${size} ${size}">`;
 
-    keys.forEach((key, i) => {
-        const angle = (i * 30 - 90) * (Math.PI / 180);
-        const x = center + radius * Math.cos(angle);
-        const y = center + radius * Math.sin(angle);
+    // Dibujar fondo
+    svg += `<circle cx="${center}" cy="${center}" r="${radiusOuter + 20}" fill="#1a1a1a" stroke="#333" stroke-width="2"/>`;
 
-        svg += `
-            <circle class="circle-segment" cx="${x}" cy="${y}" r="25" onclick="selectKey('${key}')" />
-            <text class="circle-text" x="${x}" y="${y}">${key}</text>
-        `;
+    majorKeys.forEach((key, i) => {
+        const angle = (i * 30 - 90) * (Math.PI / 180);
+
+        // Sector exterior (Mayores)
+        const x1 = center + radiusOuter * Math.cos(angle - 0.26);
+        const y1 = center + radiusOuter * Math.sin(angle - 0.26);
+        const x2 = center + radiusOuter * Math.cos(angle + 0.26);
+        const y2 = center + radiusOuter * Math.sin(angle + 0.26);
+        const x3 = center + radiusInner * Math.cos(angle + 0.26);
+        const y3 = center + radiusInner * Math.sin(angle + 0.26);
+        const x4 = center + radiusInner * Math.cos(angle - 0.26);
+        const y4 = center + radiusInner * Math.sin(angle - 0.26);
+
+        svg += `<path class="circle-segment" d="M ${x1} ${y1} L ${x2} ${y2} L ${x3} ${y3} L ${x4} ${y4} Z" onclick="selectKey('${key}')" />`;
+
+        // Texto Mayor
+        const textX = center + ((radiusOuter + radiusInner) / 2) * Math.cos(angle);
+        const textY = center + ((radiusOuter + radiusInner) / 2) * Math.sin(angle);
+        svg += `<text class="circle-text" x="${textX}" y="${textY}" fill="#e8e8e8">${key}</text>`;
+
+        // Sector interior (Menores)
+        const ir1 = center + radiusInner * Math.cos(angle - 0.26);
+        const ir2 = center + radiusInner * Math.sin(angle - 0.26);
+        const ir3 = center + radiusInner * Math.cos(angle + 0.26);
+        const ir4 = center + radiusInner * Math.sin(angle + 0.26);
+        const ir5 = center + (radiusInner - 40) * Math.cos(angle + 0.26);
+        const ir6 = center + (radiusInner - 40) * Math.sin(angle + 0.26);
+        const ir7 = center + (radiusInner - 40) * Math.cos(angle - 0.26);
+        const ir8 = center + (radiusInner - 40) * Math.sin(angle - 0.26);
+
+        svg += `<path class="circle-segment" d="M ${ir1} ${ir2} L ${ir3} ${ir4} L ${ir5} ${ir6} L ${ir7} ${ir8} Z" onclick="selectKey('${minorKeys[i]}')" style="fill:#111;" />`;
+
+        // Texto Menor
+        const mTextX = center + ((radiusInner + (radiusInner - 40)) / 2) * Math.cos(angle);
+        const mTextY = center + ((radiusInner + (radiusInner - 40)) / 2) * Math.sin(angle);
+        svg += `<text class="circle-text" x="${mTextX}" y="${mTextY}" fill="#888" font-size="10">${minorKeys[i]}</text>`;
     });
+
+    // Centro
+    svg += `<circle cx="${center}" cy="${center}" r="40" fill="#0d0d0d" stroke="#333" stroke-width="2"/>`;
+    svg += `<text class="circle-text" x="${center}" y="${center}" fill="#ff6b00" font-size="14">Tavo</text>`;
 
     svg += `</svg>`;
     container.innerHTML = svg;
@@ -230,16 +306,28 @@ function initCircleOfFifths() {
 
 function selectKey(key) {
     const info = document.getElementById('circle-info');
-    const rootIndex = NOTES.indexOf(key);
-    const fourth = NOTES[(rootIndex + 5) % 12];
-    const fifth = NOTES[(rootIndex + 7) % 12];
+    let root = key.replace('m', '');
+    const isMinor = key.includes('m');
+    const rootIndex = NOTES.indexOf(root);
 
-    info.innerHTML = `
-        <h3>Tonalidad de ${key} Mayor</h3>
-        <p><strong>Relativa menor:</strong> ${NOTES[(rootIndex + 9) % 12]}m</p>
-        <p><strong>IV Grado:</strong> ${fourth}</p>
-        <p><strong>V Grado:</strong> ${fifth}</p>
-    `;
+    if (isMinor) {
+        // Si es menor, la relativa mayor es +3 semitonos
+        const relativeMajor = NOTES[(rootIndex + 3) % 12];
+        info.innerHTML = `
+            <h3>Tonalidad de ${key}</h3>
+            <p><strong>Relativa Mayor:</strong> ${relativeMajor}</p>
+            <p><strong>IV Grado:</strong> ${NOTES[(rootIndex + 5) % 12]}m</p>
+            <p><strong>V Grado:</strong> ${NOTES[(rootIndex + 7) % 12]}m</p>
+        `;
+    } else {
+        const relativeMinor = NOTES[(rootIndex + 9) % 12] + 'm';
+        info.innerHTML = `
+            <h3>Tonalidad de ${key} Mayor</h3>
+            <p><strong>Relativa menor:</strong> ${relativeMinor}</p>
+            <p><strong>IV Grado:</strong> ${NOTES[(rootIndex + 5) % 12]}</p>
+            <p><strong>V Grado:</strong> ${NOTES[(rootIndex + 7) % 12]}</p>
+        `;
+    }
 }
 
 // --- 6. MODOS ---
@@ -265,15 +353,15 @@ function updateModeInfo() {
     `;
 }
 
-function playModeScale() {
+async function playModeScale() {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     const mode = document.getElementById('mode-selector').value;
-    const root = 'C'; // Simplificación
+    const root = 'C';
     const scale = getScaleNotes(root, mode);
 
-    scale.forEach((note, i) => {
-        setTimeout(() => playNote(note), i * 300);
-    });
+    for (let i = 0; i < scale.length; i++) {
+        setTimeout(() => playNote(scale[i]), i * 300);
+    }
 }
 
 function getScaleNotes(root, mode) {
@@ -298,6 +386,10 @@ function initSelectors() {
     const destSelect = document.getElementById('mod-dest');
     const dominantSelect = document.getElementById('dominant-key');
 
+    originSelect.innerHTML = '';
+    destSelect.innerHTML = '';
+    dominantSelect.innerHTML = '';
+
     keys.forEach(key => {
         originSelect.innerHTML += `<option value="${key}">${key}</option>`;
         destSelect.innerHTML += `<option value="${key}">${key}</option>`;
@@ -315,7 +407,6 @@ function calculateModulation() {
         return;
     }
 
-    // Ruta simple por el círculo de quintas
     const keys = ['C', 'G', 'D', 'A', 'E', 'B', 'F#', 'C#', 'G#', 'D#', 'A#', 'F'];
     let originIdx = keys.indexOf(origin);
     let destIdx = keys.indexOf(dest);
@@ -360,7 +451,6 @@ function calculateDominants() {
 
 // --- FUNCIONES DE UTILIDAD ---
 function loadQuickChord(chord) {
-    // Diccionario de posiciones comunes
     const chords = {
         'C': [0, 3, 2, 0, 1, 0],
         'G': [3, 2, 0, 0, 0, 3],
@@ -373,7 +463,6 @@ function loadQuickChord(chord) {
 
     if (chords[chord]) {
         currentFretboard = chords[chord].map(v => v === null ? null : v);
-        // Actualizar selects
         const selects = document.querySelectorAll('.string-row select');
         selects.forEach((select, i) => {
             select.value = currentFretboard[i] === null ? 'null' : currentFretboard[i];
@@ -398,7 +487,6 @@ function updateProgressions(root, chordName) {
     const container = document.getElementById('progressions-list');
     const rootIndex = NOTES.indexOf(root);
 
-    // Progresiones comunes basadas en la raíz
     const progressions = [
         `I - IV - V (${root} - ${NOTES[(rootIndex + 5) % 12]} - ${NOTES[(rootIndex + 7) % 12]})`,
         `I - vi - IV - V (${root} - ${NOTES[(rootIndex + 9) % 12]}m - ${NOTES[(rootIndex + 5) % 12]} - ${NOTES[(rootIndex + 7) % 12]})`,

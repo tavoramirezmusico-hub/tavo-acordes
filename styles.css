@@ -1,4 +1,4 @@
-/* VARIABLES DE COLOR (Basado en el documento) */
+/* VARIABLES DE COLOR */
 :root {
     --bg-color: #0d0d0d;
     --card-bg: #1a1a1a;
@@ -9,6 +9,7 @@
     --string-color: #b0b0b0;
     --fret-color: #444;
     --red-mute: #ff3333;
+    --wood-color: #2a1f1a;
 }
 
 * {
@@ -28,22 +29,34 @@ body {
 /* HEADER Y LOGO */
 .main-header {
     text-align: center;
-    padding: 20px;
+    padding: 30px 20px;
     background-color: var(--card-bg);
     border-bottom: 2px solid var(--accent);
 }
 
+.logo-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
 .logo-img {
-    max-width: 150px;
+    width: 180px;
     height: auto;
     border-radius: 50%;
-    margin-bottom: 10px;
-    box-shadow: 0 0 15px rgba(255, 107, 0, 0.3);
+    border: 3px solid var(--accent);
+    box-shadow: 0 0 25px rgba(255, 107, 0, 0.4);
+    transition: transform 0.3s ease;
+}
+
+.logo-img:hover {
+    transform: scale(1.05);
 }
 
 .subtitle {
     color: var(--text-muted);
-    font-size: 0.9em;
+    font-size: 1em;
+    letter-spacing: 1px;
 }
 
 /* NAVEGACIÓN STICKY */
@@ -51,11 +64,11 @@ body {
     position: sticky;
     top: 0;
     background-color: rgba(13, 13, 13, 0.95);
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(10px);
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 20px;
     padding: 15px;
     border-bottom: 1px solid var(--border-color);
     z-index: 1000;
@@ -89,7 +102,7 @@ body {
     border-radius: 12px;
     padding: 25px;
     border: 1px solid var(--border-color);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
 }
 
 .card h2 {
@@ -138,13 +151,25 @@ button {
 .fretboard-controls {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 20px;
+}
+
+.fretboard-visual-container {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    background-color: var(--bg-color);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
 }
 
 .string-selectors {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 10px;
+    width: 100%;
+    max-width: 500px;
     text-align: center;
 }
 
@@ -171,23 +196,16 @@ button {
     text-align: center;
 }
 
-/* DIAGRAMA DEL MÁSTIL */
-.fretboard-visual {
-    display: flex;
-    justify-content: center;
-    padding: 20px 0;
-    overflow-x: auto;
-}
-
+/* DIAGRAMA DEL MÁSTIL VERTICAL */
 .fretboard-svg {
-    background-color: #222;
+    background-color: var(--wood-color);
     border-radius: 8px;
-    padding: 10px;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
 }
 
 .fret-line {
-    stroke: var(--fret-color);
-    stroke-width: 2;
+    stroke: #555;
+    stroke-width: 3;
 }
 
 .string-line {
@@ -202,7 +220,7 @@ button {
 
 .note-text {
     fill: #000;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: bold;
     text-anchor: middle;
     dominant-baseline: middle;
@@ -210,9 +228,10 @@ button {
 
 .mute-mark {
     fill: var(--red-mute);
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     text-anchor: middle;
+    dominant-baseline: middle;
 }
 
 /* RESULTADO Y AUDIO */
@@ -282,11 +301,12 @@ button {
     .circle-container {
         flex-direction: row;
         justify-content: center;
+        align-items: flex-start;
     }
 
     .circle-svg-container {
-        width: 300px;
-        height: 300px;
+        width: 320px;
+        height: 320px;
     }
 
     .circle-info {
@@ -316,6 +336,7 @@ button {
     text-anchor: middle;
     dominant-baseline: middle;
     pointer-events: none;
+    font-weight: bold;
 }
 
 /* MODOS */
@@ -391,5 +412,9 @@ footer {
 
     .chord-display {
         font-size: 2em;
+    }
+
+    .logo-img {
+        width: 140px;
     }
 }
