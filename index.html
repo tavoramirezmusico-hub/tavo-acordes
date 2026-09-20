@@ -4,193 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tavo Acordes</title>
-  <style>
-    :root {
-      --bg: #0d0d0d;
-      --card: #1a1a1a;
-      --border: #333;
-      --text: #e8e8e8;
-      --muted: #888;
-      --orange: #ff6b00;
-      --orange-dim: #cc5500;
-      --accent: #ff8c33;
-      --string: #c9a86c;
-      --fret: #555;
-      --dot: #ff6b00;
-      --open: #4ade80;
-      --muted-x: #ef4444;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.5;
-      min-height: 100vh;
-    }
-    .container { max-width: 960px; margin: 0 auto; padding: 1rem; }
-    header { text-align: center; padding: 1.5rem 0 1rem; }
-    header h1 { font-size: 1.8rem; font-weight: 700; }
-    header h1 span { color: var(--orange); }
-    header p { color: var(--muted); font-size: 0.9rem; margin-top: 0.25rem; }
-    .nav {
-      display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center;
-      padding: 0.75rem; background: var(--card); border-radius: 12px;
-      border: 1px solid var(--border); margin-bottom: 1.25rem; position: sticky; top: 0; z-index: 100;
-    }
-    .nav-brand { font-weight: 700; margin-right: 0.5rem; }
-    .nav-brand span { color: var(--orange); }
-    .nav a {
-      color: var(--muted); text-decoration: none; padding: 0.35rem 0.7rem;
-      border-radius: 6px; font-size: 0.85rem; transition: all 0.15s;
-    }
-    .nav a:hover { color: var(--orange); background: rgba(255,107,0,0.1); }
-    .card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 1.25rem; margin-bottom: 1.25rem;
-    }
-    .card h2 {
-      font-size: 1.1rem; margin-bottom: 1rem; color: var(--orange);
-      border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;
-    }
-    .section-anchor { scroll-margin-top: 70px; }
-    .strings-grid {
-      display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.5rem;
-    }
-    @media (max-width: 600px) { .strings-grid { grid-template-columns: repeat(3, 1fr); } }
-    .string-col { text-align: center; }
-    .string-col label {
-      display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 0.25rem;
-      font-weight: 600;
-    }
-    .string-col select {
-      width: 100%; padding: 0.5rem; background: #111; border: 1px solid var(--border);
-      border-radius: 8px; color: var(--text); font-size: 1rem; text-align: center;
-      cursor: pointer;
-    }
-    .string-col select.muted { color: var(--muted-x); border-color: var(--muted-x); }
-    .string-col select:focus { outline: 2px solid var(--orange); }
-    .tuning-info { font-size: 0.8rem; color: var(--muted); margin-top: 0.75rem; text-align: center; }
-    .actions {
-      display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-top: 1rem;
-    }
-    button {
-      background: #222; border: 1px solid var(--border); color: var(--text);
-      padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-size: 0.9rem;
-      transition: all 0.15s;
-    }
-    button:hover { border-color: var(--orange); color: var(--orange); }
-    .btn-play {
-      background: var(--orange); color: #111; border-color: var(--orange); font-weight: 600;
-    }
-    .btn-play:hover { background: var(--accent); color: #111; }
-    .neck-wrap { overflow-x: auto; padding: 0.5rem 0; }
-    .neck {
-      display: inline-grid; grid-template-columns: 40px repeat(12, 36px);
-      gap: 0; min-width: 480px; background: #151515; border-radius: 8px;
-      border: 1px solid var(--border); position: relative;
-    }
-    .fret-num {
-      text-align: center; font-size: 0.7rem; color: var(--muted);
-      padding: 0.3rem 0; grid-row: 1;
-    }
-    .string-label {
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.8rem; font-weight: 700; color: var(--string);
-      background: #111; border-right: 2px solid var(--border);
-    }
-    .cell {
-      height: 28px; border-bottom: 1px solid var(--fret); border-right: 1px solid #2a2a2a;
-      position: relative; display: flex; align-items: center; justify-content: center;
-    }
-    .cell.nut { border-right: 3px solid #888; }
-    .cell .finger {
-      width: 22px; height: 22px; border-radius: 50%; background: var(--dot);
-      color: #111; font-size: 0.65rem; font-weight: 700;
-      display: flex; align-items: center; justify-content: center;
-      z-index: 2;
-    }
-    .cell .open-dot {
-      width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--open);
-      background: transparent;
-    }
-    .cell .muted-mark {
-      color: var(--muted-x); font-weight: 700; font-size: 1rem;
-    }
-    .string-line {
-      position: absolute; left: 0; right: 0; height: 2px; background: var(--string);
-      opacity: 0.35; top: 50%; transform: translateY(-50%); z-index: 0;
-    }
-    .string-line.muted { background: var(--muted-x); opacity: 0.5; }
-    .empty-state { color: var(--muted); text-align: center; padding: 1rem; font-size: 0.9rem; }
-    .result-name {
-      font-size: 1.6rem; font-weight: 700; color: var(--orange); text-align: center;
-      margin-bottom: 0.5rem;
-    }
-    .result-notes { text-align: center; color: var(--muted); font-size: 0.9rem; margin-bottom: 0.75rem; }
-    .result-alts { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; }
-    .chip {
-      background: #222; border: 1px solid var(--border); padding: 0.25rem 0.6rem;
-      border-radius: 20px; font-size: 0.8rem; cursor: pointer;
-    }
-    .chip:hover { border-color: var(--orange); color: var(--orange); }
-    .search-row { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
-    .search-row input {
-      flex: 1; padding: 0.6rem 0.8rem; background: #111; border: 1px solid var(--border);
-      border-radius: 8px; color: var(--text); font-size: 1rem;
-    }
-    .search-row input:focus { outline: 2px solid var(--orange); }
-    .voicing-card {
-      background: #111; border: 1px solid var(--border); border-radius: 8px;
-      padding: 0.75rem; margin-bottom: 0.5rem; cursor: pointer; transition: border-color 0.15s;
-    }
-    .voicing-card:hover { border-color: var(--orange); }
-    .voicing-card .pos { font-weight: 600; color: var(--orange); }
-    .voicing-card .frets { font-family: monospace; color: var(--muted); font-size: 0.85rem; }
-    .cof-wrap { display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-start; }
-    .cof-svg-wrap { flex: 0 0 auto; }
-    .cof-info { flex: 1; min-width: 200px; }
-    .info-text { color: var(--muted); font-size: 0.9rem; }
-    .mode-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.5rem;
-    }
-    .mode-btn {
-      background: #111; border: 1px solid var(--border); border-radius: 8px;
-      padding: 0.6rem; text-align: center; cursor: pointer; transition: all 0.15s;
-    }
-    .mode-btn:hover, .mode-btn.active { border-color: var(--orange); background: rgba(255,107,0,0.1); }
-    .mode-btn .name { font-weight: 600; color: var(--orange); font-size: 0.9rem; }
-    .mode-btn .deg { font-size: 0.75rem; color: var(--muted); }
-    .mode-detail { margin-top: 1rem; padding: 1rem; background: #111; border-radius: 8px; border: 1px solid var(--border); }
-    .mode-detail h3 { color: var(--orange); margin-bottom: 0.5rem; }
-    .mode-detail .scale-notes { font-family: monospace; margin: 0.5rem 0; }
-    .play-scale-btn { margin-top: 0.5rem; }
-    .mod-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 1rem; }
-    .mod-row select {
-      padding: 0.4rem 0.6rem; background: #111; border: 1px solid var(--border);
-      border-radius: 6px; color: var(--text);
-    }
-    .mod-path { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
-    .mod-step {
-      background: #222; border: 1px solid var(--border); padding: 0.3rem 0.6rem;
-      border-radius: 6px; font-size: 0.85rem;
-    }
-    .mod-step.current { border-color: var(--orange); color: var(--orange); }
-    .mod-arrow { color: var(--muted); }
-    .dom-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; }
-    .dom-card {
-      background: #111; border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem;
-    }
-    .dom-card h4 { color: var(--orange); font-size: 0.95rem; margin-bottom: 0.35rem; }
-    .dom-card p { font-size: 0.8rem; color: var(--muted); }
-    .prog-list { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-    .prog-item {
-      background: #222; border: 1px solid var(--border); padding: 0.35rem 0.7rem;
-      border-radius: 6px; font-size: 0.85rem; cursor: pointer;
-    }
-    .prog-item:hover { border-color: var(--orange); color: var(--orange); }
-    footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 1.5rem 0; }
-  </style>
+  <link rel="stylesheet" href="app.css">
 </head>
 <body>
 
@@ -213,6 +27,7 @@
       <p>Guitarra · Armonía · Círculo de quintas · Modos · Progresiones</p>
     </header>
 
+    <!-- BUSCAR POR NOMBRE -->
     <div class="card section-anchor" id="sec-buscar">
       <h2>Buscar acorde por nombre</h2>
       <div class="search-row">
@@ -224,6 +39,7 @@
       </div>
     </div>
 
+    <!-- TRASTES -->
     <div class="card section-anchor" id="sec-trastes">
       <h2>Cuerdas · E A D G B e</h2>
       <div class="strings-grid" id="stringsGrid"></div>
@@ -256,6 +72,7 @@
       <div id="progArea"><div class="empty-state">Forma un acorde para ver progresiones</div></div>
     </div>
 
+    <!-- CÍRCULO -->
     <div class="card section-anchor" id="sec-circulo">
       <h2>Círculo de quintas</h2>
       <div class="cof-wrap">
@@ -273,6 +90,7 @@
       <div class="mode-detail" id="modeDetail"></div>
     </div>
 
+    <!-- MODULACIÓN -->
     <div class="card section-anchor" id="sec-modulacion">
       <h2>Modulación paso a paso</h2>
       <p class="info-text" style="margin-bottom:0.75rem">Elige tonalidad de origen y destino. Se muestra el camino por el círculo de quintas.</p>
@@ -286,6 +104,7 @@
       <div id="modResult"><div class="empty-state">Selecciona origen y destino</div></div>
     </div>
 
+    <!-- DOMINANTES / TRITONO -->
     <div class="card section-anchor" id="sec-dominantes">
       <h2>Dominantes secundarios · Sustituto de tritono</h2>
       <p class="info-text" style="margin-bottom:0.75rem">
@@ -302,8 +121,8 @@
     <footer>Tavo Acordes</footer>
   </div>
 
-  <script>
-/* PLACEHOLDER - full JS will be inserted */
-  </script>
+  
+  <script src="app-part1.gz.js"></script>
+  <script src="app-part2.gz.js"></script>
 </body>
 </html>
