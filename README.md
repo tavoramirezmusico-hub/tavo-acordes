@@ -1,44 +1,37 @@
 # Tavo Acordes
 
-App web de guitarra (HTML + CSS + JS, sin dependencias) para identificar acordes, buscar posiciones, explorar el círculo de quintas, modos, modulaciones y progresiones.
+App web de guitarra y armonía musical.
 
-**Repositorio:** https://github.com/tavoramirezmusico-hub/Tavo-acordes
+## Características
 
-## Cómo usarla
+- Selección de trastes por cuerda (X = silenciada, 0 = al aire, 1–12)
+- Detección automática de nombre(s) de acorde
+- Diagrama realista del mástil (6ª cuerda arriba)
+- Audio realista con Web Audio API
+- Búsqueda de posiciones por nombre de acorde
+- Círculo de quintas interactivo
+- Modos (Jónico a Locrio) con usos y sustituciones
+- Visualizador de rutas de modulación
+- Dominantes secundarios y sustituto de tritono
+- Progresiones sugeridas
 
-1. Descarga `index.html` de este repo (o cópialo desde tu proyecto local).
-2. Ábrelo en Chrome, Firefox, Safari o Edge.
-3. No necesita servidor ni instalación.
+## Cómo usar
 
-## Funciones
+Abre el archivo **index.html** en cualquier navegador moderno (Chrome, Firefox, Edge, Safari).
 
-- **Trastes**: indica el traste de cada cuerda (o X = silenciada) y detecta el acorde
-- **Mástil visual**: 6ª cuerda arriba → 1ª abajo, con nombre de nota en cada dedo
-- **Buscar por nombre**: escribe `Am`, `Cmaj7`, `G7`… y obtén posiciones sugeridas
-- **Audio**: escucha el acorde con síntesis tipo cuerda
-- **Progresiones**: secuencias sugeridas según el acorde actual
-- **Círculo de quintas**: tonalidades, alteraciones, relativa menor, cadencias
-- **Modos**: los 7 modos con escala, acordes, usos y sustituciones (reproducibles)
-- **Modulación**: ruta paso a paso entre dos tonalidades
-- **Dominantes**: V7, sustituto de tritono y dominantes secundarios
-- **Menú de navegación** entre secciones
+No necesita servidor ni instalación.
 
-## Archivos
+## GitHub Pages
 
-| Archivo | Descripción |
-|---------|-------------|
-| `index.html` | App completa (todo en un solo archivo) |
-| `README.md` | Este archivo |
+Para publicarlo en vivo:
 
-## Subir la app completa
+1. Ve a Settings → Pages
+2. Source: Deploy from a branch
+3. Branch: main / (root)
+4. Save
 
-Si `index.html` aún es un placeholder, sube el archivo completo desde tu carpeta local:
+Luego estará en: https://tavoramirezmusico-hub.github.io/Tavo-acordes/
 
-1. Entra a https://github.com/tavoramirezmusico-hub/Tavo-acordes
-2. Pulsa **Add file** → **Upload files**
-3. Arrastra `index.html` (el de ~58 KB con toda la app)
-4. Commit changes
+---
 
-## Licencia
-
-Uso libre para estudio y práctica musical.
+Creado por **Tavo Ramírez**.
