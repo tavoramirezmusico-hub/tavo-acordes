@@ -1,12 +1,14 @@
+/* ===== VARIABLES DE COLOR ===== */
 :root {
     --bg-color: #0d0d0d;
     --card-bg: #1a1a1a;
     --accent: #ff6b00;
+    --accent-hover: #ff8533;
     --text-main: #e8e8e8;
     --text-muted: #888888;
     --border-color: #333333;
     --string-color: #cccccc;
-    --fret-color: #666;
+    --fret-color: #777;
     --red-mute: #ff3333;
     --wood-color: #2a1f1a;
 }
@@ -25,6 +27,7 @@ body {
     padding-bottom: 50px;
 }
 
+/* ===== HEADER Y LOGO ===== */
 .main-header {
     text-align: center;
     padding: 30px 20px;
@@ -51,12 +54,19 @@ body {
     transform: scale(1.05);
 }
 
+h1 {
+    font-size: 2em;
+    color: var(--text-main);
+    margin-bottom: 5px;
+}
+
 .subtitle {
     color: var(--text-muted);
-    font-size: 1em;
+    font-size: 0.95em;
     letter-spacing: 1px;
 }
 
+/* ===== NAVEGACIÓN STICKY ===== */
 .sticky-nav {
     position: sticky;
     top: 0;
@@ -83,6 +93,7 @@ body {
     color: var(--accent);
 }
 
+/* ===== CONTENEDOR PRINCIPAL ===== */
 .container {
     max-width: 1000px;
     margin: 20px auto;
@@ -92,6 +103,7 @@ body {
     gap: 30px;
 }
 
+/* ===== TARJETAS ===== */
 .card {
     background-color: var(--card-bg);
     border-radius: 12px;
@@ -108,6 +120,7 @@ body {
     padding-bottom: 10px;
 }
 
+/* ===== BOTONES ===== */
 button {
     cursor: pointer;
     border: none;
@@ -125,7 +138,7 @@ button {
 }
 
 .btn-primary:hover {
-    background-color: #ff8533;
+    background-color: var(--accent-hover);
     transform: scale(1.02);
 }
 
@@ -141,7 +154,19 @@ button {
     color: #fff;
 }
 
-/* MÁSTIL */
+.btn-show {
+    background-color: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 8px 15px;
+}
+
+.btn-show:hover {
+    background-color: var(--accent);
+    color: #000;
+}
+
+/* ===== MÁSTIL - RESPONSIVE Y COMPLETO ===== */
 .fretboard-controls {
     display: flex;
     flex-direction: column;
@@ -152,53 +177,29 @@ button {
 .fretboard-visual-container {
     display: flex;
     justify-content: center;
-    padding: 10px;
+    align-items: center;
+    padding: 15px;
     background-color: var(--bg-color);
     border-radius: 8px;
     border: 1px solid var(--border-color);
     width: 100%;
-    overflow-x: auto;
+    min-height: 260px;
+    overflow: visible;
 }
 
-.string-selectors {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 10px;
+.fretboard-visual {
     width: 100%;
-    max-width: 700px;
-    text-align: center;
-}
-
-.string-row {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-}
-
-.string-row label {
-    font-weight: bold;
-    color: var(--accent);
-    font-size: 0.9em;
-}
-
-.string-row select {
-    width: 100%;
-    padding: 8px;
-    background-color: var(--bg-color);
-    color: var(--text-main);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    text-align: center;
+    max-width: 900px;
 }
 
 .fretboard-svg {
     background-color: var(--wood-color);
     border-radius: 8px;
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
-    max-width: 100%;
+    width: 100%;
     height: auto;
     display: block;
+    min-height: 220px;
 }
 
 .fret-line {
@@ -234,7 +235,7 @@ button {
 
 .string-label {
     fill: var(--accent);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: bold;
     text-anchor: end;
     dominant-baseline: middle;
@@ -242,11 +243,73 @@ button {
 
 .fret-number {
     fill: var(--text-muted);
-    font-size: 10px;
+    font-size: 11px;
     text-anchor: middle;
 }
 
-/* RESULTADO */
+/* ===== SELECTORES DE CUERDAS ===== */
+.string-selectors {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    width: 100%;
+    max-width: 700px;
+    text-align: center;
+}
+
+.string-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.string-row label {
+    font-weight: bold;
+    color: var(--accent);
+    font-size: 0.9em;
+}
+
+.string-row select {
+    width: 100%;
+    padding: 8px;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    text-align: center;
+}
+
+/* ===== QUICK CHORDS ===== */
+.quick-chords {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+}
+
+.quick-chords span {
+    color: var(--text-muted);
+    font-size: 0.9em;
+    margin-right: 5px;
+}
+
+.quick-chords button {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    padding: 6px 12px;
+    font-size: 0.9em;
+}
+
+.quick-chords button:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* ===== RESULTADO Y AUDIO ===== */
 .result-box {
     text-align: center;
 }
@@ -262,9 +325,10 @@ button {
     color: var(--text-muted);
     font-size: 0.9em;
     margin-bottom: 20px;
+    min-height: 20px;
 }
 
-/* BÚSQUEDA */
+/* ===== BÚSQUEDA ===== */
 .search-box {
     display: flex;
     gap: 10px;
@@ -283,17 +347,25 @@ button {
     font-size: 1em;
 }
 
+.search-box input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
 .search-results {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
     gap: 8px;
-    max-height: 250px;
+    max-height: 280px;
     overflow-y: auto;
     padding: 5px;
+    background-color: var(--bg-color);
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
 }
 
 .result-item {
-    background-color: var(--bg-color);
+    background-color: var(--card-bg);
     padding: 8px;
     border: 1px solid var(--border-color);
     border-radius: 6px;
@@ -301,14 +373,28 @@ button {
     cursor: pointer;
     transition: border-color 0.2s, background-color 0.2s;
     font-size: 0.9em;
+    font-weight: 600;
 }
 
 .result-item:hover {
     border-color: var(--accent);
     background-color: #222;
+    color: var(--accent);
 }
 
-/* CÍRCULO */
+/* ===== PROGRESIONES ===== */
+.progressions-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.progressions-container .result-item {
+    text-align: left;
+    padding: 12px;
+}
+
+/* ===== CÍRCULO DE QUINTAS ===== */
 .circle-container {
     display: flex;
     flex-direction: column;
@@ -316,26 +402,11 @@ button {
     gap: 20px;
 }
 
-@media (min-width: 768px) {
-    .circle-container {
-        flex-direction: row;
-        justify-content: center;
-        align-items: flex-start;
-    }
-
-    .circle-svg-container {
-        width: 350px;
-        height: 350px;
-        flex-shrink: 0;
-    }
-
-    .circle-info {
-        flex: 1;
-        background-color: var(--bg-color);
-        padding: 20px;
-        border-radius: 8px;
-        border: 1px solid var(--border-color);
-    }
+.circle-svg-container {
+    width: 100%;
+    max-width: 360px;
+    aspect-ratio: 1 / 1;
+    flex-shrink: 0;
 }
 
 .circle-svg-container svg {
@@ -368,7 +439,55 @@ button {
     font-weight: bold;
 }
 
-/* MODOS */
+.circle-info {
+    flex: 1;
+    background-color: var(--bg-color);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    width: 100%;
+}
+
+.circle-info h3 {
+    color: var(--accent);
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+.circle-info h4 {
+    color: var(--accent);
+    margin: 12px 0 8px 0;
+    font-size: 1em;
+}
+
+.circle-info ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.circle-info li {
+    padding: 4px 0;
+    border-bottom: 1px solid #222;
+}
+
+.circle-info li:last-child {
+    border-bottom: none;
+}
+
+.circle-info strong {
+    color: var(--accent);
+}
+
+/* Desktop: círculo a la izquierda, info a la derecha */
+@media (min-width: 768px) {
+    .circle-container {
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+    }
+}
+
+/* ===== MODOS ===== */
 .modes-container {
     display: flex;
     flex-direction: column;
@@ -391,7 +510,15 @@ button {
     border: 1px solid var(--border-color);
 }
 
-/* MODULACIÓN Y DOMINANTES */
+.mode-info-box p {
+    margin-bottom: 8px;
+}
+
+.mode-info-box strong {
+    color: var(--accent);
+}
+
+/* ===== MODULACIÓN Y DOMINANTES ===== */
 .modulation-controls,
 .dominant-controls {
     display: flex;
@@ -399,6 +526,14 @@ button {
     gap: 15px;
     align-items: center;
     margin-bottom: 15px;
+}
+
+.modulation-controls label,
+.dominant-controls label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted);
 }
 
 .modulation-controls select,
@@ -416,14 +551,35 @@ button {
     padding: 15px;
     border-radius: 6px;
     border: 1px solid var(--border-color);
-    min-height: 50px;
+    min-height: 60px;
 }
 
+.modulation-result strong,
+.dominant-result strong {
+    color: var(--accent);
+}
+
+.modulation-result ul,
+.dominant-result ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 8px;
+}
+
+.modulation-result li,
+.dominant-result li {
+    padding: 4px 0;
+    border-bottom: 1px solid #222;
+}
+
+/* ===== ESTADO VACÍO ===== */
 .empty-state {
     color: var(--text-muted);
     font-style: italic;
+    padding: 10px;
 }
 
+/* ===== FOOTER ===== */
 footer {
     text-align: center;
     padding: 20px;
@@ -433,6 +589,7 @@ footer {
     margin-top: 30px;
 }
 
+/* ===== RESPONSIVE ===== */
 @media (max-width: 600px) {
     .string-selectors {
         grid-template-columns: repeat(3, 1fr);
@@ -444,5 +601,17 @@ footer {
 
     .logo-img {
         width: 140px;
+    }
+
+    h1 {
+        font-size: 1.5em;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    .search-box {
+        flex-direction: column;
     }
 }
