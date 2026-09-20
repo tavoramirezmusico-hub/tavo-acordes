@@ -21,8 +21,9 @@
 
   <nav class="sticky-nav">
     <a href="#trastes">Trastes</a>
-    <a href="#buscar">Buscar</a>
     <a href="#resultado">Resultado</a>
+    <a href="#buscar">Buscar</a>
+    <a href="#escala">Escala</a>
     <a href="#progresiones">Progresiones</a>
     <a href="#circulo">Círculo</a>
     <a href="#modos">Modos</a>
@@ -32,6 +33,7 @@
 
   <main class="container">
 
+    <!-- 1. SELECCIÓN DE ACORDES -->
     <section id="trastes" class="card">
       <h2>1. Selección de Acordes (Trastes)</h2>
       <div class="fretboard-controls">
@@ -58,6 +60,7 @@
       </div>
     </section>
 
+    <!-- 2. DETECCIÓN Y AUDIO -->
     <section id="resultado" class="card">
       <h2>2. Detección y Audio</h2>
       <div class="result-box">
@@ -69,6 +72,7 @@
       </div>
     </section>
 
+    <!-- 3. BUSCAR ACORDE -->
     <section id="buscar" class="card">
       <h2>3. Buscar Acorde por Nombre</h2>
       <div class="search-box">
@@ -81,6 +85,16 @@
       </div>
     </section>
 
+    <!-- 3.5. ESCALA DEL ACORDE DETECTADO (NUEVA) -->
+    <section id="escala" class="card">
+      <h2>3.5. Escala del Acorde Detectado</h2>
+      <div id="scale-info" class="mode-info-box">
+        <p class="empty-state">Toca un acorde para ver su escala.</p>
+      </div>
+      <div id="scale-fretboard" style="margin-top:15px;"></div>
+    </section>
+
+    <!-- 4. PROGRESIONES SUGERIDAS -->
     <section id="progresiones" class="card">
       <h2>4. Progresiones Sugeridas</h2>
       <div id="progressions-list" class="progressions-container">
@@ -88,6 +102,7 @@
       </div>
     </section>
 
+    <!-- 5. CÍRCULO DE QUINTAS -->
     <section id="circulo" class="card">
       <h2>5. Círculo de Quintas Interactivo</h2>
       <div class="circle-container">
@@ -100,6 +115,7 @@
       </div>
     </section>
 
+    <!-- 6. MODOS -->
     <section id="modos" class="card">
       <h2>6. Modos, Usos y Sustituciones</h2>
       <div class="modes-container">
@@ -117,6 +133,7 @@
       </div>
     </section>
 
+    <!-- 7. MODULACIÓN -->
     <section id="modulacion" class="card">
       <h2>7. Modulación Paso a Paso</h2>
       <div class="modulation-controls">
@@ -127,6 +144,7 @@
       <div id="modulation-result" class="modulation-result"></div>
     </section>
 
+    <!-- 8. DOMINANTES SECUNDARIOS -->
     <section id="dominantes" class="card">
       <h2>8. Dominantes Secundarios y Tritono</h2>
       <div class="dominant-controls">
