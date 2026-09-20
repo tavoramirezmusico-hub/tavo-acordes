@@ -300,7 +300,7 @@ button {
     min-height: 20px;
 }
 
-/* ===== INFO DEL ACORDE (FÓRMULA + EXPLICACIÓN) ===== */
+/* ===== INFO DEL ACORDE ===== */
 .chord-info-box {
     background-color: var(--bg-color);
     padding: 20px;
@@ -362,7 +362,7 @@ button {
     margin-top: 15px;
 }
 
-/* ===== POSICIONES ALTERNATIVAS DEL ACORDE ===== */
+/* ===== POSICIONES ALTERNATIVAS ===== */
 .chord-positions {
     display: flex;
     flex-wrap: wrap;

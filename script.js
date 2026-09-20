@@ -1,5 +1,5 @@
 // =====================================================
-// TAVO ACORDES - SCRIPT PRINCIPAL v5
+// TAVO ACORDES - SCRIPT PRINCIPAL v6
 // =====================================================
 
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -7,10 +7,9 @@ const STRINGS = ['E', 'A', 'D', 'G', 'B', 'e'];
 const OPEN_NOTES = ['E', 'A', 'D', 'G', 'B', 'E'];
 
 // =====================================================
-// CALIDADES DE ACORDES (MUY COMPLETO)
+// CALIDADES DE ACORDES
 // =====================================================
 const CHORD_QUALITIES = {
-    // Tríadas básicas
     '': { intervals: [0, 4, 7], formula: '1 3 5', name: 'Mayor', scale: 'jónico', explanation: 'Tríada mayor: raíz + 3ª mayor + 5ª justa. Es el acorde más común y estable.' },
     'm': { intervals: [0, 3, 7], formula: '1 b3 5', name: 'Menor', scale: 'eólico', explanation: 'Tríada menor: raíz + 3ª menor + 5ª justa. Sonido melancólico.' },
     'dim': { intervals: [0, 3, 6], formula: '1 b3 b5', name: 'Disminuido', scale: 'locrio', explanation: 'Tríada disminuida: raíz + 3ª menor + 5ª disminuida. Muy tenso, resuelve al I.' },
@@ -18,12 +17,8 @@ const CHORD_QUALITIES = {
     'sus2': { intervals: [0, 2, 7], formula: '1 2 5', name: 'Suspendido 2', scale: 'jónico', explanation: 'Suspendido: la 3ª se sustituye por la 2ª. Sonido abierto.' },
     'sus4': { intervals: [0, 5, 7], formula: '1 4 5', name: 'Suspendido 4', scale: 'jónico', explanation: 'Suspendido: la 3ª se sustituye por la 4ª. Suele resolver a mayor.' },
     '5': { intervals: [0, 7], formula: '1 5', name: 'Quinta (Power)', scale: 'jónico', explanation: 'Power chord: solo raíz y quinta. Sin 3ª, ambiguo entre mayor y menor.' },
-
-    // Sextas
     '6': { intervals: [0, 4, 7, 9], formula: '1 3 5 6', name: 'Sexta', scale: 'jónico', explanation: 'Tríada mayor + 6ª mayor. Sonido estable con color jazzy.' },
     'm6': { intervals: [0, 3, 7, 9], formula: '1 b3 5 6', name: 'Menor Sexta', scale: 'dórico', explanation: 'Tríada menor + 6ª mayor. Usado en jazz manouche.' },
-
-    // Séptimas
     '7': { intervals: [0, 4, 7, 10], formula: '1 3 5 b7', name: 'Dominante (7)', scale: 'mixolidio', explanation: 'Tríada mayor + 7ª menor. Es el acorde de dominante: genera tensión y resuelve a la tónica.' },
     'maj7': { intervals: [0, 4, 7, 11], formula: '1 3 5 7', name: 'Mayor 7', scale: 'jónico', explanation: 'Tríada mayor + 7ª mayor. Sonido suave y sofisticado.' },
     'm7': { intervals: [0, 3, 7, 10], formula: '1 b3 5 b7', name: 'Menor 7', scale: 'dórico', explanation: 'Tríada menor + 7ª menor. Muy usado en jazz, soul y funk.' },
@@ -32,14 +27,10 @@ const CHORD_QUALITIES = {
     'mMaj7': { intervals: [0, 3, 7, 11], formula: '1 b3 5 7', name: 'Menor Mayor 7', scale: 'eólico', explanation: 'Tríada menor + 7ª mayor. Sonido misterioso, típico del cine negro.' },
     'aug7': { intervals: [0, 4, 8, 10], formula: '1 3 #5 b7', name: 'Aumentado 7', scale: 'jónico', explanation: 'Tríada aumentada + 7ª menor. Domina hacia acordes menores.' },
     'maj7#5': { intervals: [0, 4, 8, 11], formula: '1 3 #5 7', name: 'Mayor 7 #5', scale: 'jónico', explanation: 'Tríada aumentada + 7ª mayor. Sonido etéreo.' },
-
-    // Add (agregados)
     'add9': { intervals: [0, 2, 4, 7], formula: '1 2 3 5', name: 'Add 9', scale: 'jónico', explanation: 'Tríada mayor + 9ª (2ª). Añade color sin la tensión del 7.' },
     'madd9': { intervals: [0, 2, 3, 7], formula: '1 2 b3 5', name: 'Menor Add 9', scale: 'eólico', explanation: 'Tríada menor + 9ª. Color melancólico moderno.' },
     'add11': { intervals: [0, 4, 5, 7], formula: '1 3 4 5', name: 'Add 11', scale: 'jónico', explanation: 'Tríada mayor + 11ª (4ª). Sonido suspenso.' },
     'add13': { intervals: [0, 4, 7, 9], formula: '1 3 5 6', name: 'Add 13', scale: 'jónico', explanation: 'Tríada mayor + 13ª (6ª). Equivalente a la sexta.' },
-
-    // Novenas
     '9': { intervals: [0, 2, 4, 7, 10], formula: '1 2 3 5 b7', name: 'Dominante 9', scale: 'mixolidio', explanation: 'Acorde de dominante + 9ª. Sonido funk y blues.' },
     'maj9': { intervals: [0, 2, 4, 7, 11], formula: '1 2 3 5 7', name: 'Mayor 9', scale: 'jónico', explanation: 'Acorde maj7 + 9ª. Sonido brillante y moderno.' },
     'm9': { intervals: [0, 2, 3, 7, 10], formula: '1 2 b3 5 b7', name: 'Menor 9', scale: 'dórico', explanation: 'Acorde m7 + 9ª. Sonido neo-soul.' },
@@ -47,29 +38,21 @@ const CHORD_QUALITIES = {
     '7b9': { intervals: [0, 1, 4, 7, 10], formula: '1 b2 3 5 b7', name: 'Dominante 7 b9', scale: 'frigio', explanation: 'Dominante con 9ª menor. Resuelve a menor. Muy usado en jazz.' },
     '7#9': { intervals: [0, 3, 4, 7, 10], formula: '1 #2 3 5 b7', name: 'Dominante 7 #9', scale: 'frigio', explanation: 'Dominante con 9ª aumentada. El famoso acorde Hendrix.' },
     'maj9#11': { intervals: [0, 2, 4, 6, 7, 11], formula: '1 2 3 #4 5 7', name: 'Mayor 9 #11', scale: 'lidio', explanation: 'Acorde maj9 con 11ª aumentada. Sonido lidio, muy cinematográfico.' },
-
-    // Oncenas
     '11': { intervals: [0, 2, 4, 5, 7, 10], formula: '1 2 3 4 5 b7', name: 'Dominante 11', scale: 'mixolidio', explanation: 'Dominante + 11ª. Sonido abierto.' },
     'm11': { intervals: [0, 2, 3, 5, 7, 10], formula: '1 2 b3 4 5 b7', name: 'Menor 11', scale: 'dórico', explanation: 'Acorde m9 + 11ª. Sonido soul.' },
     'maj7#11': { intervals: [0, 4, 6, 7, 11], formula: '1 3 #4 5 7', name: 'Mayor 7 #11', scale: 'lidio', explanation: 'Acorde maj7 con 11ª aumentada. Sonido etéreo.' },
-
-    // Treceñas
     '13': { intervals: [0, 2, 4, 7, 9, 10], formula: '1 2 3 5 6 b7', name: 'Dominante 13', scale: 'mixolidio', explanation: 'Dominante + 13ª. Sonido muy rico.' },
     'm13': { intervals: [0, 2, 3, 7, 9, 10], formula: '1 2 b3 5 6 b7', name: 'Menor 13', scale: 'dórico', explanation: 'Acorde m11 + 13ª.' },
     'maj13': { intervals: [0, 2, 4, 7, 9, 11], formula: '1 2 3 5 6 7', name: 'Mayor 13', scale: 'jónico', explanation: 'Acorde maj9 + 13ª.' },
-
-    // Alterados
     '7b5': { intervals: [0, 4, 6, 10], formula: '1 3 b5 b7', name: 'Dominante 7 b5', scale: 'locrio', explanation: 'Dominante con 5ª disminuida. Tensión extra.' },
     '7#5': { intervals: [0, 4, 8, 10], formula: '1 3 #5 b7', name: 'Dominante 7 #5', scale: 'jónico', explanation: 'Dominante con 5ª aumentada.' },
     '7#11': { intervals: [0, 4, 6, 7, 10], formula: '1 3 #4 5 b7', name: 'Dominante 7 #11', scale: 'lidio', explanation: 'Dominante con 11ª aumentada. Sonido lidio dominante.' },
     '7b13': { intervals: [0, 3, 4, 7, 10], formula: '1 #2 3 5 b7', name: 'Dominante 7 b13', scale: 'frigio', explanation: 'Dominante con 13ª disminuida.' },
-
-    // Suspendidos extendidos
     '7sus4': { intervals: [0, 5, 7, 10], formula: '1 4 5 b7', name: 'Dominante 7 Sus4', scale: 'mixolidio', explanation: 'Dominante con 4ª en lugar de 3ª.' },
 };
 
 // =====================================================
-// BASE DE DATOS DE ACORDES (posiciones comunes)
+// BASE DE DATOS DE ACORDES
 // =====================================================
 const CHORD_DB = {
     'C': [0, 3, 2, 0, 1, 0], 'C#': [null, 4, 6, 6, 6, 4], 'D': [null, null, 0, 2, 3, 2],
@@ -291,8 +274,7 @@ function getNoteName(stringIndex, fret) {
 }
 
 // =====================================================
-// 2. DETECCIÓN DE ACORDES
-// =====================================================
+// 2. DETECCIÓN DE ACORDES// =====================================================
 function detectChord() {
     const notes = [];
     currentFretboard.forEach((fret, i) => {
@@ -312,6 +294,7 @@ function detectChord() {
         if (infoEl) infoEl.innerHTML = '';
         document.getElementById('scale-info').innerHTML = '<p class="empty-state">Toca al menos 2 cuerdas para ver la escala.</p>';
         document.getElementById('scale-fretboard').innerHTML = '';
+        document.getElementById('dominant-result').innerHTML = '<p class="empty-state">Toca un acorde primero para ver sus dominantes secundarios y sustitutos de tritono.</p>';
         currentChordData = null;
         return;
     }
@@ -320,7 +303,6 @@ function detectChord() {
 
     chordNameEl.textContent = currentChordData.primaryName;
 
-    // Alternativas (incluye inversiones)
     const bassNote = notes[0];
     let altText = '';
     if (currentChordData.root && bassNote !== currentChordData.root && currentChordData.quality) {
@@ -337,6 +319,7 @@ function detectChord() {
     updateScaleForChord(currentChordData);
     updateProgressionsForChord(currentChordData);
     updateModeForChord(currentChordData);
+    calculateDominants(); // Se ejecuta automáticamente con el acorde detectado
 }
 
 function analyzeChord(notes, orderedNotes) {
@@ -367,7 +350,6 @@ function analyzeChord(notes, orderedNotes) {
         }
     });
 
-    // Filtrar duplicados por nombre
     const uniqueCandidates = [];
     const seenNames = new Set();
     candidates.sort((a, b) => b.priority - a.priority);
@@ -379,8 +361,7 @@ function analyzeChord(notes, orderedNotes) {
     }
 
     if (uniqueCandidates.length === 0) {
-        // Detección flexible: intentar sin exigir todos los intervalos
-        // Buscar el acorde que contenga la mayoría de las notas
+        // Detección flexible: buscar el que más se acerque
         let bestFlexible = null;
         notes.forEach(rootNote => {
             const rootIndex = NOTES.indexOf(rootNote);
@@ -392,17 +373,12 @@ function analyzeChord(notes, orderedNotes) {
                 const ratio = matched / total;
 
                 if (ratio >= 0.75 && matched >= 3) {
-                    const missing = quality.intervals.filter(i => !intervals.includes(i));
                     let priority = matched * 100 + (rootNote === bassNote ? 100 : 0);
-
                     if (!bestFlexible || priority > bestFlexible.priority) {
                         bestFlexible = {
-                            root: rootNote,
-                            suffix: suffix,
+                            root: rootNote, suffix: suffix,
                             name: rootNote + suffix + ' (?)',
-                            quality: quality,
-                            priority: priority,
-                            missing: missing
+                            quality: quality, priority: priority
                         };
                     }
                 }
@@ -411,38 +387,30 @@ function analyzeChord(notes, orderedNotes) {
 
         if (bestFlexible) {
             return {
-                root: bestFlexible.root,
-                suffix: bestFlexible.suffix,
-                primaryName: bestFlexible.name,
-                alternatives: [],
-                quality: bestFlexible.quality,
-                intervals: bestFlexible.quality.intervals
+                root: bestFlexible.root, suffix: bestFlexible.suffix,
+                primaryName: bestFlexible.name, alternatives: [],
+                quality: bestFlexible.quality, intervals: bestFlexible.quality.intervals
             };
         }
 
         return {
-            root: notes[0],
-            suffix: '',
+            root: notes[0], suffix: '',
             primaryName: notes[0] + ' (?)',
-            alternatives: [],
-            quality: null,
-            intervals: []
+            alternatives: [], quality: null, intervals: []
         };
     }
 
     const best = uniqueCandidates[0];
     return {
-        root: best.root,
-        suffix: best.suffix,
+        root: best.root, suffix: best.suffix,
         primaryName: best.name,
         alternatives: uniqueCandidates.map(c => c.name),
-        quality: best.quality,
-        intervals: best.quality.intervals
+        quality: best.quality, intervals: best.quality.intervals
     };
 }
 
 // =====================================================
-// INFO DEL ACORDE (FÓRMULA + EXPLICACIÓN)
+// INFO DEL ACORDE
 // =====================================================
 function renderChordInfo(chordData, notes) {
     const infoEl = document.getElementById('chord-info');
@@ -455,7 +423,6 @@ function renderChordInfo(chordData, notes) {
 
     const quality = chordData.quality;
     const formulaParts = quality.formula.split(' ');
-
     let formulaBadges = formulaParts.map(f => `<span class="formula-badge">${f}</span>`).join('');
 
     infoEl.innerHTML = `
@@ -485,7 +452,7 @@ function renderPositions(chordName) {
     const positionsEl = document.getElementById('chord-positions');
     if (!positionsEl) return;
 
-    const baseChord = chordName.split('/')[0].split(' ')[0]; // quitar (?) y slash
+    const baseChord = chordName.split('/')[0].split(' ')[0];
     positionsEl.innerHTML = '';
 
     if (!CHORD_POSITIONS[baseChord]) {
@@ -938,18 +905,15 @@ function initSelectors() {
     const keys = ['C', 'G', 'D', 'A', 'E', 'B', 'F#', 'C#', 'G#', 'D#', 'A#', 'F'];
     const originSelect = document.getElementById('mod-origin');
     const destSelect = document.getElementById('mod-dest');
-    const dominantSelect = document.getElementById('dominant-key');
 
     if (!originSelect) return;
 
     originSelect.innerHTML = '';
     destSelect.innerHTML = '';
-    dominantSelect.innerHTML = '';
 
     keys.forEach(key => {
         originSelect.innerHTML += `<option value="${key}">${key}</option>`;
         destSelect.innerHTML += `<option value="${key}">${key}</option>`;
-        dominantSelect.innerHTML += `<option value="${key}">${key}</option>`;
     });
 }
 
@@ -981,24 +945,97 @@ function calculateModulation() {
     `;
 }
 
+// =====================================================
+// 10. DOMINANTES SECUNDARIOS (AUTOMÁTICOS SEGÚN ACORDE)
+// =====================================================
 function calculateDominants() {
-    const key = document.getElementById('dominant-key').value;
     const resultBox = document.getElementById('dominant-result');
-    const rootIndex = NOTES.indexOf(key);
+    if (!resultBox) return;
 
-    const dominants = [
-        { grado: 'V7/II', acorde: NOTES[(rootIndex + 9) % 12] + '7', tritono: NOTES[(rootIndex + 3) % 12] + '7' },
-        { grado: 'V7/III', acorde: NOTES[(rootIndex + 4) % 12] + '7', tritono: NOTES[(rootIndex + 10) % 12] + '7' },
-        { grado: 'V7/IV', acorde: NOTES[(rootIndex + 0) % 12] + '7', tritono: NOTES[(rootIndex + 6) % 12] + '7' },
-        { grado: 'V7/V', acorde: NOTES[(rootIndex + 2) % 12] + '7', tritono: NOTES[(rootIndex + 8) % 12] + '7' },
-        { grado: 'V7/VI', acorde: NOTES[(rootIndex + 9) % 12] + '7', tritono: NOTES[(rootIndex + 3) % 12] + '7' }
-    ];
+    // Si no hay acorde detectado, mostrar mensaje
+    if (!currentChordData || !currentChordData.root || !currentChordData.quality) {
+        resultBox.innerHTML = '<p class="empty-state">Toca un acorde primero para ver sus dominantes secundarios y sustitutos de tritono.</p>';
+        return;
+    }
 
-    let html = `<p>Tonalidad: <strong>${key} Mayor</strong></p><ul>`;
-    dominants.forEach(d => {
-        html += `<li><strong>${d.grado}:</strong> ${d.acorde} (Sust. Tritono: ${d.tritono})</li>`;
+    const root = currentChordData.root;
+    const rootIndex = NOTES.indexOf(root);
+    const isMinor = currentChordData.suffix.includes('m') && !currentChordData.suffix.includes('maj');
+
+    let dominantsList;
+    let subtitle;
+
+    if (isMinor) {
+        subtitle = `Tonalidad menor detectada: <strong>${root} menor</strong>`;
+        dominantsList = [
+            { grado: 'V7/III', target: NOTES[(rootIndex + 3) % 12], rootOfDominant: NOTES[(rootIndex + 10) % 12] },
+            { grado: 'V7/iv', target: NOTES[(rootIndex + 5) % 12] + 'm', rootOfDominant: NOTES[(rootIndex + 0) % 12] },
+            { grado: 'V7/v', target: NOTES[(rootIndex + 7) % 12] + 'm', rootOfDominant: NOTES[(rootIndex + 2) % 12] },
+            { grado: 'V7/VI', target: NOTES[(rootIndex + 8) % 12], rootOfDominant: NOTES[(rootIndex + 3) % 12] },
+            { grado: 'V7/VII', target: NOTES[(rootIndex + 10) % 12], rootOfDominant: NOTES[(rootIndex + 5) % 12] }
+        ];
+    } else {
+        subtitle = `Tonalidad mayor detectada: <strong>${root} mayor</strong>`;
+        dominantsList = [
+            { grado: 'V7/ii', target: NOTES[(rootIndex + 2) % 12] + 'm', rootOfDominant: NOTES[(rootIndex + 9) % 12] },
+            { grado: 'V7/iii', target: NOTES[(rootIndex + 4) % 12] + 'm', rootOfDominant: NOTES[(rootIndex + 11) % 12] },
+            { grado: 'V7/IV', target: NOTES[(rootIndex + 5) % 12], rootOfDominant: NOTES[(rootIndex + 0) % 12] },
+            { grado: 'V7/V', target: NOTES[(rootIndex + 7) % 12], rootOfDominant: NOTES[(rootIndex + 2) % 12] },
+            { grado: 'V7/vi', target: NOTES[(rootIndex + 9) % 12] + 'm', rootOfDominant: NOTES[(rootIndex + 4) % 12] }
+        ];
+    }
+
+    let html = `
+        <div style="margin-bottom:15px;">
+            <p>${subtitle}</p>
+            <p style="font-size:0.9em; color:#888;">
+                Los <strong>dominantes secundarios</strong> son acordes V7 que resuelven a un grado distinto del I. 
+                Añaden tensión y color a la progresión.
+            </p>
+        </div>
+    `;
+
+    html += `<h4 style="color:#ff6b00; margin-bottom:10px;">Dominantes secundarios:</h4>`;
+    html += `<div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:8px; margin-bottom:20px;">`;
+
+    dominantsList.forEach(d => {
+        const domRootIndex = NOTES.indexOf(d.rootOfDominant);
+        const tritoneRoot = NOTES[(domRootIndex + 6) % 12];
+        const tritoneChord = tritoneRoot + '7';
+
+        html += `
+            <div class="result-item" style="text-align:left; padding:12px;">
+                <div style="color:#ff6b00; font-weight:bold; font-size:1.1em;">${d.grado}</div>
+                <div style="margin:5px 0;"><strong>Acorde:</strong> ${d.rootOfDominant}7</div>
+                <div style="margin:5px 0;"><strong>Resuelve a:</strong> ${d.target}</div>
+                <div style="margin:5px 0; color:#888; font-size:0.85em;"><strong>Sust. Tritono:</strong> ${tritoneChord}</div>
+            </div>
+        `;
     });
-    html += `</ul>`;
+    html += `</div>`;
+
+    // Dominante principal V7
+    const vRoot = NOTES[(rootIndex + 7) % 12];
+    const vTritone = NOTES[(NOTES.indexOf(vRoot) + 6) % 12] + '7';
+
+    html += `
+        <h4 style="color:#ff6b00; margin-bottom:10px;">Dominante principal (V7):</h4>
+        <div class="result-item" style="text-align:left; padding:12px;">
+            <div style="margin:5px 0;"><strong>Acorde:</strong> ${vRoot}7</div>
+            <div style="margin:5px 0;"><strong>Resuelve a:</strong> ${root}${isMinor ? 'm' : ''}</div>
+            <div style="margin:5px 0; color:#888; font-size:0.9em;">
+                <strong>Sustituto de tritono:</strong> ${vTritone} 
+                (suena casi igual porque comparten las mismas notas de tensión)
+            </div>
+        </div>
+        
+        <p style="margin-top:15px; font-size:0.9em; color:#888; border-left:3px solid #ff6b00; padding-left:12px;">
+            <strong>¿Cómo se usa?</strong> En lugar de ir directo al acorde objetivo, 
+            se toca su V7 (dominante secundario) para crear tensión y resolver. 
+            El <strong>sustituto de tritono</strong> es un acorde que reemplaza al dominante 
+            original y resuelve al mismo objetivo con un sonido más jazzístico.
+        </p>
+    `;
 
     resultBox.innerHTML = html;
 }
@@ -1020,4 +1057,5 @@ function resetFretboard() {
     document.getElementById('progressions-list').innerHTML = '<p class="empty-state">Selecciona un acorde para ver progresiones.</p>';
     document.getElementById('scale-info').innerHTML = '<p class="empty-state">Selecciona un acorde para ver la escala.</p>';
     document.getElementById('scale-fretboard').innerHTML = '';
+    document.getElementById('dominant-result').innerHTML = '<p class="empty-state">Toca un acorde primero para ver sus dominantes secundarios y sustitutos de tritono.</p>';
 }

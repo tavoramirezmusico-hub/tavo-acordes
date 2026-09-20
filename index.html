@@ -38,13 +38,9 @@
       <h2>1. Selección de Acordes (Trastes)</h2>
       <div class="fretboard-controls">
         <div class="fretboard-visual-container">
-          <div class="fretboard-visual">
-            <!-- SVG del mástil generado por JS -->
-          </div>
+          <div class="fretboard-visual"></div>
         </div>
-        <div class="string-selectors">
-          <!-- Selectores de cuerdas generados por JS -->
-        </div>
+        <div class="string-selectors"></div>
       </div>
     </section>
 
@@ -101,9 +97,7 @@
     <section id="circulo" class="card">
       <h2>5. Círculo de Quintas Interactivo</h2>
       <div class="circle-container">
-        <div id="circle-of-fifths" class="circle-svg-container">
-          <!-- SVG del círculo generado por JS -->
-        </div>
+        <div id="circle-of-fifths" class="circle-svg-container"></div>
         <div id="circle-info" class="circle-info">
           <p class="empty-state">Selecciona una tonalidad en el círculo para ver su espectro armónico completo.</p>
         </div>
@@ -142,14 +136,17 @@
       <div id="modulation-result" class="modulation-result"></div>
     </section>
 
-    <!-- 8. DOMINANTES SECUNDARIOS -->
+    <!-- 8. DOMINANTES SECUNDARIOS (basados en el acorde detectado) -->
     <section id="dominantes" class="card">
       <h2>8. Dominantes Secundarios y Tritono</h2>
-      <div class="dominant-controls">
-        <label>Tonalidad: <select id="dominant-key"></select></label>
-        <button onclick="calculateDominants()" class="btn-primary">Calcular</button>
+      <div style="margin-bottom:15px;">
+        <p style="color:#888; font-size:0.9em;">
+          Se calculan automáticamente según el acorde que toques en el mástil.
+        </p>
       </div>
-      <div id="dominant-result" class="dominant-result"></div>
+      <div id="dominant-result" class="dominant-result">
+        <p class="empty-state">Toca un acorde primero para ver sus dominantes secundarios y sustitutos de tritono.</p>
+      </div>
     </section>
 
   </main>
