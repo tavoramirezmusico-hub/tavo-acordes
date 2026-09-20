@@ -2,11 +2,13 @@
 
 App web de guitarra (HTML + CSS + JS, sin dependencias) para identificar acordes, buscar posiciones, explorar el círculo de quintas, modos, modulaciones y progresiones.
 
+**Repositorio:** https://github.com/tavoramirezmusico-hub/Tavo-acordes
+
 ## Cómo usarla
 
-Abre `index.html` (o `acorde-guitarra.html`) en cualquier navegador moderno.
-
-No necesita servidor ni instalación.
+1. Descarga `index.html` de este repo (o cópialo desde tu proyecto local).
+2. Ábrelo en Chrome, Firefox, Safari o Edge.
+3. No necesita servidor ni instalación.
 
 ## Funciones
 
@@ -19,12 +21,23 @@ No necesita servidor ni instalación.
 - **Modos**: los 7 modos con escala, acordes, usos y sustituciones (reproducibles)
 - **Modulación**: ruta paso a paso entre dos tonalidades
 - **Dominantes**: V7, sustituto de tritono y dominantes secundarios
+- **Menú de navegación** entre secciones
 
 ## Archivos
 
 | Archivo | Descripción |
 |---------|-------------|
-| `index.html` | App completa |
+| `index.html` | App completa (todo en un solo archivo) |
+| `README.md` | Este archivo |
+
+## Subir la app completa
+
+Si `index.html` aún es un placeholder, sube el archivo completo desde tu carpeta local:
+
+1. Entra a https://github.com/tavoramirezmusico-hub/Tavo-acordes
+2. Pulsa **Add file** → **Upload files**
+3. Arrastra `index.html` (el de ~58 KB con toda la app)
+4. Commit changes
 
 ## Licencia
 
