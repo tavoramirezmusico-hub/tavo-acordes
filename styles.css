@@ -1,0 +1,395 @@
+/* VARIABLES DE COLOR (Basado en el documento) */
+:root {
+    --bg-color: #0d0d0d;
+    --card-bg: #1a1a1a;
+    --accent: #ff6b00;
+    --text-main: #e8e8e8;
+    --text-muted: #888888;
+    --border-color: #333333;
+    --string-color: #b0b0b0;
+    --fret-color: #444;
+    --red-mute: #ff3333;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    line-height: 1.6;
+    padding-bottom: 50px;
+}
+
+/* HEADER Y LOGO */
+.main-header {
+    text-align: center;
+    padding: 20px;
+    background-color: var(--card-bg);
+    border-bottom: 2px solid var(--accent);
+}
+
+.logo-img {
+    max-width: 150px;
+    height: auto;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    box-shadow: 0 0 15px rgba(255, 107, 0, 0.3);
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-size: 0.9em;
+}
+
+/* NAVEGACIÓN STICKY */
+.sticky-nav {
+    position: sticky;
+    top: 0;
+    background-color: rgba(13, 13, 13, 0.95);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+    z-index: 1000;
+}
+
+.sticky-nav a {
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9em;
+    transition: color 0.3s;
+}
+
+.sticky-nav a:hover {
+    color: var(--accent);
+}
+
+/* CONTENEDOR PRINCIPAL */
+.container {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 0 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* TARJETAS (CARDS) */
+.card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    padding: 25px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.card h2 {
+    color: var(--accent);
+    margin-bottom: 20px;
+    font-size: 1.4em;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+/* BOTONES */
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    font-family: inherit;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background-color: var(--accent);
+    color: #000;
+    padding: 10px 20px;
+    font-size: 1em;
+}
+
+.btn-primary:hover {
+    background-color: #ff8533;
+    transform: scale(1.02);
+}
+
+.btn-reset {
+    background-color: transparent;
+    color: var(--red-mute);
+    border: 1px solid var(--red-mute);
+    padding: 8px 15px;
+}
+
+.btn-reset:hover {
+    background-color: var(--red-mute);
+    color: #fff;
+}
+
+/* MÁSTIL Y SELECCIÓN DE TRASTES */
+.fretboard-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.string-selectors {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    text-align: center;
+}
+
+.string-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.string-row label {
+    font-weight: bold;
+    color: var(--accent);
+    font-size: 0.9em;
+}
+
+.string-row select {
+    width: 100%;
+    padding: 8px;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    text-align: center;
+}
+
+/* DIAGRAMA DEL MÁSTIL */
+.fretboard-visual {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+    overflow-x: auto;
+}
+
+.fretboard-svg {
+    background-color: #222;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.fret-line {
+    stroke: var(--fret-color);
+    stroke-width: 2;
+}
+
+.string-line {
+    stroke: var(--string-color);
+}
+
+.note-circle {
+    fill: var(--accent);
+    stroke: #000;
+    stroke-width: 2;
+}
+
+.note-text {
+    fill: #000;
+    font-size: 12px;
+    font-weight: bold;
+    text-anchor: middle;
+    dominant-baseline: middle;
+}
+
+.mute-mark {
+    fill: var(--red-mute);
+    font-size: 16px;
+    font-weight: bold;
+    text-anchor: middle;
+}
+
+/* RESULTADO Y AUDIO */
+.result-box {
+    text-align: center;
+}
+
+.chord-display {
+    font-size: 3em;
+    font-weight: bold;
+    color: var(--accent);
+    margin: 10px 0;
+}
+
+.alternatives {
+    color: var(--text-muted);
+    font-size: 0.9em;
+    margin-bottom: 20px;
+}
+
+/* BÚSQUEDA */
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 10px;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    border-radius: 6px;
+    font-size: 1em;
+}
+
+.search-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 10px;
+}
+
+.result-item {
+    background-color: var(--bg-color);
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.result-item:hover {
+    border-color: var(--accent);
+}
+
+/* CÍRCULO DE QUINTAS */
+.circle-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+@media (min-width: 768px) {
+    .circle-container {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .circle-svg-container {
+        width: 300px;
+        height: 300px;
+    }
+
+    .circle-info {
+        flex: 1;
+    }
+}
+
+.circle-svg-container svg {
+    width: 100%;
+    height: 100%;
+}
+
+.circle-segment {
+    fill: var(--bg-color);
+    stroke: var(--border-color);
+    cursor: pointer;
+    transition: fill 0.2s;
+}
+
+.circle-segment:hover {
+    fill: var(--accent);
+}
+
+.circle-text {
+    fill: var(--text-main);
+    font-size: 12px;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    pointer-events: none;
+}
+
+/* MODOS */
+.modes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#mode-selector {
+    padding: 10px;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 1em;
+}
+
+.mode-info-box {
+    background-color: var(--bg-color);
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+}
+
+/* MODULACIÓN Y DOMINANTES */
+.modulation-controls,
+.dominant-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.modulation-controls select,
+.dominant-controls select {
+    padding: 8px;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.modulation-result,
+.dominant-result {
+    background-color: var(--bg-color);
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    min-height: 50px;
+}
+
+.empty-state {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-muted);
+    font-size: 0.8em;
+    border-top: 1px solid var(--border-color);
+    margin-top: 30px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+    .string-selectors {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .chord-display {
+        font-size: 2em;
+    }
+}

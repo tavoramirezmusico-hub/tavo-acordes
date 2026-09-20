@@ -1,128 +1,162 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tavo Acordes</title>
-  <link rel="stylesheet" href="app.css">
+  <title>Tavo Acordes - Armonía y Guitarra</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- FontAwesome para iconos de reproducción -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
 
-  <div class="container">
-    <nav class="nav" id="mainNav">
-      <span class="nav-brand">Tavo <span>Acordes</span></span>
-      <a href="#sec-buscar">Buscar</a>
-      <a href="#sec-trastes">Trastes</a>
-      <a href="#sec-mastil">Mástil</a>
-      <a href="#sec-resultado">Resultado</a>
-      <a href="#sec-prog">Progresiones</a>
-      <a href="#sec-circulo">Círculo</a>
-      <a href="#sec-modos">Modos</a>
-      <a href="#sec-modulacion">Modulación</a>
-      <a href="#sec-dominantes">Dominantes</a>
-    </nav>
-
-    <header>
-      <h1>Tavo <span>Acordes</span></h1>
-      <p>Guitarra · Armonía · Círculo de quintas · Modos · Progresiones</p>
-    </header>
-
-    <!-- BUSCAR POR NOMBRE -->
-    <div class="card section-anchor" id="sec-buscar">
-      <h2>Buscar acorde por nombre</h2>
-      <div class="search-row">
-        <input type="text" id="chordSearch" placeholder="Ej: Am, Cmaj7, F#m7, G7..." autocomplete="off">
-        <button class="btn-play" onclick="searchChordPositions()">Buscar posiciones</button>
-      </div>
-      <div id="voicingResults">
-        <div class="empty-state">Escribe un acorde (C, Am, G7, Dm7…) y pulsa buscar</div>
-      </div>
+  <!-- LOGO Y CABECERA -->
+  <header class="main-header">
+    <div class="logo-container">
+      <!-- Asegúrate de guardar tu imagen como logo.png en la misma carpeta -->
+      <img src="logo.png" alt="Tavo Acordes Logo" class="logo-img"
+        onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%22150%22><circle cx=%2275%22 cy=%2275%22 r=%2270%22 fill=%22%231a1a1a%22 stroke=%22%23ff6b00%22 stroke-width=%225%22/><text x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 fill=%22%23ff6b00%22 font-size=%2220%22 font-family=%22sans-serif%22 dy=%22.3em%22>Tavo</text></svg>'">
     </div>
+    <h1>Tavo Acordes</h1>
+    <p class="subtitle">Guitarra • Armonía • Círculo de Quintas • Modos</p>
+  </header>
 
-    <!-- TRASTES -->
-    <div class="card section-anchor" id="sec-trastes">
-      <h2>Cuerdas · E A D G B e</h2>
-      <div class="strings-grid" id="stringsGrid"></div>
-      <p class="tuning-info">X = silenciada · 0 = al aire · 1–12 = traste</p>
-      <div class="actions">
-        <button class="btn-play" onclick="playChord()">▶ Escuchar</button>
-        <button onclick="resetAll()">Reiniciar</button>
-        <button onclick="setExample('C')">C</button>
-        <button onclick="setExample('G')">G</button>
-        <button onclick="setExample('Em')">Em</button>
-        <button onclick="setExample('Am')">Am</button>
-        <button onclick="setExample('D')">D</button>
-        <button onclick="setExample('F')">F</button>
-        <button onclick="setExample('E')">E</button>
-      </div>
-    </div>
+  <!-- NAVEGACIÓN STICKY -->
+  <nav class="sticky-nav">
+    <a href="#trastes">Trastes</a>
+    <a href="#buscar">Buscar</a>
+    <a href="#resultado">Resultado</a>
+    <a href="#progresiones">Progresiones</a>
+    <a href="#circulo">Círculo</a>
+    <a href="#modos">Modos</a>
+    <a href="#modulacion">Modulación</a>
+    <a href="#dominantes">Dominantes</a>
+  </nav>
 
-    <div class="card section-anchor" id="sec-mastil">
-      <h2>Mástil</h2>
-      <div class="neck-wrap"><div class="neck" id="fretboard"></div></div>
-    </div>
+  <main class="container">
 
-    <div class="card section-anchor" id="sec-resultado">
-      <h2>Resultado</h2>
-      <div id="resultArea"><div class="empty-state">Selecciona trastes o busca un acorde</div></div>
-    </div>
-
-    <div class="card section-anchor" id="sec-prog">
-      <h2>Progresiones sugeridas</h2>
-      <div id="progArea"><div class="empty-state">Forma un acorde para ver progresiones</div></div>
-    </div>
-
-    <!-- CÍRCULO -->
-    <div class="card section-anchor" id="sec-circulo">
-      <h2>Círculo de quintas</h2>
-      <div class="cof-wrap">
-        <div class="cof-svg-wrap" id="cofSvg"></div>
-        <div class="cof-info" id="cofInfo">
-          <div class="info-text">Pulsa una tonalidad en el círculo</div>
+    <!-- SECCIÓN 1: SELECCIÓN DE TRASTES Y MÁSTIL -->
+    <section id="trastes" class="card">
+      <h2>1. Selección de Acordes (Trastes)</h2>
+      <div class="fretboard-controls">
+        <div class="string-selectors">
+          <!-- Generado por JS -->
+        </div>
+        <div class="fretboard-visual">
+          <!-- Generado por JS -->
         </div>
       </div>
-    </div>
 
-    <div class="card section-anchor" id="sec-modos">
-      <h2>Modos · Usos · Sustituciones</h2>
-      <p class="info-text" id="cofHint" style="margin-bottom:0.75rem">Pulsa una tonalidad arriba</p>
-      <div class="mode-grid" id="modeGrid"></div>
-      <div class="mode-detail" id="modeDetail"></div>
-    </div>
-
-    <!-- MODULACIÓN -->
-    <div class="card section-anchor" id="sec-modulacion">
-      <h2>Modulación paso a paso</h2>
-      <p class="info-text" style="margin-bottom:0.75rem">Elige tonalidad de origen y destino. Se muestra el camino por el círculo de quintas.</p>
-      <div class="mod-row">
-        <label style="color:#aaa;font-size:0.85rem">De</label>
-        <select id="modFrom"></select>
-        <label style="color:#aaa;font-size:0.85rem">a</label>
-        <select id="modTo"></select>
-        <button class="btn-play" onclick="calcModulation()">Calcular ruta</button>
+      <div class="quick-chords">
+        <span>Ejemplos rápidos:</span>
+        <button onclick="loadQuickChord('C')">C</button>
+        <button onclick="loadQuickChord('G')">G</button>
+        <button onclick="loadQuickChord('Em')">Em</button>
+        <button onclick="loadQuickChord('Am')">Am</button>
+        <button onclick="loadQuickChord('D')">D</button>
+        <button onclick="loadQuickChord('F')">F</button>
+        <button onclick="loadQuickChord('E')">E</button>
+        <button onclick="resetFretboard()" class="btn-reset">Reiniciar</button>
       </div>
-      <div id="modResult"><div class="empty-state">Selecciona origen y destino</div></div>
-    </div>
+    </section>
 
-    <!-- DOMINANTES / TRITONO -->
-    <div class="card section-anchor" id="sec-dominantes">
-      <h2>Dominantes secundarios · Sustituto de tritono</h2>
-      <p class="info-text" style="margin-bottom:0.75rem">
-        Basado en el acorde actual (o elige una tónica). El sustituto de tritono comparte el tritono del V7 y resuelve igual.
-      </p>
-      <div class="mod-row">
-        <label style="color:#aaa;font-size:0.85rem">Tónica</label>
-        <select id="domKey"></select>
-        <button onclick="renderDominants()">Actualizar</button>
+    <!-- SECCIÓN 2: DETECCIÓN Y AUDIO -->
+    <section id="resultado" class="card">
+      <h2>2. Detección y Audio</h2>
+      <div class="result-box">
+        <div id="chord-name" class="chord-display">---</div>
+        <div id="chord-alternatives" class="alternatives"></div>
+        <button id="play-btn" class="btn-primary" onclick="playCurrentChord()">
+          <i class="fas fa-play"></i> Escuchar
+        </button>
       </div>
-      <div class="dom-grid" id="domGrid" style="margin-top:0.75rem"></div>
-    </div>
+    </section>
 
-    <footer>Tavo Acordes</footer>
-  </div>
+    <!-- SECCIÓN 3: BÚSQUEDA DE ACORDES -->
+    <section id="buscar" class="card">
+      <h2>3. Buscar Acorde por Nombre</h2>
+      <div class="search-box">
+        <input type="text" id="search-input" placeholder="Ej: Am, Cmaj7, F#m7, G7...">
+        <button onclick="searchChord()" class="btn-primary">Buscar</button>
+      </div>
+      <div id="search-results" class="search-results"></div>
+    </section>
 
-  
-  <script src="app-part1.gz.js"></script>
-  <script src="app-part2.gz.js"></script>
+    <!-- SECCIÓN 4: PROGRESIONES SUGERIDAS -->
+    <section id="progresiones" class="card">
+      <h2>4. Progresiones Sugeridas</h2>
+      <div id="progressions-list" class="progressions-container">
+        <p class="empty-state">Selecciona un acorde para ver progresiones.</p>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 5: CÍRCULO DE QUINTAS -->
+    <section id="circulo" class="card">
+      <h2>5. Círculo de Quintas</h2>
+      <div class="circle-container">
+        <div id="circle-of-fifths" class="circle-svg-container">
+          <!-- SVG Generado por JS -->
+        </div>
+        <div id="circle-info" class="circle-info">
+          <p>Selecciona una tonalidad en el círculo.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 6: MODOS -->
+    <section id="modos" class="card">
+      <h2>6. Modos, Usos y Sustituciones</h2>
+      <div class="modes-container">
+        <select id="mode-selector" onchange="updateModeInfo()">
+          <option value="jónico">Jónico (Mayor)</option>
+          <option value="dórico">Dórico</option>
+          <option value="frigio">Frigio</option>
+          <option value="lidio">Lidio</option>
+          <option value="mixolidio">Mixolidio</option>
+          <option value="eólico">Eólico (Menor)</option>
+          <option value="locrio">Locrio</option>
+        </select>
+        <div id="mode-info" class="mode-info-box">
+          <!-- Info generada por JS -->
+        </div>
+        <button onclick="playModeScale()" class="btn-primary"><i class="fas fa-play"></i> Escuchar Escala</button>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 7: MODULACIÓN -->
+    <section id="modulacion" class="card">
+      <h2>7. Modulación Paso a Paso</h2>
+      <div class="modulation-controls">
+        <label>Origen: <select id="mod-origin"></select></label>
+        <label>Destino: <select id="mod-dest"></select></label>
+        <button onclick="calculateModulation()" class="btn-primary">Calcular Ruta</button>
+      </div>
+      <div id="modulation-result" class="modulation-result">
+        <!-- Resultado generado por JS -->
+      </div>
+    </section>
+
+    <!-- SECCIÓN 8: DOMINANTES SECUNDARIOS -->
+    <section id="dominantes" class="card">
+      <h2>8. Dominantes Secundarios y Tritono</h2>
+      <div class="dominant-controls">
+        <label>Tonalidad: <select id="dominant-key"></select></label>
+        <button onclick="calculateDominants()" class="btn-primary">Calcular</button>
+      </div>
+      <div id="dominant-result" class="dominant-result">
+        <!-- Resultado generado por JS -->
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Tavo Acordes — App de guitarra, armonía y teoría musical.</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
+
 </html>
