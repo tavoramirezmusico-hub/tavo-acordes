@@ -324,8 +324,47 @@ button {
 .alternatives {
     color: var(--text-muted);
     font-size: 0.9em;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     min-height: 20px;
+}
+
+/* ===== POSICIONES ALTERNATIVAS DEL ACORDE ===== */
+.chord-positions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin: 15px 0;
+    align-items: center;
+    min-height: 35px;
+}
+
+.positions-title {
+    color: var(--text-muted);
+    font-size: 0.9em;
+    margin-right: 5px;
+}
+
+.position-btn {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    padding: 6px 14px;
+    font-size: 0.85em;
+    border-radius: 20px;
+    transition: all 0.2s;
+}
+
+.position-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.position-btn.active {
+    background-color: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+    box-shadow: 0 0 10px rgba(255, 107, 0, 0.5);
 }
 
 /* ===== BÚSQUEDA ===== */
@@ -380,6 +419,37 @@ button {
     border-color: var(--accent);
     background-color: #222;
     color: var(--accent);
+}
+
+/* ===== ESCALA DEL ACORDE ===== */
+#scale-info {
+    background-color: var(--bg-color);
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 15px;
+}
+
+#scale-info h4 {
+    color: var(--accent);
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+
+#scale-info p {
+    margin-bottom: 6px;
+}
+
+#scale-info strong {
+    color: var(--accent);
+}
+
+#scale-fretboard {
+    margin-top: 15px;
+    background-color: var(--bg-color);
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid var(--border-color);
 }
 
 /* ===== PROGRESIONES ===== */
@@ -478,7 +548,6 @@ button {
     color: var(--accent);
 }
 
-/* Desktop: círculo a la izquierda, info a la derecha */
 @media (min-width: 768px) {
     .circle-container {
         flex-direction: row;
@@ -516,6 +585,13 @@ button {
 
 .mode-info-box strong {
     color: var(--accent);
+}
+
+#mode-fretboard {
+    background-color: var(--bg-color);
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid var(--border-color);
 }
 
 /* ===== MODULACIÓN Y DOMINANTES ===== */
@@ -613,5 +689,10 @@ footer {
 
     .search-box {
         flex-direction: column;
+    }
+
+    .position-btn {
+        font-size: 0.8em;
+        padding: 5px 10px;
     }
 }

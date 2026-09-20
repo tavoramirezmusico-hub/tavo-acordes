@@ -1,5 +1,5 @@
 // =====================================================
-// TAVO ACORDES - SCRIPT PRINCIPAL v3
+// TAVO ACORDES - SCRIPT PRINCIPAL v4
 // =====================================================
 
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -8,40 +8,107 @@ const OPEN_NOTES = ['E', 'A', 'D', 'G', 'B', 'E'];
 
 // --- BASE DE DATOS DE ACORDES (orden: 6ª a 1ª cuerda) ---
 const CHORD_DB = {
-    // Mayores
     'C': [0, 3, 2, 0, 1, 0], 'C#': [null, 4, 6, 6, 6, 4], 'D': [null, null, 0, 2, 3, 2],
     'D#': [null, 6, 8, 8, 8, 6], 'E': [0, 2, 2, 1, 0, 0], 'F': [1, 3, 3, 2, 1, 1],
     'F#': [2, 4, 4, 3, 2, 2], 'G': [3, 2, 0, 0, 0, 3], 'G#': [4, 6, 6, 5, 4, 4],
     'A': [null, 0, 2, 2, 2, 0], 'A#': [null, 1, 3, 3, 3, 1], 'B': [null, 2, 4, 4, 4, 2],
-    // Menores
     'Cm': [null, 3, 5, 5, 4, 3], 'C#m': [null, 4, 6, 6, 5, 4], 'Dm': [null, null, 0, 2, 3, 1],
     'D#m': [null, 6, 8, 8, 7, 6], 'Em': [0, 2, 2, 0, 0, 0], 'Fm': [1, 3, 3, 1, 1, 1],
     'F#m': [2, 4, 4, 2, 2, 2], 'Gm': [3, 5, 5, 3, 3, 3], 'G#m': [4, 6, 6, 4, 4, 4],
     'Am': [null, 0, 2, 2, 1, 0], 'A#m': [null, 1, 3, 3, 2, 1], 'Bm': [null, 2, 4, 4, 3, 2],
-    // Séptimas dominantes
     'C7': [null, 3, 2, 3, 1, 0], 'D7': [null, null, 0, 2, 1, 2], 'E7': [0, 2, 0, 1, 0, 0],
     'F7': [1, 3, 1, 2, 1, 1], 'G7': [3, 2, 0, 0, 0, 1], 'A7': [null, 0, 2, 0, 2, 0], 'B7': [null, 2, 1, 2, 0, 2],
-    // Maj7
     'Cmaj7': [null, 3, 2, 0, 0, 0], 'Dmaj7': [null, null, 0, 2, 2, 2], 'Emaj7': [0, 2, 1, 1, 0, 0],
     'Fmaj7': [1, 3, 2, 2, 1, 0], 'Gmaj7': [3, 2, 0, 0, 0, 2], 'Amaj7': [null, 0, 2, 1, 2, 0], 'Bmaj7': [null, 2, 4, 3, 4, 2],
-    // m7
     'Cm7': [null, 3, 5, 3, 4, 3], 'Dm7': [null, null, 0, 2, 1, 1], 'Em7': [0, 2, 0, 0, 0, 0],
     'Fm7': [1, 3, 1, 1, 1, 1], 'Gm7': [3, 5, 3, 3, 3, 3], 'Am7': [null, 0, 2, 0, 1, 0], 'Bm7': [null, 2, 0, 2, 0, 2],
-    // Suspendidos
     'Csus2': [null, 3, 0, 0, 1, 3], 'Csus4': [null, 3, 3, 0, 1, 1], 'Dsus2': [null, null, 0, 2, 3, 0],
     'Dsus4': [null, null, 0, 2, 3, 3], 'Esus4': [0, 2, 2, 2, 0, 0], 'Gsus4': [3, 3, 0, 0, 1, 3],
     'Asus2': [null, 0, 2, 2, 0, 0], 'Asus4': [null, 0, 2, 2, 3, 0],
-    // Disminuidos
     'Cdim': [null, 3, 4, 5, 4, null], 'Ddim': [null, null, 0, 1, 3, 1], 'Edim': [0, 1, 2, 0, null, null],
     'F#dim': [2, 3, 4, 2, null, null], 'G#dim': [4, 5, 6, 4, null, null], 'Adim': [null, 0, 1, 2, 1, null],
-    // Aumentados
     'Caug': [null, 3, 2, 1, 1, 0], 'Eaug': [0, 3, 2, 1, 1, 0], 'Gaug': [3, 2, 1, 0, 0, 3],
-    // Sextas
     'C6': [null, 3, 2, 2, 1, 0], 'D6': [null, null, 0, 2, 0, 2], 'E6': [0, 2, 2, 1, 2, 0],
     'F6': [1, 3, 3, 2, 3, 1], 'G6': [3, 2, 0, 0, 0, 0], 'A6': [null, 0, 2, 2, 2, 2],
 };
 
-// --- CALIDADES DE ACORDES (intervalos desde la raíz) ---
+// --- POSICIONES ALTERNATIVAS DE ACORDES ---
+const CHORD_POSITIONS = {
+    'C': [
+        { name: 'Abierto', frets: [0, 3, 2, 0, 1, 0], baseFret: 0 },
+        { name: '3er traste', frets: [null, 3, 5, 5, 5, 3], baseFret: 3 },
+        { name: '8vo traste', frets: [8, 10, 10, 9, 8, 8], baseFret: 8 }
+    ],
+    'G': [
+        { name: 'Abierto', frets: [3, 2, 0, 0, 0, 3], baseFret: 0 },
+        { name: 'Barra 3er', frets: [3, 5, 5, 4, 3, 3], baseFret: 3 },
+        { name: 'Barra 10mo', frets: [10, 12, 12, 11, 10, 10], baseFret: 10 }
+    ],
+    'D': [
+        { name: 'Abierto', frets: [null, null, 0, 2, 3, 2], baseFret: 0 },
+        { name: 'Barra 5to', frets: [null, 5, 7, 7, 7, 5], baseFret: 5 },
+        { name: 'Barra 10mo', frets: [10, 12, 12, 11, 10, 10], baseFret: 10 }
+    ],
+    'A': [
+        { name: 'Abierto', frets: [null, 0, 2, 2, 2, 0], baseFret: 0 },
+        { name: 'Barra 5to', frets: [5, 7, 7, 6, 5, 5], baseFret: 5 },
+        { name: 'Barra 12vo', frets: [12, 14, 14, 13, 12, 12], baseFret: 12 }
+    ],
+    'E': [
+        { name: 'Abierto', frets: [0, 2, 2, 1, 0, 0], baseFret: 0 },
+        { name: 'Barra 7mo', frets: [7, 9, 9, 8, 7, 7], baseFret: 7 },
+        { name: 'Barra 12vo', frets: [12, 14, 14, 13, 12, 12], baseFret: 12 }
+    ],
+    'F': [
+        { name: 'Barra 1er', frets: [1, 3, 3, 2, 1, 1], baseFret: 1 },
+        { name: 'Barra 8vo', frets: [8, 10, 10, 9, 8, 8], baseFret: 8 },
+        { name: 'Barra 13vo', frets: [13, 15, 15, 14, 13, 13], baseFret: 13 }
+    ],
+    'Am': [
+        { name: 'Abierto', frets: [null, 0, 2, 2, 1, 0], baseFret: 0 },
+        { name: 'Barra 5to', frets: [5, 7, 7, 5, 5, 5], baseFret: 5 },
+        { name: 'Barra 12vo', frets: [12, 14, 14, 12, 12, 12], baseFret: 12 }
+    ],
+    'Em': [
+        { name: 'Abierto', frets: [0, 2, 2, 0, 0, 0], baseFret: 0 },
+        { name: 'Barra 7mo', frets: [7, 9, 9, 7, 7, 7], baseFret: 7 },
+        { name: 'Barra 12vo', frets: [12, 14, 14, 12, 12, 12], baseFret: 12 }
+    ],
+    'Dm': [
+        { name: 'Abierto', frets: [null, null, 0, 2, 3, 1], baseFret: 0 },
+        { name: 'Barra 5to', frets: [null, 5, 7, 7, 6, 5], baseFret: 5 },
+        { name: 'Barra 10mo', frets: [10, 12, 12, 10, 10, 10], baseFret: 10 }
+    ],
+    'Cmaj7': [
+        { name: 'Abierto', frets: [null, 3, 2, 0, 0, 0], baseFret: 0 },
+        { name: 'Barra 3er', frets: [null, 3, 5, 4, 5, 3], baseFret: 3 },
+        { name: 'Barra 8vo', frets: [8, 10, 9, 9, 8, null], baseFret: 8 }
+    ],
+    'Am7': [
+        { name: 'Abierto', frets: [null, 0, 2, 0, 1, 0], baseFret: 0 },
+        { name: 'Barra 5to', frets: [5, 7, 5, 5, 5, 5], baseFret: 5 },
+        { name: 'Barra 12vo', frets: [12, 14, 12, 12, 12, 12], baseFret: 12 }
+    ],
+    'G7': [
+        { name: 'Abierto', frets: [3, 2, 0, 0, 0, 1], baseFret: 0 },
+        { name: 'Barra 3er', frets: [3, 5, 3, 4, 3, 3], baseFret: 3 },
+        { name: 'Barra 10mo', frets: [10, 12, 10, 12, 10, 10], baseFret: 10 }
+    ],
+    'E7': [
+        { name: 'Abierto', frets: [0, 2, 0, 1, 0, 0], baseFret: 0 },
+        { name: 'Barra 7mo', frets: [7, 9, 7, 8, 7, 7], baseFret: 7 }
+    ],
+    'D7': [
+        { name: 'Abierto', frets: [null, null, 0, 2, 1, 2], baseFret: 0 },
+        { name: 'Barra 5to', frets: [null, 5, 7, 5, 7, 5], baseFret: 5 }
+    ],
+    'A7': [
+        { name: 'Abierto', frets: [null, 0, 2, 0, 2, 0], baseFret: 0 },
+        { name: 'Barra 5to', frets: [5, 7, 5, 6, 5, 5], baseFret: 5 }
+    ]
+};
+
+// --- CALIDADES DE ACORDES ---
 const CHORD_QUALITIES = {
     '': { name: 'Mayor', intervals: [0, 4, 7], scale: 'jónico', scaleName: 'Jónica (Mayor)' },
     'm': { name: 'Menor', intervals: [0, 3, 7], scale: 'eólico', scaleName: 'Eólica (Menor Natural)' },
@@ -49,14 +116,22 @@ const CHORD_QUALITIES = {
     'maj7': { name: 'Mayor 7', intervals: [0, 4, 7, 11], scale: 'jónico', scaleName: 'Jónica (Mayor)' },
     'm7': { name: 'Menor 7', intervals: [0, 3, 7, 10], scale: 'dórico', scaleName: 'Dórica' },
     'dim': { name: 'Disminuido', intervals: [0, 3, 6], scale: 'locrio', scaleName: 'Locria' },
-    'aug': { name: 'Aumentado', intervals: [0, 4, 8], scale: 'jónico', scaleName: 'Jónica (Mayor) con #5' },
+    'aug': { name: 'Aumentado', intervals: [0, 4, 8], scale: 'jónico', scaleName: 'Jónica con #5' },
     'sus2': { name: 'Suspendido 2', intervals: [0, 2, 7], scale: 'jónico', scaleName: 'Jónica (Mayor)' },
     'sus4': { name: 'Suspendido 4', intervals: [0, 5, 7], scale: 'jónico', scaleName: 'Jónica (Mayor)' },
     '6': { name: 'Sexta', intervals: [0, 4, 7, 9], scale: 'jónico', scaleName: 'Jónica (Mayor)' },
     'm6': { name: 'Menor Sexta', intervals: [0, 3, 7, 9], scale: 'dórico', scaleName: 'Dórica' },
     'm7b5': { name: 'Semidisminuido', intervals: [0, 3, 6, 10], scale: 'locrio', scaleName: 'Locria' },
-    'add9': { name: 'Add 9', intervals: [0, 2, 4, 7], scale: 'jónico', scaleName: 'Jónica (Mayor)' },
-    '9': { name: 'Novena', intervals: [0, 2, 4, 7, 10], scale: 'mixolidio', scaleName: 'Mixolidia' },
+};
+
+const MODE_INTERVALS = {
+    'jónico': [0, 2, 4, 5, 7, 9, 11],
+    'dórico': [0, 2, 3, 5, 7, 9, 10],
+    'frigio': [0, 1, 3, 5, 7, 8, 10],
+    'lidio': [0, 2, 4, 6, 7, 9, 11],
+    'mixolidio': [0, 2, 4, 5, 7, 9, 10],
+    'eólico': [0, 2, 3, 5, 7, 8, 10],
+    'locrio': [0, 1, 3, 5, 6, 8, 10]
 };
 
 let currentFretboard = [null, null, null, null, null, null];
@@ -169,7 +244,7 @@ function getNoteName(stringIndex, fret) {
 }
 
 // =====================================================
-// 2. DETECCIÓN DE ACORDES (CORREGIDA)
+// 2. DETECCIÓN DE ACORDES
 // =====================================================
 function detectChord() {
     const notes = [];
@@ -180,42 +255,45 @@ function detectChord() {
     const uniqueNotes = [...new Set(notes)];
     const chordNameEl = document.getElementById('chord-name');
     const altEl = document.getElementById('chord-alternatives');
+    const positionsEl = document.getElementById('chord-positions');
 
     if (uniqueNotes.length < 2) {
         chordNameEl.textContent = '---';
         altEl.textContent = '';
+        if (positionsEl) positionsEl.innerHTML = '';
         document.getElementById('scale-info').innerHTML = '<p class="empty-state">Toca al menos 2 cuerdas para ver la escala.</p>';
         document.getElementById('scale-fretboard').innerHTML = '';
         currentChordData = null;
         return;
     }
 
-    // Analizar el acorde (probando TODAS las notas como posible raíz)
     currentChordData = analyzeChord(uniqueNotes, notes);
 
-    // Detección de inversión: si el bajo NO es la raíz
+    // Nombre principal (SIN inversión)
+    chordNameEl.textContent = currentChordData.primaryName;
+
+    // Alternativas (incluye inversiones)
     const bassNote = notes[0];
-    let displayName = currentChordData.primaryName;
+    let altText = '';
+
     if (currentChordData.root && bassNote !== currentChordData.root && currentChordData.quality) {
-        displayName = currentChordData.primaryName + '/' + bassNote;
+        altText += `Inversión: ${currentChordData.primaryName}/${bassNote} · `;
     }
 
-    chordNameEl.textContent = displayName;
-
-    // Alternativas
-    let altText = '';
     if (currentChordData.alternatives.length > 1) {
-        altText = `También: ${currentChordData.alternatives.slice(1).join(', ')} · `;
+        altText += `También: ${currentChordData.alternatives.slice(1).join(', ')} · `;
     }
     altText += `Notas: ${uniqueNotes.join(' - ')}`;
     altEl.textContent = altText;
+
+    // Mostrar posiciones alternativas
+    renderPositions(currentChordData.primaryName);
 
     updateScaleForChord(currentChordData);
     updateProgressionsForChord(currentChordData);
     updateModeForChord(currentChordData);
 }
 
-// Analiza un conjunto de notas probando CADA nota como raíz
 function analyzeChord(notes, orderedNotes) {
     const candidates = [];
     const bassNote = orderedNotes ? orderedNotes[0] : notes[0];
@@ -230,17 +308,8 @@ function analyzeChord(notes, orderedNotes) {
             const extras = intervals.filter(i => !requiredIntervals.includes(i));
 
             if (matches && extras.length === 0) {
-                // Prioridad:
-                // - 100 por cada intervalo (acordes más específicos ganan)
-                // - +200 si la raíz es la nota más grave (bajo)
-                // - -50 si el acorde requiere inversión (bajo no es raíz)
                 let priority = requiredIntervals.length * 100;
-
-                if (rootNote === bassNote) {
-                    priority += 200;
-                } else {
-                    priority -= 50;
-                }
+                if (rootNote === bassNote) priority += 150;
 
                 candidates.push({
                     root: rootNote,
@@ -253,7 +322,6 @@ function analyzeChord(notes, orderedNotes) {
         }
     });
 
-    // Eliminar duplicados por nombre
     const uniqueCandidates = [];
     const seenNames = new Set();
     candidates.sort((a, b) => b.priority - a.priority);
@@ -288,7 +356,54 @@ function analyzeChord(notes, orderedNotes) {
 }
 
 // =====================================================
-// 3. ESCALA DEL ACORDE
+// 3. POSICIONES ALTERNATIVAS DEL ACORDE
+// =====================================================
+function renderPositions(chordName) {
+    const positionsEl = document.getElementById('chord-positions');
+    if (!positionsEl) return;
+
+    const baseChord = chordName.split('/')[0];
+    positionsEl.innerHTML = '';
+
+    if (!CHORD_POSITIONS[baseChord]) {
+        if (CHORD_DB[baseChord]) {
+            const btn = document.createElement('button');
+            btn.className = 'position-btn active';
+            btn.textContent = 'Posición estándar';
+            btn.onclick = () => loadChordFromDB(baseChord);
+            positionsEl.appendChild(btn);
+        }
+        return;
+    }
+
+    const title = document.createElement('span');
+    title.className = 'positions-title';
+    title.textContent = 'Posiciones:';
+    positionsEl.appendChild(title);
+
+    CHORD_POSITIONS[baseChord].forEach((pos, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'position-btn';
+        btn.textContent = pos.name;
+        btn.onclick = () => {
+            currentFretboard = [...pos.frets];
+            const selects = document.querySelectorAll('.string-row select');
+            selects.forEach((select, i) => {
+                select.value = currentFretboard[i] === null ? 'null' : currentFretboard[i];
+            });
+            drawFretboard();
+            detectChord();
+
+            positionsEl.querySelectorAll('.position-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        };
+        if (idx === 0) btn.classList.add('active');
+        positionsEl.appendChild(btn);
+    });
+}
+
+// =====================================================
+// 4. ESCALA DEL ACORDE
 // =====================================================
 function updateScaleForChord(chordData) {
     const infoBox = document.getElementById('scale-info');
@@ -305,21 +420,10 @@ function updateScaleForChord(chordData) {
     const scaleRootIndex = NOTES.indexOf(root);
     const scaleMode = quality.scale;
 
-    const modeIntervals = {
-        'jónico': [0, 2, 4, 5, 7, 9, 11],
-        'dórico': [0, 2, 3, 5, 7, 9, 10],
-        'frigio': [0, 1, 3, 5, 7, 8, 10],
-        'lidio': [0, 2, 4, 6, 7, 9, 11],
-        'mixolidio': [0, 2, 4, 5, 7, 9, 10],
-        'eólico': [0, 2, 3, 5, 7, 8, 10],
-        'locrio': [0, 1, 3, 5, 6, 8, 10]
-    };
+    const scaleNotes = MODE_INTERVALS[scaleMode].map(i => NOTES[(scaleRootIndex + i) % 12]);
 
-    const scaleNotes = modeIntervals[scaleMode].map(i => NOTES[(scaleRootIndex + i) % 12]);
-
-    // Formato de fórmula: 1 2 3 4 5 6 7 (con alteraciones)
     const formulaSymbols = ['1', 'b2', '2', 'b3', '3', '4', 'b5', '5', 'b6', '6', 'b7', '7'];
-    const formula = modeIntervals[scaleMode].map(i => formulaSymbols[i]).join(' ');
+    const formula = MODE_INTERVALS[scaleMode].map(i => formulaSymbols[i]).join(' ');
 
     infoBox.innerHTML = `
         <h4>Escala de ${root} ${quality.scaleName}</h4>
@@ -328,15 +432,15 @@ function updateScaleForChord(chordData) {
         <p><strong>Acorde base:</strong> ${chordData.primaryName} (${quality.name})</p>
         <p style="margin-top:10px; font-size:0.9em; color:#888;">
             <strong>Uso:</strong> Esta es la escala recomendada para improvisar sobre ${chordData.primaryName}.
-            La nota naranja en el mástil es la raíz (${root}); las azules son las demás notas de la escala.
+            La nota naranja en el mástil es la raíz (${root}); las azules son las demás notas.
         </p>
     `;
 
-    drawScaleFretboard(scaleNotes, scaleRootIndex);
+    drawScaleFretboard('scale-fretboard', scaleNotes, scaleRootIndex);
 }
 
-function drawScaleFretboard(scaleNotes, rootIndex) {
-    const container = document.getElementById('scale-fretboard');
+function drawScaleFretboard(containerId, scaleNotes, rootIndex) {
+    const container = document.getElementById(containerId);
     if (!container) return;
 
     const width = 800;
@@ -396,7 +500,7 @@ function drawScaleFretboard(scaleNotes, rootIndex) {
 }
 
 // =====================================================
-// 4. PROGRESIONES BASADAS EN EL ACORDE
+// 5. PROGRESIONES
 // =====================================================
 function updateProgressionsForChord(chordData) {
     const container = document.getElementById('progressions-list');
@@ -463,7 +567,7 @@ function updateProgressionsForChord(chordData) {
 }
 
 // =====================================================
-// 5. MODOS BASADOS EN EL ACORDE
+// 6. MODOS CON MÁSTIL
 // =====================================================
 function updateModeForChord(chordData) {
     if (!chordData || !chordData.quality) return;
@@ -489,38 +593,35 @@ function updateModeInfo() {
     };
 
     const data = modesData[mode];
-    if (data) {
-        infoBox.innerHTML = `
-            <p><strong>Fórmula:</strong> ${data.formula}</p>
-            <p><strong>Uso:</strong> ${data.uso}</p>
-            <p><strong>Sustitución:</strong> Prueba sustituir el acorde I por el VI o el III.</p>
-        `;
-    }
+    if (!data) return;
+
+    const root = currentChordData && currentChordData.root ? currentChordData.root : 'C';
+    const rootIndex = NOTES.indexOf(root);
+    const scaleNotes = MODE_INTERVALS[mode].map(i => NOTES[(rootIndex + i) % 12]);
+
+    infoBox.innerHTML = `
+        <p><strong>Fórmula:</strong> ${data.formula}</p>
+        <p><strong>Escala de ${root} ${mode.charAt(0).toUpperCase() + mode.slice(1)}:</strong> ${scaleNotes.join(' - ')}</p>
+        <p><strong>Uso:</strong> ${data.uso}</p>
+        <p><strong>Sustitución:</strong> Prueba sustituir el acorde I por el VI o el III.</p>
+    `;
+
+    drawScaleFretboard('mode-fretboard', scaleNotes, rootIndex);
 }
 
 function playModeScale() {
     const mode = document.getElementById('mode-selector').value;
-    const root = currentChordData ? currentChordData.root : 'C';
-    const scale = getScaleNotes(root, mode);
+    const root = currentChordData && currentChordData.root ? currentChordData.root : 'C';
+    const rootIndex = NOTES.indexOf(root);
+    const scale = MODE_INTERVALS[mode].map(i => NOTES[(rootIndex + i) % 12]);
 
     for (let i = 0; i < scale.length; i++) {
         setTimeout(() => playNote(scale[i]), i * 350);
     }
 }
 
-function getScaleNotes(root, mode) {
-    const rootIndex = NOTES.indexOf(root);
-    const intervals = {
-        'jónico': [0, 2, 4, 5, 7, 9, 11], 'dórico': [0, 2, 3, 5, 7, 9, 10],
-        'frigio': [0, 1, 3, 5, 7, 8, 10], 'lidio': [0, 2, 4, 6, 7, 9, 11],
-        'mixolidio': [0, 2, 4, 5, 7, 9, 10], 'eólico': [0, 2, 3, 5, 7, 8, 10],
-        'locrio': [0, 1, 3, 5, 6, 8, 10]
-    };
-    return intervals[mode].map(i => NOTES[(rootIndex + i) % 12]);
-}
-
 // =====================================================
-// 6. AUDIO
+// 7. AUDIO
 // =====================================================
 function initAudio() {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -590,7 +691,7 @@ function getFrequency(note) {
 }
 
 // =====================================================
-// 7. CÍRCULO DE QUINTAS
+// 8. CÍRCULO DE QUINTAS
 // =====================================================
 function initCircleOfFifths() {
     const container = document.getElementById('circle-of-fifths');
@@ -688,7 +789,7 @@ function selectKey(key) {
 }
 
 // =====================================================
-// 8. BÚSQUEDA Y UTILIDADES
+// 9. BÚSQUEDA Y UTILIDADES
 // =====================================================
 function searchChord() {
     const query = document.getElementById('search-input').value.trim();
@@ -821,6 +922,8 @@ function resetFretboard() {
     detectChord();
     document.getElementById('chord-name').textContent = '---';
     document.getElementById('chord-alternatives').textContent = '';
+    const posEl = document.getElementById('chord-positions');
+    if (posEl) posEl.innerHTML = '';
     document.getElementById('progressions-list').innerHTML = '<p class="empty-state">Selecciona un acorde para ver progresiones.</p>';
     document.getElementById('scale-info').innerHTML = '<p class="empty-state">Selecciona un acorde para ver la escala.</p>';
     document.getElementById('scale-fretboard').innerHTML = '';

@@ -66,6 +66,7 @@
       <div class="result-box">
         <div id="chord-name" class="chord-display">---</div>
         <div id="chord-alternatives" class="alternatives"></div>
+        <div id="chord-positions" class="chord-positions"></div>
         <button id="play-btn" class="btn-primary" onclick="playCurrentChord()">
           <i class="fas fa-play"></i> Escuchar
         </button>
@@ -85,7 +86,7 @@
       </div>
     </section>
 
-    <!-- 3.5. ESCALA DEL ACORDE DETECTADO (NUEVA) -->
+    <!-- 3.5. ESCALA DEL ACORDE DETECTADO -->
     <section id="escala" class="card">
       <h2>3.5. Escala del Acorde Detectado</h2>
       <div id="scale-info" class="mode-info-box">
@@ -129,7 +130,10 @@
           <option value="locrio">Locrio</option>
         </select>
         <div id="mode-info" class="mode-info-box"></div>
-        <button onclick="playModeScale()" class="btn-primary"><i class="fas fa-play"></i> Escuchar Escala</button>
+        <div id="mode-fretboard" style="margin-top:15px;"></div>
+        <button onclick="playModeScale()" class="btn-primary" style="margin-top:15px;">
+          <i class="fas fa-play"></i> Escuchar Escala
+        </button>
       </div>
     </section>
 
