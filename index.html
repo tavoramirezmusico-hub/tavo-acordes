@@ -1,1 +1,121 @@
-PLACEHOLDER_SEE_ARTIFACTS
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tavo Acordes</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+  <div class="container">
+    <nav class="nav" id="mainNav">
+      <span class="nav-brand">Tavo <span>Acordes</span></span>
+      <a href="#sec-buscar">Buscar</a>
+      <a href="#sec-trastes">Trastes</a>
+      <a href="#sec-mastil">Mástil</a>
+      <a href="#sec-resultado">Resultado</a>
+      <a href="#sec-prog">Progresiones</a>
+      <a href="#sec-circulo">Círculo</a>
+      <a href="#sec-modos">Modos</a>
+      <a href="#sec-modulacion">Modulación</a>
+      <a href="#sec-dominantes">Dominantes</a>
+    </nav>
+
+    <header>
+      <h1>Tavo <span>Acordes</span></h1>
+      <p>Guitarra · Armonía · Círculo de quintas · Modos · Progresiones</p>
+    </header>
+
+    <div class="card section-anchor" id="sec-buscar">
+      <h2>Buscar acorde por nombre</h2>
+      <div class="search-row">
+        <input type="text" id="chordSearch" placeholder="Ej: Am, Cmaj7, F#m7, G7..." autocomplete="off">
+        <button class="btn-play" onclick="searchChordPositions()">Buscar posiciones</button>
+      </div>
+      <div id="voicingResults">
+        <div class="empty-state">Escribe un acorde (C, Am, G7, Dm7…) y pulsa buscar</div>
+      </div>
+    </div>
+
+    <div class="card section-anchor" id="sec-trastes">
+      <h2>Cuerdas · E A D G B e</h2>
+      <div class="strings-grid" id="stringsGrid"></div>
+      <p class="tuning-info">X = silenciada · 0 = al aire · 1–12 = traste</p>
+      <div class="actions">
+        <button class="btn-play" onclick="playChord()">▶ Escuchar</button>
+        <button onclick="resetAll()">Reiniciar</button>
+        <button onclick="setExample('C')">C</button>
+        <button onclick="setExample('G')">G</button>
+        <button onclick="setExample('Em')">Em</button>
+        <button onclick="setExample('Am')">Am</button>
+        <button onclick="setExample('D')">D</button>
+        <button onclick="setExample('F')">F</button>
+        <button onclick="setExample('E')">E</button>
+      </div>
+    </div>
+
+    <div class="card section-anchor" id="sec-mastil">
+      <h2>Mástil</h2>
+      <div class="neck-wrap"><div class="neck" id="fretboard"></div></div>
+    </div>
+
+    <div class="card section-anchor" id="sec-resultado">
+      <h2>Resultado</h2>
+      <div id="resultArea"><div class="empty-state">Selecciona trastes o busca un acorde</div></div>
+    </div>
+
+    <div class="card section-anchor" id="sec-prog">
+      <h2>Progresiones sugeridas</h2>
+      <div id="progArea"><div class="empty-state">Forma un acorde para ver progresiones</div></div>
+    </div>
+
+    <div class="card section-anchor" id="sec-circulo">
+      <h2>Círculo de quintas</h2>
+      <div class="cof-wrap">
+        <div class="cof-svg-wrap" id="cofSvg"></div>
+        <div class="cof-info" id="cofInfo">
+          <div class="info-text">Pulsa una tonalidad en el círculo</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card section-anchor" id="sec-modos">
+      <h2>Modos · Usos · Sustituciones</h2>
+      <p class="info-text" id="cofHint" style="margin-bottom:0.75rem">Pulsa una tonalidad arriba</p>
+      <div class="mode-grid" id="modeGrid"></div>
+      <div class="mode-detail" id="modeDetail"></div>
+    </div>
+
+    <div class="card section-anchor" id="sec-modulacion">
+      <h2>Modulación paso a paso</h2>
+      <p class="info-text" style="margin-bottom:0.75rem">Elige tonalidad de origen y destino. Se muestra el camino por el círculo de quintas.</p>
+      <div class="mod-row">
+        <label style="color:#aaa;font-size:0.85rem">De</label>
+        <select id="modFrom"></select>
+        <label style="color:#aaa;font-size:0.85rem">a</label>
+        <select id="modTo"></select>
+        <button class="btn-play" onclick="calcModulation()">Calcular ruta</button>
+      </div>
+      <div id="modResult"><div class="empty-state">Selecciona origen y destino</div></div>
+    </div>
+
+    <div class="card section-anchor" id="sec-dominantes">
+      <h2>Dominantes secundarios · Sustituto de tritono</h2>
+      <p class="info-text" style="margin-bottom:0.75rem">
+        Basado en el acorde actual (o elige una tónica). El sustituto de tritono comparte el tritono del V7 y resuelve igual.
+      </p>
+      <div class="mod-row">
+        <label style="color:#aaa;font-size:0.85rem">Tónica</label>
+        <select id="domKey"></select>
+        <button onclick="renderDominants()">Actualizar</button>
+      </div>
+      <div class="dom-grid" id="domGrid" style="margin-top:0.75rem"></div>
+    </div>
+
+    <footer>Tavo Acordes</footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
