@@ -14,7 +14,6 @@
   <!-- LOGO Y CABECERA -->
   <header class="main-header">
     <div class="logo-container">
-      <!-- Aquí se carga tu logo.png -->
       <img src="logo.png" alt="Tavo Acordes Logo" class="logo-img">
     </div>
     <h1>Tavo Acordes</h1>
@@ -39,6 +38,7 @@
     <section id="trastes" class="card">
       <h2>1. Selección de Acordes (Trastes)</h2>
       <div class="fretboard-controls">
+        <!-- El mástil ahora está arriba y los selectores abajo -->
         <div class="fretboard-visual-container">
           <div class="fretboard-visual">
             <!-- SVG generado por JS -->
@@ -92,15 +92,15 @@
       </div>
     </section>
 
-    <!-- SECCIÓN 5: CÍRCULO DE QUINTAS -->
+    <!-- SECCIÓN 5: CÍRCULO DE QUINTAS INTERACTIVO -->
     <section id="circulo" class="card">
-      <h2>5. Círculo de Quintas</h2>
+      <h2>5. Círculo de Quintas Interactivo</h2>
       <div class="circle-container">
         <div id="circle-of-fifths" class="circle-svg-container">
           <!-- SVG Generado por JS -->
         </div>
         <div id="circle-info" class="circle-info">
-          <p>Selecciona una tonalidad en el círculo.</p>
+          <p class="empty-state">Selecciona una tonalidad en el círculo para ver su espectro armónico.</p>
         </div>
       </div>
     </section>

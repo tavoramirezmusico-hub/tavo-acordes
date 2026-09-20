@@ -45,42 +45,50 @@ function updateString(stringIndex, value) {
     detectChord();
 }
 
-// Dibuja el mástil VERTICAL (6ª cuerda arriba, 1ª abajo)
+// Dibuja el mástil HORIZONTAL (Cuerdas de arriba a abajo, trastes de izquierda a derecha)
 function drawFretboard() {
     const container = document.querySelector('.fretboard-visual');
-    const width = 160;
-    const height = 320;
-    const stringSpacing = width / 5; // 5 espacios para 6 cuerdas
-    const fretSpacing = height / 6;   // Mostramos 5 trastes
+    const width = 400;  // Ancho para mostrar 5 trastes
+    const height = 180; // Alto para 6 cuerdas
+    const stringSpacing = height / 5; // 5 espacios para 6 cuerdas
+    const fretSpacing = width / 6;    // Mostramos 5 trastes (0 al 5)
 
     let svg = `<svg class="fretboard-svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}">`;
 
     // Dibujar fondo de madera
     svg += `<rect x="0" y="0" width="${width}" height="${height}" fill="#2a1f1a" rx="5" />`;
 
-    // Dibujar trastes (líneas horizontales)
+    // Dibujar trastes (líneas verticales)
     for (let i = 0; i <= 6; i++) {
-        svg += `<line class="fret-line" x1="0" y1="${i * fretSpacing}" x2="${width}" y2="${i * fretSpacing}" />`;
+        svg += `<line class="fret-line" x1="${i * fretSpacing}" y1="0" x2="${i * fretSpacing}" y2="${height}" />`;
     }
 
-    // Dibujar cuerdas (líneas verticales)
+    // Dibujar cuerdas (líneas horizontales)
     // i=0 es la 6ª cuerda (arriba), i=5 es la 1ª cuerda (abajo)
     for (let i = 0; i < 6; i++) {
-        const x = i * stringSpacing;
+        const y = i * stringSpacing;
         const strokeW = 4 - (i * 0.5); // Cuerdas más gruesas arriba
-        svg += `<line class="string-line" x1="${x}" y1="0" x2="${x}" y2="${height}" stroke-width="${strokeW}" />`;
+        svg += `<line class="string-line" x1="0" y1="${y}" x2="${width}" y2="${y}" stroke-width="${strokeW}" />`;
+
+        // Nombre de la cuerda a la izquierda
+        svg += `<text class="string-label" x="-10" y="${y}" fill="#ff6b00">${STRINGS[i]}</text>`;
+    }
+
+    // Números de traste arriba
+    for (let i = 1; i <= 5; i++) {
+        svg += `<text class="fret-number" x="${(i - 0.5) * fretSpacing}" y="-10">${i}</text>`;
     }
 
     // Dibujar notas seleccionadas
     currentFretboard.forEach((fret, stringIndex) => {
-        const x = stringIndex * stringSpacing;
-        // Si es X, dibujar arriba del todo
+        const y = stringIndex * stringSpacing;
+        // Si es X, dibujar a la izquierda
         if (fret === 'X') {
-            svg += `<text class="mute-mark" x="${x}" y="12">X</text>`;
+            svg += `<text class="mute-mark" x="-25" y="${y}">X</text>`;
         } else if (fret !== null && fret >= 0) {
-            // Si es 0 (al aire), dibujar arriba del todo
+            // Si es 0 (al aire), dibujar a la izquierda
             // Si es traste, dibujar en el espacio del traste
-            const y = (fret === 0) ? 12 : (fret - 0.5) * fretSpacing;
+            const x = (fret === 0) ? -10 : (fret - 0.5) * fretSpacing;
             const noteName = getNoteName(stringIndex, fret);
             svg += `
                 <circle class="note-circle" cx="${x}" cy="${y}" r="11" />
@@ -197,8 +205,6 @@ async function playNote(noteName) {
         source.buffer = buffer;
 
         // Ajustar velocidad para notas sostenidas (simplificación)
-        // En una app real, se mapearían las notas exactas.
-        // Aquí usamos la muestra base y ajustamos playbackRate.
         source.playbackRate.value = 1.0;
 
         const gainNode = audioCtx.createGain();
@@ -242,34 +248,36 @@ function getFrequency(note) {
     return noteMap[note] || 440;
 }
 
-// --- 5. CÍRCULO DE QUINTAS GRÁFICO ---
+// --- 5. CÍRCULO DE QUINTAS INTERACTIVO ---
 function initCircleOfFifths() {
     const container = document.getElementById('circle-of-fifths');
-    const size = 320;
+    const size = 350;
     const center = size / 2;
-    const radiusOuter = 140;
-    const radiusInner = 90;
+    const radiusOuter = 150;
+    const radiusInner = 100;
+    const radiusCore = 50;
 
     const majorKeys = ['C', 'G', 'D', 'A', 'E', 'B', 'F#', 'C#', 'G#', 'D#', 'A#', 'F'];
     const minorKeys = ['Am', 'Em', 'Bm', 'F#m', 'C#m', 'G#m', 'D#m', 'A#m', 'Fm', 'Cm', 'Gm', 'Dm'];
 
     let svg = `<svg viewBox="0 0 ${size} ${size}">`;
 
-    // Dibujar fondo
+    // Fondo
     svg += `<circle cx="${center}" cy="${center}" r="${radiusOuter + 20}" fill="#1a1a1a" stroke="#333" stroke-width="2"/>`;
 
     majorKeys.forEach((key, i) => {
         const angle = (i * 30 - 90) * (Math.PI / 180);
+        const angleWidth = 0.26; // Ancho del sector
 
         // Sector exterior (Mayores)
-        const x1 = center + radiusOuter * Math.cos(angle - 0.26);
-        const y1 = center + radiusOuter * Math.sin(angle - 0.26);
-        const x2 = center + radiusOuter * Math.cos(angle + 0.26);
-        const y2 = center + radiusOuter * Math.sin(angle + 0.26);
-        const x3 = center + radiusInner * Math.cos(angle + 0.26);
-        const y3 = center + radiusInner * Math.sin(angle + 0.26);
-        const x4 = center + radiusInner * Math.cos(angle - 0.26);
-        const y4 = center + radiusInner * Math.sin(angle - 0.26);
+        const x1 = center + radiusOuter * Math.cos(angle - angleWidth);
+        const y1 = center + radiusOuter * Math.sin(angle - angleWidth);
+        const x2 = center + radiusOuter * Math.cos(angle + angleWidth);
+        const y2 = center + radiusOuter * Math.sin(angle + angleWidth);
+        const x3 = center + radiusInner * Math.cos(angle + angleWidth);
+        const y3 = center + radiusInner * Math.sin(angle + angleWidth);
+        const x4 = center + radiusInner * Math.cos(angle - angleWidth);
+        const y4 = center + radiusInner * Math.sin(angle - angleWidth);
 
         svg += `<path class="circle-segment" d="M ${x1} ${y1} L ${x2} ${y2} L ${x3} ${y3} L ${x4} ${y4} Z" onclick="selectKey('${key}')" />`;
 
@@ -279,25 +287,25 @@ function initCircleOfFifths() {
         svg += `<text class="circle-text" x="${textX}" y="${textY}" fill="#e8e8e8">${key}</text>`;
 
         // Sector interior (Menores)
-        const ir1 = center + radiusInner * Math.cos(angle - 0.26);
-        const ir2 = center + radiusInner * Math.sin(angle - 0.26);
-        const ir3 = center + radiusInner * Math.cos(angle + 0.26);
-        const ir4 = center + radiusInner * Math.sin(angle + 0.26);
-        const ir5 = center + (radiusInner - 40) * Math.cos(angle + 0.26);
-        const ir6 = center + (radiusInner - 40) * Math.sin(angle + 0.26);
-        const ir7 = center + (radiusInner - 40) * Math.cos(angle - 0.26);
-        const ir8 = center + (radiusInner - 40) * Math.sin(angle - 0.26);
+        const ir1 = center + radiusInner * Math.cos(angle - angleWidth);
+        const ir2 = center + radiusInner * Math.sin(angle - angleWidth);
+        const ir3 = center + radiusInner * Math.cos(angle + angleWidth);
+        const ir4 = center + radiusInner * Math.sin(angle + angleWidth);
+        const ir5 = center + radiusCore * Math.cos(angle + angleWidth);
+        const ir6 = center + radiusCore * Math.sin(angle + angleWidth);
+        const ir7 = center + radiusCore * Math.cos(angle - angleWidth);
+        const ir8 = center + radiusCore * Math.sin(angle - angleWidth);
 
         svg += `<path class="circle-segment" d="M ${ir1} ${ir2} L ${ir3} ${ir4} L ${ir5} ${ir6} L ${ir7} ${ir8} Z" onclick="selectKey('${minorKeys[i]}')" style="fill:#111;" />`;
 
         // Texto Menor
-        const mTextX = center + ((radiusInner + (radiusInner - 40)) / 2) * Math.cos(angle);
-        const mTextY = center + ((radiusInner + (radiusInner - 40)) / 2) * Math.sin(angle);
+        const mTextX = center + ((radiusInner + radiusCore) / 2) * Math.cos(angle);
+        const mTextY = center + ((radiusInner + radiusCore) / 2) * Math.sin(angle);
         svg += `<text class="circle-text" x="${mTextX}" y="${mTextY}" fill="#888" font-size="10">${minorKeys[i]}</text>`;
     });
 
     // Centro
-    svg += `<circle cx="${center}" cy="${center}" r="40" fill="#0d0d0d" stroke="#333" stroke-width="2"/>`;
+    svg += `<circle cx="${center}" cy="${center}" r="${radiusCore}" fill="#0d0d0d" stroke="#333" stroke-width="2"/>`;
     svg += `<text class="circle-text" x="${center}" y="${center}" fill="#ff6b00" font-size="14">Tavo</text>`;
 
     svg += `</svg>`;
@@ -310,22 +318,36 @@ function selectKey(key) {
     const isMinor = key.includes('m');
     const rootIndex = NOTES.indexOf(root);
 
+    // Calcular grados y relativos
+    let relativeMajor, relativeMinor, fourth, fifth, dominant;
+
     if (isMinor) {
-        // Si es menor, la relativa mayor es +3 semitonos
-        const relativeMajor = NOTES[(rootIndex + 3) % 12];
+        relativeMajor = NOTES[(rootIndex + 3) % 12];
+        fourth = NOTES[(rootIndex + 5) % 12] + 'm';
+        fifth = NOTES[(rootIndex + 7) % 12] + 'm';
+        dominant = NOTES[(rootIndex + 7) % 12] + '7';
+
         info.innerHTML = `
             <h3>Tonalidad de ${key}</h3>
             <p><strong>Relativa Mayor:</strong> ${relativeMajor}</p>
-            <p><strong>IV Grado:</strong> ${NOTES[(rootIndex + 5) % 12]}m</p>
-            <p><strong>V Grado:</strong> ${NOTES[(rootIndex + 7) % 12]}m</p>
+            <p><strong>IV Grado:</strong> ${fourth}</p>
+            <p><strong>V Grado:</strong> ${fifth}</p>
+            <p><strong>Dominante (V7):</strong> ${dominant}</p>
+            <p><strong>Notas de la escala:</strong> ${getScaleNotes(root, 'eólico').join(', ')}</p>
         `;
     } else {
-        const relativeMinor = NOTES[(rootIndex + 9) % 12] + 'm';
+        relativeMinor = NOTES[(rootIndex + 9) % 12] + 'm';
+        fourth = NOTES[(rootIndex + 5) % 12];
+        fifth = NOTES[(rootIndex + 7) % 12];
+        dominant = NOTES[(rootIndex + 7) % 12] + '7';
+
         info.innerHTML = `
             <h3>Tonalidad de ${key} Mayor</h3>
             <p><strong>Relativa menor:</strong> ${relativeMinor}</p>
-            <p><strong>IV Grado:</strong> ${NOTES[(rootIndex + 5) % 12]}</p>
-            <p><strong>V Grado:</strong> ${NOTES[(rootIndex + 7) % 12]}</p>
+            <p><strong>IV Grado:</strong> ${fourth}</p>
+            <p><strong>V Grado:</strong> ${fifth}</p>
+            <p><strong>Dominante (V7):</strong> ${dominant}</p>
+            <p><strong>Notas de la escala:</strong> ${getScaleNotes(root, 'jónico').join(', ')}</p>
         `;
     }
 }
