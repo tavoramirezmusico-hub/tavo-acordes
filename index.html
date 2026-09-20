@@ -7,15 +7,14 @@
   <title>Tavo Acordes - Armonía y Guitarra</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <!-- Tone.js para audio realista -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
 </head>
 
 <body>
 
   <header class="main-header">
     <div class="logo-container">
-      <img src="logo.png" alt="Tavo Acordes Logo" class="logo-img">
+      <img src="logo.png" alt="Tavo Acordes Logo" class="logo-img"
+        onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%22150%22><circle cx=%2275%22 cy=%2275%22 r=%2270%22 fill=%22%231a1a1a%22 stroke=%22%23ff6b00%22 stroke-width=%225%22/><text x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 fill=%22%23ff6b00%22 font-size=%2220%22 font-family=%22sans-serif%22 dy=%22.3em%22>Tavo</text></svg>'">
     </div>
     <h1>Tavo Acordes</h1>
     <p class="subtitle">Guitarra • Armonía • Círculo de Quintas • Modos</p>
@@ -74,11 +73,14 @@
     <section id="buscar" class="card">
       <h2>3. Buscar Acorde por Nombre</h2>
       <div class="search-box">
-        <input type="text" id="search-input"
-          placeholder="Busca entre más de 100 acordes... Ej: Am, Cmaj7, F#m7, G7, Csus4...">
+        <input type="text" id="search-input" placeholder="Escribe para filtrar... Ej: Am, Cmaj7, G7">
         <button onclick="searchChord()" class="btn-primary">Buscar</button>
+        <button onclick="showAllChords()" class="btn-reset"
+          style="border-color: var(--accent); color: var(--accent);">Mostrar Todos</button>
       </div>
-      <div id="search-results" class="search-results"></div>
+      <div id="search-results" class="search-results">
+        <p class="empty-state">Escribe un acorde o pulsa "Mostrar Todos" para ver la lista completa.</p>
+      </div>
     </section>
 
     <section id="progresiones" class="card">
@@ -112,9 +114,7 @@
           <option value="eólico">Eólico (Menor)</option>
           <option value="locrio">Locrio</option>
         </select>
-        <div id="mode-info" class="mode-info-box">
-          <!-- Info generada por JS -->
-        </div>
+        <div id="mode-info" class="mode-info-box"></div>
         <button onclick="playModeScale()" class="btn-primary"><i class="fas fa-play"></i> Escuchar Escala</button>
       </div>
     </section>
@@ -126,9 +126,7 @@
         <label>Destino: <select id="mod-dest"></select></label>
         <button onclick="calculateModulation()" class="btn-primary">Calcular Ruta</button>
       </div>
-      <div id="modulation-result" class="modulation-result">
-        <!-- Resultado generado por JS -->
-      </div>
+      <div id="modulation-result" class="modulation-result"></div>
     </section>
 
     <section id="dominantes" class="card">
@@ -137,9 +135,7 @@
         <label>Tonalidad: <select id="dominant-key"></select></label>
         <button onclick="calculateDominants()" class="btn-primary">Calcular</button>
       </div>
-      <div id="dominant-result" class="dominant-result">
-        <!-- Resultado generado por JS -->
-      </div>
+      <div id="dominant-result" class="dominant-result"></div>
     </section>
 
   </main>

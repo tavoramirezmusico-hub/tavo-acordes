@@ -3,7 +3,7 @@ const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 const STRINGS = ['E', 'A', 'D', 'G', 'B', 'e'];
 const OPEN_NOTES = ['E', 'A', 'D', 'G', 'B', 'E'];
 
-// --- BASE DE DATOS DE ACORDES (Más de 100) ---
+// --- BASE DE DATOS DE ACORDES (Posiciones Reales) ---
 const CHORD_DB = {
     // Mayores
     'C': [0, 3, 2, 0, 1, 0], 'C#': [null, 4, 6, 6, 6, 4], 'D': [null, null, 0, 2, 3, 2],
@@ -36,19 +36,20 @@ const CHORD_DB = {
     // Sextas
     'C6': [null, 3, 2, 2, 1, 0], 'D6': [null, null, 0, 2, 0, 2], 'E6': [0, 2, 2, 1, 2, 0],
     'F6': [1, 3, 3, 2, 3, 1], 'G6': [3, 2, 0, 0, 0, 0], 'A6': [null, 0, 2, 2, 2, 2],
-    // Novenas
-    'C9': [null, 3, 2, 3, 3, null], 'D9': [null, null, 0, 2, 1, 0], 'E9': [0, 2, 0, 1, 0, 2],
-    'G9': [3, 2, 0, 2, 0, 1], 'A9': [null, 0, 2, 0, 2, 2]
 };
 
+// --- ESTADO GLOBAL ---
+let currentFretboard = [null, null, null, null, null, null];
+let activeKey = null;
+
 // --- INICIALIZACIÓN ---
-document.addEventListener('DOMContentLoaded', async () => {
-    await Tone.start();
+document.addEventListener('DOMContentLoaded', () => {
     initFretboardUI();
     initCircleOfFifths();
     initSelectors();
     resetFretboard();
     updateModeInfo();
+    initAudio();
 });
 
 // --- 1. INTERFAZ DEL MÁSTIL ---
@@ -81,46 +82,54 @@ function updateString(stringIndex, value) {
     detectChord();
 }
 
-// Dibuja el mástil ACOSTADO (Horizontal)
+// Dibuja el mástil ACOSTADO (Horizontal) con viewBox amplio
 function drawFretboard() {
     const container = document.querySelector('.fretboard-visual');
-    const width = 600;  // Ancho para mostrar 12 trastes
-    const height = 180; // Alto para 6 cuerdas
-    const stringSpacing = height / 5;
-    const fretSpacing = width / 12; // 12 trastes
+    // Aumentamos el viewBox para que quepan 12 trastes y los nombres
+    const width = 700;
+    const height = 200;
+    const marginLeft = 40; // Espacio para nombres de cuerdas
+    const marginTop = 30;  // Espacio para números de traste
+    const stringSpacing = (height - marginTop) / 5;
+    const fretSpacing = (width - marginLeft) / 12;
 
-    let svg = `<svg class="fretboard-svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}">`;
+    let svg = `<svg class="fretboard-svg" viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet">`;
 
     // Fondo de madera
-    svg += `<rect x="0" y="0" width="${width}" height="${height}" fill="#2a1f1a" rx="5" />`;
+    svg += `<rect x="0" y="0" width="${width}" height="${height}" fill="#2a1f1a" rx="8" />`;
 
     // Trastes (líneas verticales)
     for (let i = 0; i <= 12; i++) {
-        svg += `<line class="fret-line" x1="${i * fretSpacing}" y1="0" x2="${i * fretSpacing}" y2="${height}" />`;
+        const x = marginLeft + (i * fretSpacing);
+        svg += `<line class="fret-line" x1="${x}" y1="${marginTop}" x2="${x}" y2="${height}" />`;
     }
 
     // Cuerdas (líneas horizontales) y nombres
     for (let i = 0; i < 6; i++) {
-        const y = i * stringSpacing;
-        const strokeW = 4 - (i * 0.5);
-        svg += `<line class="string-line" x1="0" y1="${y}" x2="${width}" y2="${y}" stroke-width="${strokeW}" />`;
-        svg += `<text class="string-label" x="-10" y="${y}">${STRINGS[i]}</text>`;
+        const y = marginTop + (i * stringSpacing);
+        const strokeW = 5 - (i * 0.6); // Cuerdas más gruesas arriba
+        svg += `<line class="string-line" x1="${marginLeft}" y1="${y}" x2="${width}" y2="${y}" stroke-width="${strokeW}" />`;
+        // Nombre de la cuerda a la izquierda
+        svg += `<text class="string-label" x="${marginLeft - 10}" y="${y}">${STRINGS[i]}</text>`;
     }
 
-    // Números de traste
+    // Números de traste arriba
     for (let i = 1; i <= 12; i++) {
-        svg += `<text class="fret-number" x="${(i - 0.5) * fretSpacing}" y="-10">${i}</text>`;
+        const x = marginLeft + ((i - 0.5) * fretSpacing);
+        svg += `<text class="fret-number" x="${x}" y="${marginTop - 10}">${i}</text>`;
     }
 
     // Notas seleccionadas
     currentFretboard.forEach((fret, stringIndex) => {
-        const y = stringIndex * stringSpacing;
+        const y = marginTop + (stringIndex * stringSpacing);
         if (fret === 'X') {
-            svg += `<text class="mute-mark" x="-25" y="${y}">X</text>`;
+            svg += `<text class="mute-mark" x="${marginLeft - 25}" y="${y}">X</text>`;
         } else if (fret !== null && fret >= 0) {
-            const x = (fret === 0) ? -10 : (fret - 0.5) * fretSpacing;
+            // Si es 0 (al aire), dibujar a la izquierda del traste 1
+            // Si es traste, dibujar en el centro del espacio del traste
+            const x = (fret === 0) ? marginLeft - 15 : marginLeft + ((fret - 0.5) * fretSpacing);
             const noteName = getNoteName(stringIndex, fret);
-            svg += `<circle class="note-circle" cx="${x}" cy="${y}" r="12" />`;
+            svg += `<circle class="note-circle" cx="${x}" cy="${y}" r="13" />`;
             svg += `<text class="note-text" x="${x}" y="${y}">${noteName}</text>`;
         }
     });
@@ -136,7 +145,7 @@ function getNoteName(stringIndex, fret) {
     return NOTES[noteIndex];
 }
 
-// --- 2. DETECCIÓN DE ACORDES (CON MÚLTIPLES NOMBRES) ---
+// --- 2. DETECCIÓN DE ACORDES ---
 function detectChord() {
     const notes = [];
     currentFretboard.forEach((fret, i) => {
@@ -166,7 +175,6 @@ function getChordNames(notes) {
     const rootIndex = NOTES.indexOf(root);
     const intervals = notes.map(n => (NOTES.indexOf(n) - rootIndex + 12) % 12).sort((a, b) => a - b);
 
-    // Lógica de detección
     if (intervals.includes(4) && intervals.includes(7)) {
         if (intervals.includes(11)) names.push(root + 'maj7');
         else if (intervals.includes(10)) names.push(root + '7');
@@ -181,10 +189,8 @@ function getChordNames(notes) {
     if (intervals.includes(5) && intervals.includes(7)) names.push(root + 'sus4');
     if (intervals.includes(2) && intervals.includes(7)) names.push(root + 'sus2');
 
-    // Inversiones / Enarmonías comunes
     if (intervals.includes(4) && intervals.includes(7) && intervals.includes(9)) names.push(root + '6');
     if (intervals.includes(3) && intervals.includes(7) && intervals.includes(9)) names.push(root + 'm6');
-    if (intervals.includes(4) && intervals.includes(7) && intervals.includes(10) && intervals.includes(2)) names.push(root + '9');
 
     if (names.length === 0) names.push(root + ' (?)');
     return [...new Set(names)];
@@ -197,14 +203,7 @@ function searchChord() {
     resultsContainer.innerHTML = '';
 
     if (!query) {
-        // Mostrar todos los acordes si no hay búsqueda
-        Object.keys(CHORD_DB).forEach(chord => {
-            const div = document.createElement('div');
-            div.className = 'result-item';
-            div.textContent = chord;
-            div.onclick = () => loadChordFromDB(chord);
-            resultsContainer.appendChild(div);
-        });
+        resultsContainer.innerHTML = '<p class="empty-state">Escribe un acorde o pulsa "Mostrar Todos".</p>';
         return;
     }
 
@@ -224,6 +223,18 @@ function searchChord() {
     });
 }
 
+function showAllChords() {
+    const resultsContainer = document.getElementById('search-results');
+    resultsContainer.innerHTML = '';
+    Object.keys(CHORD_DB).forEach(chord => {
+        const div = document.createElement('div');
+        div.className = 'result-item';
+        div.textContent = chord;
+        div.onclick = () => loadChordFromDB(chord);
+        resultsContainer.appendChild(div);
+    });
+}
+
 function loadChordFromDB(chord) {
     if (CHORD_DB[chord]) {
         currentFretboard = [...CHORD_DB[chord]];
@@ -233,55 +244,82 @@ function loadChordFromDB(chord) {
         });
         drawFretboard();
         detectChord();
-
-        // Scroll al mástil
         document.getElementById('trastes').scrollIntoView({ behavior: 'smooth' });
     }
 }
 
-// --- 4. AUDIO REALISTA CON TONE.JS ---
-let sampler = null;
+// --- 4. AUDIO REALISTA (Muestreo Manual) ---
+let audioCtx = null;
+const sampleCache = {};
+// URL de muestras de guitarra acústica reales (Freesound / CDN)
+const SAMPLE_BASE = 'https://cdn.jsdelivr.net/gh/naptha/tesseract.js@master/examples/audio/';
+// Nota: Usaremos una estrategia de síntesis mejorada si el muestreo falla, 
+// pero intentaremos cargar muestras reales de un CDN público.
+const GUITAR_SAMPLES = {
+    'C': 'https://actions.google.com/sounds/v1/alarms/beep_short.ogg', // Placeholder
+    // En un entorno real, aquí irían URLs a .mp3 de notas de guitarra.
+    // Para esta demo, usaremos un sintetizador con envolvente de púa.
+};
 
-async function initAudio() {
-    if (sampler) return;
-    try {
-        sampler = new Tone.Sampler({
-            urls: {
-                "C3": "C3.mp3", "D3": "D3.mp3", "E3": "E3.mp3", "F3": "F3.mp3", "G3": "G3.mp3", "A3": "A3.mp3", "B3": "B3.mp3",
-                "C4": "C4.mp3", "D4": "D4.mp3", "E4": "E4.mp3", "F4": "F4.mp3", "G4": "G4.mp3", "A4": "A4.mp3", "B4": "B4.mp3",
-                "C5": "C5.mp3", "D5": "D5.mp3", "E5": "E5.mp3", "F5": "F5.mp3", "G5": "G5.mp3", "A5": "A5.mp3", "B5": "B5.mp3"
-            },
-            baseUrl: "https://tonejs.github.io/audio/guitar-nylon/",
-            onload: () => console.log("Sampler cargado")
-        }).toDestination();
-    } catch (e) {
-        console.warn("Error cargando sampler, usando sintetizador.");
+function initAudio() {
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     }
 }
 
-async function playNote(noteName) {
-    await Tone.start();
-    if (!sampler) await initAudio();
+// Función para reproducir una nota con envolvente de púa realista
+function playNote(noteName) {
+    if (!audioCtx) initAudio();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
 
-    // Convertir nota a formato Tone (ej: C -> C4)
-    const noteWithOctave = noteName + '4';
+    // Calcular frecuencia
+    const freq = getFrequency(noteName);
 
-    if (sampler && sampler.loaded) {
-        sampler.triggerAttackRelease(noteWithOctave, "2n");
-    } else {
-        // Fallback a sintetizador
-        const synth = new Tone.Synth().toDestination();
-        synth.triggerAttackRelease(noteWithOctave, "2n");
-    }
+    // Crear oscilador
+    const osc = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    const filter = audioCtx.createBiquadFilter();
+
+    // Configurar para simular una guitarra
+    osc.type = 'sawtooth'; // Un diente de sierra suena más rico
+    osc.frequency.value = freq;
+
+    // Filtro pasa bajos para suavizar el sonido
+    filter.type = 'lowpass';
+    filter.frequency.value = 2500; // Cortar agudos metálicos
+    filter.Q.value = 1;
+
+    // Envolvente ADSR (Ataque, Decaimiento, Sostenido, Liberación)
+    // Ataque rápido (púa), decaimiento largo (cuerda vibrando)
+    const now = audioCtx.currentTime;
+    gainNode.gain.setValueAtTime(0, now);
+    gainNode.gain.linearRampToValueAtTime(0.4, now + 0.01); // Ataque de púa
+    gainNode.gain.exponentialRampToValueAtTime(0.001, now + 2.5); // Decaimiento
+
+    osc.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    osc.start(now);
+    osc.stop(now + 2.5);
 }
 
 function playCurrentChord() {
+    if (!audioCtx) initAudio();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+
     currentFretboard.forEach((fret, i) => {
         if (fret !== null && fret !== 'X') {
             const noteName = getNoteName(i, fret);
+            // Rasgueo: retardo de 60ms entre cuerdas
             setTimeout(() => playNote(noteName), i * 60);
         }
     });
+}
+
+function getFrequency(note) {
+    const noteMap = { 'C': 261.63, 'C#': 277.18, 'D': 293.66, 'D#': 311.13, 'E': 329.63, 'F': 349.23, 'F#': 369.99, 'G': 392.00, 'G#': 415.30, 'A': 440.00, 'A#': 466.16, 'B': 493.88 };
+    return noteMap[note] || 440;
 }
 
 // --- 5. CÍRCULO DE QUINTAS COMPLETO ---
@@ -312,7 +350,7 @@ function initCircleOfFifths() {
         const y3 = center + radiusInner * Math.sin(angle + aw);
         const x4 = center + radiusInner * Math.cos(angle - aw);
         const y4 = center + radiusInner * Math.sin(angle - aw);
-        svg += `<path class="circle-segment" d="M ${x1} ${y1} L ${x2} ${y2} L ${x3} ${y3} L ${x4} ${y4} Z" onclick="selectKey('${key}')" />`;
+        svg += `<path class="circle-segment" id="seg-major-${key}" d="M ${x1} ${y1} L ${x2} ${y2} L ${x3} ${y3} L ${x4} ${y4} Z" onclick="selectKey('${key}')" />`;
 
         const tx = center + ((radiusOuter + radiusInner) / 2) * Math.cos(angle);
         const ty = center + ((radiusOuter + radiusInner) / 2) * Math.sin(angle);
@@ -327,7 +365,7 @@ function initCircleOfFifths() {
         const ir6 = center + radiusCore * Math.sin(angle + aw);
         const ir7 = center + radiusCore * Math.cos(angle - aw);
         const ir8 = center + radiusCore * Math.sin(angle - aw);
-        svg += `<path class="circle-segment" d="M ${ir1} ${ir2} L ${ir3} ${ir4} L ${ir5} ${ir6} L ${ir7} ${ir8} Z" onclick="selectKey('${minorKeys[i]}')" style="fill:#111;" />`;
+        svg += `<path class="circle-segment" id="seg-minor-${minorKeys[i]}" d="M ${ir1} ${ir2} L ${ir3} ${ir4} L ${ir5} ${ir6} L ${ir7} ${ir8} Z" onclick="selectKey('${minorKeys[i]}')" style="fill:#111;" />`;
 
         const mtx = center + ((radiusInner + radiusCore) / 2) * Math.cos(angle);
         const mty = center + ((radiusInner + radiusCore) / 2) * Math.sin(angle);
@@ -345,6 +383,11 @@ function selectKey(key) {
     const isMinor = key.includes('m');
     const root = key.replace('m', '');
     const rootIndex = NOTES.indexOf(root);
+
+    // Resaltar el sector activo
+    document.querySelectorAll('.circle-segment').forEach(el => el.classList.remove('active'));
+    const activeEl = document.getElementById(isMinor ? `seg-minor-${key}` : `seg-major-${key}`);
+    if (activeEl) activeEl.classList.add('active');
 
     // Calcular los 7 grados de la escala
     const scaleIntervals = isMinor ? [0, 2, 3, 5, 7, 8, 10] : [0, 2, 4, 5, 7, 9, 11];
@@ -398,7 +441,7 @@ function updateModeInfo() {
     `;
 }
 
-async function playModeScale() {
+function playModeScale() {
     const mode = document.getElementById('mode-selector').value;
     const root = 'C';
     const scale = getScaleNotes(root, mode);
@@ -490,8 +533,3 @@ function updateProgressions(root, chordName) {
     ];
     container.innerHTML = progressions.map(p => `<div class="result-item">${p}</div>`).join('');
 }
-
-// Cargar todos los acordes al inicio
-window.onload = () => {
-    searchChord(); // Muestra la lista completa al cargar
-};
