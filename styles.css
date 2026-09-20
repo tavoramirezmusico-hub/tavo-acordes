@@ -20,107 +20,10 @@
     padding: 0;
 }
 
-/* ===== FONDO ANIMADO CON NOTAS MUSICALES Y PENTAGRAMAS ===== */
-@keyframes bgShift {
-    0% {
-        background-position: 0% 50%;
-    }
-
-    50% {
-        background-position: 100% 50%;
-    }
-
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-/* Notas flotantes */
-@keyframes floatNote1 {
-    0% {
-        transform: translate(0, 0) rotate(0deg);
-        opacity: 0;
-    }
-
-    10% {
-        opacity: 0.4;
-    }
-
-    90% {
-        opacity: 0.4;
-    }
-
-    100% {
-        transform: translate(150px, -800px) rotate(360deg);
-        opacity: 0;
-    }
-}
-
-@keyframes floatNote2 {
-    0% {
-        transform: translate(0, 0) rotate(0deg);
-        opacity: 0;
-    }
-
-    10% {
-        opacity: 0.35;
-    }
-
-    90% {
-        opacity: 0.35;
-    }
-
-    100% {
-        transform: translate(-200px, -900px) rotate(-360deg);
-        opacity: 0;
-    }
-}
-
-@keyframes floatNote3 {
-    0% {
-        transform: translate(0, 0) rotate(0deg) scale(1);
-        opacity: 0;
-    }
-
-    15% {
-        opacity: 0.3;
-    }
-
-    85% {
-        opacity: 0.3;
-    }
-
-    100% {
-        transform: translate(250px, -1000px) rotate(180deg) scale(1.3);
-        opacity: 0;
-    }
-}
-
-@keyframes floatNote4 {
-    0% {
-        transform: translate(0, 0) rotate(0deg);
-        opacity: 0;
-    }
-
-    10% {
-        opacity: 0.25;
-    }
-
-    90% {
-        opacity: 0.25;
-    }
-
-    100% {
-        transform: translate(-180px, -750px) rotate(-270deg);
-        opacity: 0;
-    }
-}
-
+/* ===== FONDO ANIMADO (LIGERO) ===== */
 body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: linear-gradient(-45deg, #0d0d0d, #121212, #0d0d0d, #151515);
-    background-size: 400% 400%;
-    animation: bgShift 25s ease infinite;
+    background-color: #0d0d0d;
     color: var(--text-main);
     line-height: 1.6;
     padding-bottom: 50px;
@@ -130,7 +33,7 @@ body {
     min-height: 100vh;
 }
 
-/* ===== PENTAGRAMAS DE FONDO ===== */
+/* ===== PENTAGRAMAS DE FONDO (SIN ANIMACIÓN, ESTÁTICOS) ===== */
 body::before {
     content: '';
     position: fixed;
@@ -140,12 +43,10 @@ body::before {
     height: 100%;
     pointer-events: none;
     z-index: 0;
-    opacity: 0.08;
+    opacity: 0.06;
     background-image:
-        /* Pentagrama 1: 5 líneas horizontales */
         linear-gradient(to bottom,
-            transparent 0%,
-            transparent 15%,
+            transparent 0%, transparent 15%,
             var(--accent) 15%, var(--accent) calc(15% + 1px),
             transparent calc(15% + 1px), transparent 16%,
             var(--accent) 16%, var(--accent) calc(16% + 1px),
@@ -156,10 +57,8 @@ body::before {
             transparent calc(18% + 1px), transparent 19%,
             var(--accent) 19%, var(--accent) calc(19% + 1px),
             transparent calc(19% + 1px), transparent 100%),
-        /* Pentagrama 2 (más abajo) */
         linear-gradient(to bottom,
-            transparent 0%,
-            transparent 60%,
+            transparent 0%, transparent 60%,
             var(--accent) 60%, var(--accent) calc(60% + 1px),
             transparent calc(60% + 1px), transparent 61%,
             var(--accent) 61%, var(--accent) calc(61% + 1px),
@@ -171,59 +70,48 @@ body::before {
             var(--accent) 64%, var(--accent) calc(64% + 1px),
             transparent calc(64% + 1px), transparent 100%);
     background-size: 100% 100%;
-    animation: staffDrift 60s linear infinite;
 }
 
-@keyframes staffDrift {
-    0% {
-        background-position: 0 0, 0 0;
-    }
-
-    100% {
-        background-position: 200px 0, -200px 0;
-    }
-}
-
-/* ===== NOTAS MUSICALES FLOTANTES ===== */
+/* ===== NOTAS MUSICALES FLOTANTES (ANIMACIÓN LIGERA) ===== */
 body::after {
-    content: '♪ ♫ ♬ ♩ ♭ ♯ 𝄞 ♪ ♫ 𝄢 ♬ ♩ 𝄞 ♭ ♪ ♫ 𝄢';
+    content: '♪ ♫ ♬ ♩ ♭ ♯ 𝄞 ♪ ♫ 𝄢 ♬ ♩ 𝄞 ♭ ♪ ♫ 𝄢 ♪ ♫ ♬ ♩';
     position: fixed;
-    top: 100%;
+    top: 100vh;
     left: 0;
     width: 100%;
-    height: 2000px;
     pointer-events: none;
     z-index: 0;
-    font-size: 30px;
+    font-size: 28px;
     color: var(--accent);
-    opacity: 0.15;
-    letter-spacing: 200px;
-    line-height: 400px;
+    opacity: 0.12;
+    letter-spacing: 180px;
+    line-height: 350px;
     text-align: justify;
     word-break: break-all;
-    animation: notesFloat 40s linear infinite;
+    animation: notesFloat 60s linear infinite;
+    will-change: transform;
     text-shadow:
         0 0 10px var(--accent-glow),
-        300px -400px 0 var(--accent),
-        600px -800px 0 var(--accent),
+        400px -400px 0 var(--accent),
+        800px -800px 0 var(--accent),
         -300px -600px 0 var(--accent),
-        900px -200px 0 var(--accent),
-        1200px -1000px 0 var(--accent),
-        -500px -300px 0 var(--accent),
-        1800px -500px 0 var(--accent);
+        1400px -200px 0 var(--accent),
+        1800px -1000px 0 var(--accent),
+        -600px -300px 0 var(--accent),
+        2200px -500px 0 var(--accent);
 }
 
 @keyframes notesFloat {
     0% {
-        transform: translateY(0) rotate(0deg);
+        transform: translate3d(0, 0, 0);
     }
 
     100% {
-        transform: translateY(-2000px) rotate(360deg);
+        transform: translate3d(0, -2500px, 0);
     }
 }
 
-/* Contenedor principal sobre el fondo */
+/* Contenido sobre el fondo */
 .main-header,
 .sticky-nav,
 .container,
@@ -232,7 +120,7 @@ footer {
     z-index: 1;
 }
 
-/* ===== SCROLLBAR PERSONALIZADO ===== */
+/* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -260,7 +148,7 @@ footer {
     }
 
     50% {
-        box-shadow: 0 0 45px rgba(255, 107, 0, 0.8), 0 0 70px rgba(255, 107, 0, 0.3);
+        box-shadow: 0 0 45px rgba(255, 107, 0, 0.7);
     }
 }
 
@@ -272,7 +160,7 @@ footer {
     }
 
     50% {
-        transform: translateY(-8px) scale(1.02);
+        transform: translateY(-6px) scale(1.02);
     }
 }
 
@@ -284,38 +172,21 @@ footer {
     }
 
     50% {
-        text-shadow: 0 0 25px rgba(255, 107, 0, 0.8), 0 0 40px rgba(255, 107, 0, 0.4);
+        text-shadow: 0 0 25px rgba(255, 107, 0, 0.7);
     }
 }
 
 .main-header {
     text-align: center;
     padding: 30px 20px;
-    background: linear-gradient(180deg, rgba(26, 26, 26, 0.95), rgba(20, 20, 20, 0.9));
-    backdrop-filter: blur(10px);
+    background-color: #1a1a1a;
     border-bottom: 2px solid var(--accent);
-    position: relative;
-    overflow: hidden;
-}
-
-.main-header::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255, 107, 0, 0.08) 0%, transparent 70%);
-    animation: bgShift 15s ease infinite;
-    pointer-events: none;
 }
 
 .logo-container {
     display: flex;
     justify-content: center;
     margin-bottom: 15px;
-    position: relative;
-    z-index: 1;
 }
 
 .logo-img {
@@ -325,12 +196,11 @@ footer {
     border: 3px solid var(--accent);
     animation: logoGlow 4s ease-in-out infinite, logoFloat 6s ease-in-out infinite;
     transition: transform 0.4s ease;
-    position: relative;
-    z-index: 1;
+    will-change: transform;
 }
 
 .logo-img:hover {
-    transform: scale(1.1) rotate(5deg);
+    transform: scale(1.08) rotate(4deg);
     animation-play-state: paused;
 }
 
@@ -338,8 +208,6 @@ h1 {
     font-size: 2em;
     color: var(--text-main);
     margin-bottom: 5px;
-    position: relative;
-    z-index: 1;
     animation: titleGlow 4s ease-in-out infinite;
     letter-spacing: 2px;
 }
@@ -348,16 +216,13 @@ h1 {
     color: var(--text-muted);
     font-size: 0.95em;
     letter-spacing: 2px;
-    position: relative;
-    z-index: 1;
 }
 
 /* ===== NAVEGACIÓN STICKY ===== */
 .sticky-nav {
     position: sticky;
     top: 0;
-    background-color: rgba(13, 13, 13, 0.95);
-    backdrop-filter: blur(15px);
+    background-color: rgba(13, 13, 13, 0.98);
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -374,29 +239,12 @@ h1 {
     font-size: 0.9em;
     padding: 8px 15px;
     border-radius: 20px;
-    position: relative;
-    transition: color 0.3s, background-color 0.3s;
-    overflow: hidden;
-}
-
-.sticky-nav a::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, var(--accent-glow), transparent);
-    transition: left 0.5s;
+    transition: color 0.25s, background-color 0.25s;
 }
 
 .sticky-nav a:hover {
     color: var(--accent);
-    background-color: rgba(255, 107, 0, 0.08);
-}
-
-.sticky-nav a:hover::before {
-    left: 100%;
+    background-color: rgba(255, 107, 0, 0.1);
 }
 
 /* ===== CONTENEDOR PRINCIPAL ===== */
@@ -409,51 +257,19 @@ h1 {
     gap: 30px;
 }
 
-/* ===== TARJETAS ===== */
-@keyframes cardFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
+/* ===== TARJETAS (SIN BACKDROP-FILTER) ===== */
 .card {
-    background: linear-gradient(145deg, rgba(26, 26, 26, 0.95), rgba(20, 20, 20, 0.9));
-    backdrop-filter: blur(8px);
+    background-color: var(--card-bg);
     border-radius: 12px;
     padding: 25px;
     border: 1px solid var(--border-color);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
-    animation: cardFadeIn 0.6s ease-out both;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    transform: translateX(-100%);
-    transition: transform 0.6s;
-}
-
-.card:hover::before {
-    transform: translateX(100%);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 107, 0, 0.15);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 107, 0, 0.15);
     border-color: rgba(255, 107, 0, 0.4);
 }
 
@@ -479,45 +295,15 @@ h1 {
 }
 
 /* ===== BOTONES ===== */
-@keyframes btnPulse {
-
-    0%,
-    100% {
-        box-shadow: 0 0 0 0 var(--accent-glow);
-    }
-
-    50% {
-        box-shadow: 0 0 0 10px rgba(255, 107, 0, 0);
-    }
-}
-
 button {
     cursor: pointer;
     border: none;
     border-radius: 6px;
     font-family: inherit;
     font-weight: bold;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s, color 0.2s;
     position: relative;
     overflow: hidden;
-}
-
-button::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    transform: translate(-50%, -50%);
-    transition: width 0.5s, height 0.5s;
-}
-
-button:active::before {
-    width: 300px;
-    height: 300px;
 }
 
 .btn-primary {
@@ -529,9 +315,8 @@ button:active::before {
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, var(--accent-hover), #ff9a55);
-    transform: translateY(-2px) scale(1.03);
-    box-shadow: 0 6px 25px rgba(255, 107, 0, 0.6);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 20px rgba(255, 107, 0, 0.55);
 }
 
 .btn-primary:active {
@@ -550,7 +335,6 @@ button:active::before {
     background-color: var(--red-mute);
     color: #fff;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 51, 51, 0.5);
 }
 
 .btn-show {
@@ -558,14 +342,12 @@ button:active::before {
     color: var(--accent);
     border: 1px solid var(--accent);
     padding: 8px 15px;
-    transition: all 0.3s;
 }
 
 .btn-show:hover {
     background-color: var(--accent);
     color: #000;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px var(--accent-glow);
 }
 
 /* ===== MÁSTIL ===== */
@@ -581,7 +363,7 @@ button:active::before {
     justify-content: center;
     align-items: center;
     padding: 15px;
-    background: linear-gradient(145deg, #0a0a0a, #151515);
+    background-color: #0a0a0a;
     border-radius: 8px;
     border: 1px solid var(--border-color);
     width: 100%;
@@ -599,50 +381,10 @@ button:active::before {
     max-width: 900px;
 }
 
-@keyframes stringPulse {
-
-    0%,
-    100% {
-        opacity: 0.9;
-    }
-
-    50% {
-        opacity: 1;
-    }
-}
-
-@keyframes noteAppear {
-    0% {
-        opacity: 0;
-        transform: scale(0.3);
-    }
-
-    60% {
-        transform: scale(1.2);
-    }
-
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-@keyframes circleGlow {
-
-    0%,
-    100% {
-        filter: drop-shadow(0 0 5px var(--accent-glow));
-    }
-
-    50% {
-        filter: drop-shadow(0 0 15px var(--accent));
-    }
-}
-
 .fretboard-svg {
-    background: linear-gradient(145deg, #2a1f1a, #1f1613);
+    background-color: var(--wood-color);
     border-radius: 8px;
-    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
     width: 100%;
     height: auto;
     display: block;
@@ -652,23 +394,10 @@ button:active::before {
 .fret-line {
     stroke: var(--fret-color);
     stroke-width: 2;
-    transition: stroke 0.3s;
 }
 
 .string-line {
     stroke: var(--string-color);
-    transition: stroke 0.3s;
-    animation: stringPulse 3s ease-in-out infinite;
-}
-
-.fretboard-svg circle {
-    animation: noteAppear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    transition: all 0.3s ease;
-}
-
-.fretboard-svg circle:hover {
-    filter: drop-shadow(0 0 10px var(--accent));
-    transform-origin: center;
 }
 
 .note-circle {
@@ -708,6 +437,25 @@ button:active::before {
     text-anchor: middle;
 }
 
+/* Notas del mástil con animación ligera */
+@keyframes noteAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.4);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.fretboard-svg circle {
+    animation: noteAppear 0.35s ease-out;
+    transform-origin: center;
+    transform-box: fill-box;
+}
+
 /* ===== SELECTORES DE CUERDAS ===== */
 .string-selectors {
     display: grid;
@@ -727,41 +475,35 @@ button:active::before {
 }
 
 .string-row:hover {
-    transform: translateY(-3px);
+    transform: translateY(-2px);
 }
 
 .string-row label {
     font-weight: bold;
     color: var(--accent);
     font-size: 0.9em;
-    transition: text-shadow 0.3s;
-}
-
-.string-row:hover label {
-    text-shadow: 0 0 10px var(--accent);
 }
 
 .string-row select {
     width: 100%;
     padding: 8px;
-    background: linear-gradient(145deg, #0a0a0a, #151515);
+    background-color: #0a0a0a;
     color: var(--text-main);
     border: 1px solid var(--border-color);
     border-radius: 6px;
     text-align: center;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: border-color 0.25s, box-shadow 0.25s;
 }
 
 .string-row select:hover {
     border-color: var(--accent);
-    box-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
 }
 
 .string-row select:focus {
     outline: none;
     border-color: var(--accent);
-    box-shadow: 0 0 15px var(--accent-glow);
+    box-shadow: 0 0 10px var(--accent-glow);
 }
 
 /* ===== RESULTADO Y AUDIO ===== */
@@ -772,11 +514,11 @@ button:active::before {
 @keyframes chordPop {
     0% {
         opacity: 0;
-        transform: scale(0.5);
+        transform: scale(0.6);
     }
 
     60% {
-        transform: scale(1.15);
+        transform: scale(1.1);
     }
 
     100% {
@@ -788,15 +530,11 @@ button:active::before {
 .chord-display {
     font-size: 3.5em;
     font-weight: 900;
-    background: linear-gradient(135deg, var(--accent), #ff9a55, var(--accent));
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: chordPop 0.5s ease-out, bgShift 3s ease infinite;
+    color: var(--accent);
     margin: 15px 0;
     letter-spacing: 2px;
-    filter: drop-shadow(0 0 15px rgba(255, 107, 0, 0.5));
+    text-shadow: 0 0 20px rgba(255, 107, 0, 0.5);
+    animation: chordPop 0.45s ease-out;
 }
 
 .alternatives {
@@ -804,19 +542,16 @@ button:active::before {
     font-size: 0.9em;
     margin-bottom: 10px;
     min-height: 20px;
-    animation: cardFadeIn 0.6s ease-out;
 }
 
 /* ===== INFO DEL ACORDE ===== */
 .chord-info-box {
-    background: linear-gradient(145deg, rgba(10, 10, 10, 0.9), rgba(21, 21, 21, 0.85));
-    backdrop-filter: blur(5px);
+    background-color: #0a0a0a;
     padding: 20px;
     border-radius: 8px;
     border: 1px solid var(--border-color);
     margin: 20px 0;
     text-align: left;
-    animation: cardFadeIn 0.5s ease-out;
     transition: border-color 0.3s;
 }
 
@@ -856,33 +591,11 @@ button:active::before {
     font-size: 0.9em;
     margin: 2px;
     box-shadow: 0 2px 8px rgba(255, 107, 0, 0.4);
-    transition: transform 0.2s, box-shadow 0.2s;
-    animation: cardFadeIn 0.4s ease-out both;
+    transition: transform 0.2s;
 }
 
 .chord-info-box .formula-badge:hover {
     transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 6px 15px rgba(255, 107, 0, 0.7);
-}
-
-.chord-info-box .formula-badge:nth-child(1) {
-    animation-delay: 0.05s;
-}
-
-.chord-info-box .formula-badge:nth-child(2) {
-    animation-delay: 0.1s;
-}
-
-.chord-info-box .formula-badge:nth-child(3) {
-    animation-delay: 0.15s;
-}
-
-.chord-info-box .formula-badge:nth-child(4) {
-    animation-delay: 0.2s;
-}
-
-.chord-info-box .formula-badge:nth-child(5) {
-    animation-delay: 0.25s;
 }
 
 .chord-info-box .explanation {
@@ -923,58 +636,27 @@ button:active::before {
     margin-right: 5px;
 }
 
-@keyframes chipIn {
-    0% {
-        opacity: 0;
-        transform: scale(0.5) translateY(10px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-    }
-}
-
 .position-btn {
-    background: linear-gradient(145deg, #0a0a0a, #151515);
+    background-color: #0a0a0a;
     color: var(--text-main);
     border: 1px solid var(--border-color);
     padding: 6px 14px;
     font-size: 0.85em;
     border-radius: 20px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    animation: chipIn 0.4s ease-out both;
-}
-
-.position-btn:nth-child(2) {
-    animation-delay: 0.05s;
-}
-
-.position-btn:nth-child(3) {
-    animation-delay: 0.1s;
-}
-
-.position-btn:nth-child(4) {
-    animation-delay: 0.15s;
-}
-
-.position-btn:nth-child(5) {
-    animation-delay: 0.2s;
+    transition: all 0.25s;
 }
 
 .position-btn:hover {
     border-color: var(--accent);
     color: var(--accent);
     transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(255, 107, 0, 0.3);
 }
 
 .position-btn.active {
     background: linear-gradient(135deg, var(--accent), #ff8533);
     color: #000;
     border-color: var(--accent);
-    box-shadow: 0 0 20px var(--accent-glow);
-    animation: btnPulse 2s infinite;
+    box-shadow: 0 0 15px var(--accent-glow);
 }
 
 /* ===== BÚSQUEDA ===== */
@@ -989,19 +671,18 @@ button:active::before {
     flex: 1;
     min-width: 200px;
     padding: 12px 15px;
-    background: linear-gradient(145deg, #0a0a0a, #151515);
+    background-color: #0a0a0a;
     border: 1px solid var(--border-color);
     color: var(--text-main);
     border-radius: 6px;
     font-size: 1em;
-    transition: all 0.3s;
+    transition: border-color 0.25s, box-shadow 0.25s;
 }
 
 .search-box input:focus {
     outline: none;
     border-color: var(--accent);
-    box-shadow: 0 0 20px rgba(255, 107, 0, 0.3);
-    transform: translateY(-1px);
+    box-shadow: 0 0 15px rgba(255, 107, 0, 0.3);
 }
 
 .search-results {
@@ -1011,49 +692,43 @@ button:active::before {
     max-height: 280px;
     overflow-y: auto;
     padding: 5px;
-    background: linear-gradient(145deg, rgba(10, 10, 10, 0.9), rgba(21, 21, 21, 0.85));
-    backdrop-filter: blur(5px);
+    background-color: #0a0a0a;
     border-radius: 6px;
     border: 1px solid var(--border-color);
 }
 
 .result-item {
-    background: linear-gradient(145deg, var(--card-bg), #151515);
+    background-color: var(--card-bg);
     padding: 8px;
     border: 1px solid var(--border-color);
     border-radius: 6px;
     text-align: center;
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: all 0.2s;
     font-size: 0.9em;
     font-weight: 600;
-    position: relative;
-    overflow: hidden;
 }
 
 .result-item:hover {
     border-color: var(--accent);
-    background: linear-gradient(145deg, #222, #1a1a1a);
     color: var(--accent);
-    transform: translateY(-2px) scale(1.03);
-    box-shadow: 0 6px 15px rgba(255, 107, 0, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(255, 107, 0, 0.25);
 }
 
 /* ===== ESCALA DEL ACORDE ===== */
 #scale-info {
-    background: linear-gradient(145deg, rgba(10, 10, 10, 0.9), rgba(21, 21, 21, 0.85));
+    background-color: #0a0a0a;
     padding: 15px;
     border-radius: 6px;
     border: 1px solid var(--border-color);
     margin-bottom: 15px;
-    animation: cardFadeIn 0.5s ease-out;
 }
 
 #scale-info h4 {
     color: var(--accent);
     margin-bottom: 10px;
     font-size: 1.1em;
-    text-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
 }
 
 #scale-info p {
@@ -1066,21 +741,16 @@ button:active::before {
 
 #scale-fretboard {
     margin-top: 15px;
-    background: linear-gradient(145deg, #0a0a0a, #151515);
+    background-color: #0a0a0a;
     border-radius: 8px;
     padding: 10px;
     border: 1px solid var(--border-color);
-    animation: cardFadeIn 0.6s ease-out;
-    transition: border-color 0.3s;
-}
-
-#scale-fretboard:hover {
-    border-color: rgba(255, 107, 0, 0.4);
 }
 
 #scale-fretboard circle {
-    animation: noteAppear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-    transition: all 0.3s;
+    animation: noteAppear 0.35s ease-out;
+    transform-origin: center;
+    transform-box: fill-box;
 }
 
 /* ===== PROGRESIONES ===== */
@@ -1093,27 +763,6 @@ button:active::before {
 .progressions-container .result-item {
     text-align: left;
     padding: 12px;
-    animation: cardFadeIn 0.5s ease-out both;
-}
-
-.progressions-container .result-item:nth-child(1) {
-    animation-delay: 0.05s;
-}
-
-.progressions-container .result-item:nth-child(2) {
-    animation-delay: 0.1s;
-}
-
-.progressions-container .result-item:nth-child(3) {
-    animation-delay: 0.15s;
-}
-
-.progressions-container .result-item:nth-child(4) {
-    animation-delay: 0.2s;
-}
-
-.progressions-container .result-item:nth-child(5) {
-    animation-delay: 0.25s;
 }
 
 /* ===== CÍRCULO DE QUINTAS ===== */
@@ -1129,39 +778,29 @@ button:active::before {
     max-width: 360px;
     aspect-ratio: 1 / 1;
     flex-shrink: 0;
-    filter: drop-shadow(0 0 20px rgba(255, 107, 0, 0.15));
-    transition: filter 0.5s;
-}
-
-.circle-svg-container:hover {
-    filter: drop-shadow(0 0 30px rgba(255, 107, 0, 0.35));
 }
 
 .circle-svg-container svg {
     width: 100%;
     height: 100%;
     display: block;
-    animation: circleGlow 6s ease-in-out infinite;
 }
 
 .circle-segment {
     fill: var(--bg-color);
     stroke: var(--border-color);
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    transform-origin: center;
+    transition: fill 0.25s, filter 0.25s;
 }
 
 .circle-segment:hover {
     fill: var(--accent);
     filter: drop-shadow(0 0 10px var(--accent));
-    transform: scale(1.02);
 }
 
 .circle-segment.active {
     fill: var(--accent) !important;
-    filter: drop-shadow(0 0 15px var(--accent));
-    animation: btnPulse 2s infinite;
+    filter: drop-shadow(0 0 12px var(--accent));
 }
 
 .circle-text {
@@ -1171,18 +810,15 @@ button:active::before {
     dominant-baseline: middle;
     pointer-events: none;
     font-weight: bold;
-    transition: fill 0.3s;
 }
 
 .circle-info {
     flex: 1;
-    background: linear-gradient(145deg, rgba(10, 10, 10, 0.9), rgba(21, 21, 21, 0.85));
-    backdrop-filter: blur(5px);
+    background-color: #0a0a0a;
     padding: 20px;
     border-radius: 8px;
     border: 1px solid var(--border-color);
     width: 100%;
-    animation: cardFadeIn 0.5s ease-out;
     transition: border-color 0.3s;
 }
 
@@ -1194,7 +830,6 @@ button:active::before {
     color: var(--accent);
     margin-bottom: 10px;
     font-size: 1.2em;
-    text-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
 }
 
 .circle-info h4 {
@@ -1244,28 +879,27 @@ button:active::before {
 
 #mode-selector {
     padding: 12px;
-    background: linear-gradient(145deg, #0a0a0a, #151515);
+    background-color: #0a0a0a;
     color: var(--text-main);
     border: 1px solid var(--border-color);
     border-radius: 6px;
     font-size: 1em;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: border-color 0.25s, box-shadow 0.25s;
 }
 
 #mode-selector:hover,
 #mode-selector:focus {
     border-color: var(--accent);
-    box-shadow: 0 0 15px rgba(255, 107, 0, 0.3);
+    box-shadow: 0 0 12px rgba(255, 107, 0, 0.3);
     outline: none;
 }
 
 .mode-info-box {
-    background: linear-gradient(145deg, rgba(10, 10, 10, 0.9), rgba(21, 21, 21, 0.85));
+    background-color: #0a0a0a;
     padding: 15px;
     border-radius: 6px;
     border: 1px solid var(--border-color);
-    animation: cardFadeIn 0.4s ease-out;
 }
 
 .mode-info-box p {
@@ -1277,11 +911,10 @@ button:active::before {
 }
 
 #mode-fretboard {
-    background: linear-gradient(145deg, #0a0a0a, #151515);
+    background-color: #0a0a0a;
     border-radius: 8px;
     padding: 10px;
     border: 1px solid var(--border-color);
-    animation: cardFadeIn 0.6s ease-out;
 }
 
 /* ===== MODULACIÓN Y DOMINANTES ===== */
@@ -1305,12 +938,12 @@ button:active::before {
 .modulation-controls select,
 .dominant-controls select {
     padding: 8px 12px;
-    background: linear-gradient(145deg, #0a0a0a, #151515);
+    background-color: #0a0a0a;
     color: var(--text-main);
     border: 1px solid var(--border-color);
     border-radius: 4px;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: border-color 0.25s;
 }
 
 .modulation-controls select:hover,
@@ -1319,18 +952,15 @@ button:active::before {
 .dominant-controls select:focus {
     border-color: var(--accent);
     outline: none;
-    box-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
 }
 
 .modulation-result,
 .dominant-result {
-    background: linear-gradient(145deg, rgba(10, 10, 10, 0.9), rgba(21, 21, 21, 0.85));
-    backdrop-filter: blur(5px);
+    background-color: #0a0a0a;
     padding: 15px;
     border-radius: 6px;
     border: 1px solid var(--border-color);
     min-height: 60px;
-    animation: cardFadeIn 0.5s ease-out;
 }
 
 .modulation-result strong,
@@ -1358,54 +988,20 @@ button:active::before {
 }
 
 .dominant-result .result-item {
-    animation: cardFadeIn 0.5s ease-out both;
-    transition: all 0.3s;
+    transition: all 0.25s;
 }
 
 .dominant-result .result-item:hover {
     border-color: var(--accent);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(255, 107, 0, 0.25);
-}
-
-.dominant-result .result-item:nth-child(1) {
-    animation-delay: 0.05s;
-}
-
-.dominant-result .result-item:nth-child(2) {
-    animation-delay: 0.1s;
-}
-
-.dominant-result .result-item:nth-child(3) {
-    animation-delay: 0.15s;
-}
-
-.dominant-result .result-item:nth-child(4) {
-    animation-delay: 0.2s;
-}
-
-.dominant-result .result-item:nth-child(5) {
-    animation-delay: 0.25s;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 107, 0, 0.2);
 }
 
 /* ===== ESTADO VACÍO ===== */
-@keyframes emptyPulse {
-
-    0%,
-    100% {
-        opacity: 0.6;
-    }
-
-    50% {
-        opacity: 1;
-    }
-}
-
 .empty-state {
     color: var(--text-muted);
     font-style: italic;
     padding: 10px;
-    animation: emptyPulse 3s ease-in-out infinite;
 }
 
 /* ===== FOOTER ===== */
@@ -1467,7 +1063,7 @@ footer::before {
     }
 }
 
-/* ===== REDUCED MOTION (accesibilidad) ===== */
+/* ===== REDUCED MOTION ===== */
 @media (prefers-reduced-motion: reduce) {
 
     *,
@@ -1478,7 +1074,6 @@ footer::before {
         transition-duration: 0.01ms !important;
     }
 
-    body::before,
     body::after {
         display: none;
     }
