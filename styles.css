@@ -146,7 +146,8 @@ button {
     background-color: transparent;
     color: var(--red-mute);
     border: 1px solid var(--red-mute);
-    padding: 8px 15px;
+    padding: 10px 20px;
+    font-size: 1em;
 }
 
 .btn-reset:hover {
@@ -166,7 +167,7 @@ button {
     color: #000;
 }
 
-/* ===== MÁSTIL - RESPONSIVE Y COMPLETO ===== */
+/* ===== MÁSTIL ===== */
 .fretboard-controls {
     display: flex;
     flex-direction: column;
@@ -280,35 +281,6 @@ button {
     text-align: center;
 }
 
-/* ===== QUICK CHORDS ===== */
-.quick-chords {
-    margin-top: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
-    justify-content: center;
-}
-
-.quick-chords span {
-    color: var(--text-muted);
-    font-size: 0.9em;
-    margin-right: 5px;
-}
-
-.quick-chords button {
-    background-color: var(--bg-color);
-    color: var(--text-main);
-    border: 1px solid var(--border-color);
-    padding: 6px 12px;
-    font-size: 0.9em;
-}
-
-.quick-chords button:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-}
-
 /* ===== RESULTADO Y AUDIO ===== */
 .result-box {
     text-align: center;
@@ -326,6 +298,68 @@ button {
     font-size: 0.9em;
     margin-bottom: 10px;
     min-height: 20px;
+}
+
+/* ===== INFO DEL ACORDE (FÓRMULA + EXPLICACIÓN) ===== */
+.chord-info-box {
+    background-color: var(--bg-color);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    margin: 20px 0;
+    text-align: left;
+}
+
+.chord-info-box h4 {
+    color: var(--accent);
+    margin-bottom: 12px;
+    font-size: 1.1em;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 8px;
+}
+
+.chord-info-box .info-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.chord-info-box .info-label {
+    color: var(--accent);
+    font-weight: bold;
+    min-width: 110px;
+}
+
+.chord-info-box .formula-badge {
+    display: inline-block;
+    background-color: var(--accent);
+    color: #000;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 0.9em;
+    margin: 2px;
+}
+
+.chord-info-box .explanation {
+    color: var(--text-muted);
+    font-size: 0.9em;
+    margin-top: 15px;
+    line-height: 1.6;
+    border-left: 3px solid var(--accent);
+    padding-left: 15px;
+    font-style: italic;
+}
+
+/* ===== BOTONES DEL RESULTADO ===== */
+.result-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 15px;
 }
 
 /* ===== POSICIONES ALTERNATIVAS DEL ACORDE ===== */
@@ -694,5 +728,9 @@ footer {
     .position-btn {
         font-size: 0.8em;
         padding: 5px 10px;
+    }
+
+    .chord-info-box .info-label {
+        min-width: 80px;
     }
 }

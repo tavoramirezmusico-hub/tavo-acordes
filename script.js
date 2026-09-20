@@ -1,12 +1,76 @@
 // =====================================================
-// TAVO ACORDES - SCRIPT PRINCIPAL v4
+// TAVO ACORDES - SCRIPT PRINCIPAL v5
 // =====================================================
 
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 const STRINGS = ['E', 'A', 'D', 'G', 'B', 'e'];
 const OPEN_NOTES = ['E', 'A', 'D', 'G', 'B', 'E'];
 
-// --- BASE DE DATOS DE ACORDES (orden: 6ª a 1ª cuerda) ---
+// =====================================================
+// CALIDADES DE ACORDES (MUY COMPLETO)
+// =====================================================
+const CHORD_QUALITIES = {
+    // Tríadas básicas
+    '': { intervals: [0, 4, 7], formula: '1 3 5', name: 'Mayor', scale: 'jónico', explanation: 'Tríada mayor: raíz + 3ª mayor + 5ª justa. Es el acorde más común y estable.' },
+    'm': { intervals: [0, 3, 7], formula: '1 b3 5', name: 'Menor', scale: 'eólico', explanation: 'Tríada menor: raíz + 3ª menor + 5ª justa. Sonido melancólico.' },
+    'dim': { intervals: [0, 3, 6], formula: '1 b3 b5', name: 'Disminuido', scale: 'locrio', explanation: 'Tríada disminuida: raíz + 3ª menor + 5ª disminuida. Muy tenso, resuelve al I.' },
+    'aug': { intervals: [0, 4, 8], formula: '1 3 #5', name: 'Aumentado', scale: 'jónico', explanation: 'Tríada aumentada: raíz + 3ª mayor + 5ª aumentada. Sonido flotante.' },
+    'sus2': { intervals: [0, 2, 7], formula: '1 2 5', name: 'Suspendido 2', scale: 'jónico', explanation: 'Suspendido: la 3ª se sustituye por la 2ª. Sonido abierto.' },
+    'sus4': { intervals: [0, 5, 7], formula: '1 4 5', name: 'Suspendido 4', scale: 'jónico', explanation: 'Suspendido: la 3ª se sustituye por la 4ª. Suele resolver a mayor.' },
+    '5': { intervals: [0, 7], formula: '1 5', name: 'Quinta (Power)', scale: 'jónico', explanation: 'Power chord: solo raíz y quinta. Sin 3ª, ambiguo entre mayor y menor.' },
+
+    // Sextas
+    '6': { intervals: [0, 4, 7, 9], formula: '1 3 5 6', name: 'Sexta', scale: 'jónico', explanation: 'Tríada mayor + 6ª mayor. Sonido estable con color jazzy.' },
+    'm6': { intervals: [0, 3, 7, 9], formula: '1 b3 5 6', name: 'Menor Sexta', scale: 'dórico', explanation: 'Tríada menor + 6ª mayor. Usado en jazz manouche.' },
+
+    // Séptimas
+    '7': { intervals: [0, 4, 7, 10], formula: '1 3 5 b7', name: 'Dominante (7)', scale: 'mixolidio', explanation: 'Tríada mayor + 7ª menor. Es el acorde de dominante: genera tensión y resuelve a la tónica.' },
+    'maj7': { intervals: [0, 4, 7, 11], formula: '1 3 5 7', name: 'Mayor 7', scale: 'jónico', explanation: 'Tríada mayor + 7ª mayor. Sonido suave y sofisticado.' },
+    'm7': { intervals: [0, 3, 7, 10], formula: '1 b3 5 b7', name: 'Menor 7', scale: 'dórico', explanation: 'Tríada menor + 7ª menor. Muy usado en jazz, soul y funk.' },
+    'm7b5': { intervals: [0, 3, 6, 10], formula: '1 b3 b5 b7', name: 'Semidisminuido', scale: 'locrio', explanation: 'Tríada disminuida + 7ª menor. También llamado m7(b5). Precede al dominante.' },
+    'dim7': { intervals: [0, 3, 6, 9], formula: '1 b3 b5 bb7', name: 'Disminuido 7', scale: 'locrio', explanation: 'Tríada disminuida + 7ª disminuida. Acorde simétrico, muy tenso.' },
+    'mMaj7': { intervals: [0, 3, 7, 11], formula: '1 b3 5 7', name: 'Menor Mayor 7', scale: 'eólico', explanation: 'Tríada menor + 7ª mayor. Sonido misterioso, típico del cine negro.' },
+    'aug7': { intervals: [0, 4, 8, 10], formula: '1 3 #5 b7', name: 'Aumentado 7', scale: 'jónico', explanation: 'Tríada aumentada + 7ª menor. Domina hacia acordes menores.' },
+    'maj7#5': { intervals: [0, 4, 8, 11], formula: '1 3 #5 7', name: 'Mayor 7 #5', scale: 'jónico', explanation: 'Tríada aumentada + 7ª mayor. Sonido etéreo.' },
+
+    // Add (agregados)
+    'add9': { intervals: [0, 2, 4, 7], formula: '1 2 3 5', name: 'Add 9', scale: 'jónico', explanation: 'Tríada mayor + 9ª (2ª). Añade color sin la tensión del 7.' },
+    'madd9': { intervals: [0, 2, 3, 7], formula: '1 2 b3 5', name: 'Menor Add 9', scale: 'eólico', explanation: 'Tríada menor + 9ª. Color melancólico moderno.' },
+    'add11': { intervals: [0, 4, 5, 7], formula: '1 3 4 5', name: 'Add 11', scale: 'jónico', explanation: 'Tríada mayor + 11ª (4ª). Sonido suspenso.' },
+    'add13': { intervals: [0, 4, 7, 9], formula: '1 3 5 6', name: 'Add 13', scale: 'jónico', explanation: 'Tríada mayor + 13ª (6ª). Equivalente a la sexta.' },
+
+    // Novenas
+    '9': { intervals: [0, 2, 4, 7, 10], formula: '1 2 3 5 b7', name: 'Dominante 9', scale: 'mixolidio', explanation: 'Acorde de dominante + 9ª. Sonido funk y blues.' },
+    'maj9': { intervals: [0, 2, 4, 7, 11], formula: '1 2 3 5 7', name: 'Mayor 9', scale: 'jónico', explanation: 'Acorde maj7 + 9ª. Sonido brillante y moderno.' },
+    'm9': { intervals: [0, 2, 3, 7, 10], formula: '1 2 b3 5 b7', name: 'Menor 9', scale: 'dórico', explanation: 'Acorde m7 + 9ª. Sonido neo-soul.' },
+    '9sus4': { intervals: [0, 2, 5, 7, 10], formula: '1 2 4 5 b7', name: '9 Suspendido', scale: 'mixolidio', explanation: 'Acorde 9 con 4ª en lugar de 3ª.' },
+    '7b9': { intervals: [0, 1, 4, 7, 10], formula: '1 b2 3 5 b7', name: 'Dominante 7 b9', scale: 'frigio', explanation: 'Dominante con 9ª menor. Resuelve a menor. Muy usado en jazz.' },
+    '7#9': { intervals: [0, 3, 4, 7, 10], formula: '1 #2 3 5 b7', name: 'Dominante 7 #9', scale: 'frigio', explanation: 'Dominante con 9ª aumentada. El famoso acorde Hendrix.' },
+    'maj9#11': { intervals: [0, 2, 4, 6, 7, 11], formula: '1 2 3 #4 5 7', name: 'Mayor 9 #11', scale: 'lidio', explanation: 'Acorde maj9 con 11ª aumentada. Sonido lidio, muy cinematográfico.' },
+
+    // Oncenas
+    '11': { intervals: [0, 2, 4, 5, 7, 10], formula: '1 2 3 4 5 b7', name: 'Dominante 11', scale: 'mixolidio', explanation: 'Dominante + 11ª. Sonido abierto.' },
+    'm11': { intervals: [0, 2, 3, 5, 7, 10], formula: '1 2 b3 4 5 b7', name: 'Menor 11', scale: 'dórico', explanation: 'Acorde m9 + 11ª. Sonido soul.' },
+    'maj7#11': { intervals: [0, 4, 6, 7, 11], formula: '1 3 #4 5 7', name: 'Mayor 7 #11', scale: 'lidio', explanation: 'Acorde maj7 con 11ª aumentada. Sonido etéreo.' },
+
+    // Treceñas
+    '13': { intervals: [0, 2, 4, 7, 9, 10], formula: '1 2 3 5 6 b7', name: 'Dominante 13', scale: 'mixolidio', explanation: 'Dominante + 13ª. Sonido muy rico.' },
+    'm13': { intervals: [0, 2, 3, 7, 9, 10], formula: '1 2 b3 5 6 b7', name: 'Menor 13', scale: 'dórico', explanation: 'Acorde m11 + 13ª.' },
+    'maj13': { intervals: [0, 2, 4, 7, 9, 11], formula: '1 2 3 5 6 7', name: 'Mayor 13', scale: 'jónico', explanation: 'Acorde maj9 + 13ª.' },
+
+    // Alterados
+    '7b5': { intervals: [0, 4, 6, 10], formula: '1 3 b5 b7', name: 'Dominante 7 b5', scale: 'locrio', explanation: 'Dominante con 5ª disminuida. Tensión extra.' },
+    '7#5': { intervals: [0, 4, 8, 10], formula: '1 3 #5 b7', name: 'Dominante 7 #5', scale: 'jónico', explanation: 'Dominante con 5ª aumentada.' },
+    '7#11': { intervals: [0, 4, 6, 7, 10], formula: '1 3 #4 5 b7', name: 'Dominante 7 #11', scale: 'lidio', explanation: 'Dominante con 11ª aumentada. Sonido lidio dominante.' },
+    '7b13': { intervals: [0, 3, 4, 7, 10], formula: '1 #2 3 5 b7', name: 'Dominante 7 b13', scale: 'frigio', explanation: 'Dominante con 13ª disminuida.' },
+
+    // Suspendidos extendidos
+    '7sus4': { intervals: [0, 5, 7, 10], formula: '1 4 5 b7', name: 'Dominante 7 Sus4', scale: 'mixolidio', explanation: 'Dominante con 4ª en lugar de 3ª.' },
+};
+
+// =====================================================
+// BASE DE DATOS DE ACORDES (posiciones comunes)
+// =====================================================
 const CHORD_DB = {
     'C': [0, 3, 2, 0, 1, 0], 'C#': [null, 4, 6, 6, 6, 4], 'D': [null, null, 0, 2, 3, 2],
     'D#': [null, 6, 8, 8, 8, 6], 'E': [0, 2, 2, 1, 0, 0], 'F': [1, 3, 3, 2, 1, 1],
@@ -30,9 +94,16 @@ const CHORD_DB = {
     'Caug': [null, 3, 2, 1, 1, 0], 'Eaug': [0, 3, 2, 1, 1, 0], 'Gaug': [3, 2, 1, 0, 0, 3],
     'C6': [null, 3, 2, 2, 1, 0], 'D6': [null, null, 0, 2, 0, 2], 'E6': [0, 2, 2, 1, 2, 0],
     'F6': [1, 3, 3, 2, 3, 1], 'G6': [3, 2, 0, 0, 0, 0], 'A6': [null, 0, 2, 2, 2, 2],
+    'Cm7b5': [null, 3, 4, 3, 4, null], 'Dm7b5': [null, null, 0, 1, 1, 1], 'Bm7b5': [null, 2, 3, 2, 3, null],
+    'Cadd9': [null, 3, 2, 0, 3, 0], 'Dadd9': [null, null, 0, 2, 3, 0], 'Eadd9': [0, 2, 2, 1, 0, 2],
+    'Gadd9': [3, 2, 0, 2, 0, 3], 'Aadd9': [null, 0, 2, 4, 2, 0],
+    'C9': [null, 3, 2, 3, 3, null], 'D9': [null, null, 0, 2, 1, 0], 'E9': [0, 2, 0, 1, 0, 2],
+    'G9': [3, 2, 0, 2, 0, 1], 'A9': [null, 0, 2, 0, 2, 2],
 };
 
-// --- POSICIONES ALTERNATIVAS DE ACORDES ---
+// =====================================================
+// POSICIONES ALTERNATIVAS
+// =====================================================
 const CHORD_POSITIONS = {
     'C': [
         { name: 'Abierto', frets: [0, 3, 2, 0, 1, 0], baseFret: 0 },
@@ -93,35 +164,7 @@ const CHORD_POSITIONS = {
         { name: 'Abierto', frets: [3, 2, 0, 0, 0, 1], baseFret: 0 },
         { name: 'Barra 3er', frets: [3, 5, 3, 4, 3, 3], baseFret: 3 },
         { name: 'Barra 10mo', frets: [10, 12, 10, 12, 10, 10], baseFret: 10 }
-    ],
-    'E7': [
-        { name: 'Abierto', frets: [0, 2, 0, 1, 0, 0], baseFret: 0 },
-        { name: 'Barra 7mo', frets: [7, 9, 7, 8, 7, 7], baseFret: 7 }
-    ],
-    'D7': [
-        { name: 'Abierto', frets: [null, null, 0, 2, 1, 2], baseFret: 0 },
-        { name: 'Barra 5to', frets: [null, 5, 7, 5, 7, 5], baseFret: 5 }
-    ],
-    'A7': [
-        { name: 'Abierto', frets: [null, 0, 2, 0, 2, 0], baseFret: 0 },
-        { name: 'Barra 5to', frets: [5, 7, 5, 6, 5, 5], baseFret: 5 }
     ]
-};
-
-// --- CALIDADES DE ACORDES ---
-const CHORD_QUALITIES = {
-    '': { name: 'Mayor', intervals: [0, 4, 7], scale: 'jónico', scaleName: 'Jónica (Mayor)' },
-    'm': { name: 'Menor', intervals: [0, 3, 7], scale: 'eólico', scaleName: 'Eólica (Menor Natural)' },
-    '7': { name: 'Dominante', intervals: [0, 4, 7, 10], scale: 'mixolidio', scaleName: 'Mixolidia' },
-    'maj7': { name: 'Mayor 7', intervals: [0, 4, 7, 11], scale: 'jónico', scaleName: 'Jónica (Mayor)' },
-    'm7': { name: 'Menor 7', intervals: [0, 3, 7, 10], scale: 'dórico', scaleName: 'Dórica' },
-    'dim': { name: 'Disminuido', intervals: [0, 3, 6], scale: 'locrio', scaleName: 'Locria' },
-    'aug': { name: 'Aumentado', intervals: [0, 4, 8], scale: 'jónico', scaleName: 'Jónica con #5' },
-    'sus2': { name: 'Suspendido 2', intervals: [0, 2, 7], scale: 'jónico', scaleName: 'Jónica (Mayor)' },
-    'sus4': { name: 'Suspendido 4', intervals: [0, 5, 7], scale: 'jónico', scaleName: 'Jónica (Mayor)' },
-    '6': { name: 'Sexta', intervals: [0, 4, 7, 9], scale: 'jónico', scaleName: 'Jónica (Mayor)' },
-    'm6': { name: 'Menor Sexta', intervals: [0, 3, 7, 9], scale: 'dórico', scaleName: 'Dórica' },
-    'm7b5': { name: 'Semidisminuido', intervals: [0, 3, 6, 10], scale: 'locrio', scaleName: 'Locria' },
 };
 
 const MODE_INTERVALS = {
@@ -132,6 +175,16 @@ const MODE_INTERVALS = {
     'mixolidio': [0, 2, 4, 5, 7, 9, 10],
     'eólico': [0, 2, 3, 5, 7, 8, 10],
     'locrio': [0, 1, 3, 5, 6, 8, 10]
+};
+
+const MODE_INFO = {
+    'jónico': { formula: '1 2 3 4 5 6 7', uso: 'Mayor natural. Ideal para pop, rock y música clásica.' },
+    'dórico': { formula: '1 2 b3 4 5 6 b7', uso: 'Menor con 6ª mayor. Jazz, funk y rock progresivo.' },
+    'frigio': { formula: '1 b2 b3 4 5 b6 b7', uso: 'Sonido español/flamenco. Metal y rock.' },
+    'lidio': { formula: '1 2 3 #4 5 6 7', uso: 'Mayor con #4. Sonido etéreo, bandas sonoras.' },
+    'mixolidio': { formula: '1 2 3 4 5 6 b7', uso: 'Mayor con b7. Rock, blues y funk.' },
+    'eólico': { formula: '1 2 b3 4 5 b6 b7', uso: 'Menor natural. Baladas, rock y pop.' },
+    'locrio': { formula: '1 b2 b3 4 b5 b6 b7', uso: 'Disminuido. Jazz y metal extremo.' }
 };
 
 let currentFretboard = [null, null, null, null, null, null];
@@ -186,13 +239,8 @@ function drawFretboard() {
     const container = document.querySelector('.fretboard-visual');
     if (!container) return;
 
-    const width = 800;
-    const height = 260;
-    const marginLeft = 55;
-    const marginTop = 35;
-    const marginRight = 15;
-    const marginBottom = 15;
-
+    const width = 800, height = 260;
+    const marginLeft = 55, marginTop = 35, marginRight = 15, marginBottom = 15;
     const drawWidth = width - marginLeft - marginRight;
     const drawHeight = height - marginTop - marginBottom;
     const stringSpacing = drawHeight / 5;
@@ -221,7 +269,6 @@ function drawFretboard() {
 
     currentFretboard.forEach((fret, stringIndex) => {
         const y = marginTop + (stringIndex * stringSpacing);
-
         if (fret === 'X') {
             svg += `<text x="${marginLeft - 25}" y="${y}" fill="#ff3333" font-size="16" font-weight="bold" text-anchor="middle" dominant-baseline="middle">X</text>`;
         } else if (fret !== null && fret >= 0) {
@@ -256,11 +303,13 @@ function detectChord() {
     const chordNameEl = document.getElementById('chord-name');
     const altEl = document.getElementById('chord-alternatives');
     const positionsEl = document.getElementById('chord-positions');
+    const infoEl = document.getElementById('chord-info');
 
     if (uniqueNotes.length < 2) {
         chordNameEl.textContent = '---';
         altEl.textContent = '';
         if (positionsEl) positionsEl.innerHTML = '';
+        if (infoEl) infoEl.innerHTML = '';
         document.getElementById('scale-info').innerHTML = '<p class="empty-state">Toca al menos 2 cuerdas para ver la escala.</p>';
         document.getElementById('scale-fretboard').innerHTML = '';
         currentChordData = null;
@@ -269,26 +318,22 @@ function detectChord() {
 
     currentChordData = analyzeChord(uniqueNotes, notes);
 
-    // Nombre principal (SIN inversión)
     chordNameEl.textContent = currentChordData.primaryName;
 
     // Alternativas (incluye inversiones)
     const bassNote = notes[0];
     let altText = '';
-
     if (currentChordData.root && bassNote !== currentChordData.root && currentChordData.quality) {
         altText += `Inversión: ${currentChordData.primaryName}/${bassNote} · `;
     }
-
     if (currentChordData.alternatives.length > 1) {
         altText += `También: ${currentChordData.alternatives.slice(1).join(', ')} · `;
     }
     altText += `Notas: ${uniqueNotes.join(' - ')}`;
     altEl.textContent = altText;
 
-    // Mostrar posiciones alternativas
     renderPositions(currentChordData.primaryName);
-
+    renderChordInfo(currentChordData, uniqueNotes);
     updateScaleForChord(currentChordData);
     updateProgressionsForChord(currentChordData);
     updateModeForChord(currentChordData);
@@ -303,12 +348,12 @@ function analyzeChord(notes, orderedNotes) {
         const intervals = notes.map(n => (NOTES.indexOf(n) - rootIndex + 12) % 12).sort((a, b) => a - b);
 
         for (const [suffix, quality] of Object.entries(CHORD_QUALITIES)) {
-            const requiredIntervals = quality.intervals;
-            const matches = requiredIntervals.every(i => intervals.includes(i));
-            const extras = intervals.filter(i => !requiredIntervals.includes(i));
+            const required = quality.intervals;
+            const matches = required.every(i => intervals.includes(i));
+            const extras = intervals.filter(i => !required.includes(i));
 
             if (matches && extras.length === 0) {
-                let priority = requiredIntervals.length * 100;
+                let priority = required.length * 100;
                 if (rootNote === bassNote) priority += 150;
 
                 candidates.push({
@@ -322,10 +367,10 @@ function analyzeChord(notes, orderedNotes) {
         }
     });
 
+    // Filtrar duplicados por nombre
     const uniqueCandidates = [];
     const seenNames = new Set();
     candidates.sort((a, b) => b.priority - a.priority);
-
     for (const c of candidates) {
         if (!seenNames.has(c.name)) {
             seenNames.add(c.name);
@@ -334,6 +379,47 @@ function analyzeChord(notes, orderedNotes) {
     }
 
     if (uniqueCandidates.length === 0) {
+        // Detección flexible: intentar sin exigir todos los intervalos
+        // Buscar el acorde que contenga la mayoría de las notas
+        let bestFlexible = null;
+        notes.forEach(rootNote => {
+            const rootIndex = NOTES.indexOf(rootNote);
+            const intervals = notes.map(n => (NOTES.indexOf(n) - rootIndex + 12) % 12).sort((a, b) => a - b);
+
+            for (const [suffix, quality] of Object.entries(CHORD_QUALITIES)) {
+                const matched = quality.intervals.filter(i => intervals.includes(i)).length;
+                const total = quality.intervals.length;
+                const ratio = matched / total;
+
+                if (ratio >= 0.75 && matched >= 3) {
+                    const missing = quality.intervals.filter(i => !intervals.includes(i));
+                    let priority = matched * 100 + (rootNote === bassNote ? 100 : 0);
+
+                    if (!bestFlexible || priority > bestFlexible.priority) {
+                        bestFlexible = {
+                            root: rootNote,
+                            suffix: suffix,
+                            name: rootNote + suffix + ' (?)',
+                            quality: quality,
+                            priority: priority,
+                            missing: missing
+                        };
+                    }
+                }
+            }
+        });
+
+        if (bestFlexible) {
+            return {
+                root: bestFlexible.root,
+                suffix: bestFlexible.suffix,
+                primaryName: bestFlexible.name,
+                alternatives: [],
+                quality: bestFlexible.quality,
+                intervals: bestFlexible.quality.intervals
+            };
+        }
+
         return {
             root: notes[0],
             suffix: '',
@@ -356,13 +442,50 @@ function analyzeChord(notes, orderedNotes) {
 }
 
 // =====================================================
-// 3. POSICIONES ALTERNATIVAS DEL ACORDE
+// INFO DEL ACORDE (FÓRMULA + EXPLICACIÓN)
+// =====================================================
+function renderChordInfo(chordData, notes) {
+    const infoEl = document.getElementById('chord-info');
+    if (!infoEl) return;
+
+    if (!chordData || !chordData.quality) {
+        infoEl.innerHTML = '<p class="empty-state">Sin información disponible para esta combinación de notas.</p>';
+        return;
+    }
+
+    const quality = chordData.quality;
+    const formulaParts = quality.formula.split(' ');
+
+    let formulaBadges = formulaParts.map(f => `<span class="formula-badge">${f}</span>`).join('');
+
+    infoEl.innerHTML = `
+        <h4>Información del acorde: ${chordData.primaryName}</h4>
+        <div class="info-row">
+            <span class="info-label">Tipo:</span>
+            <span>${quality.name}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Fórmula:</span>
+            <div>${formulaBadges}</div>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Notas:</span>
+            <span>${notes.join(' - ')}</span>
+        </div>
+        <div class="explanation">
+            <strong>¿Por qué se llama ${chordData.primaryName}?</strong> ${quality.explanation}
+        </div>
+    `;
+}
+
+// =====================================================
+// 3. POSICIONES ALTERNATIVAS
 // =====================================================
 function renderPositions(chordName) {
     const positionsEl = document.getElementById('chord-positions');
     if (!positionsEl) return;
 
-    const baseChord = chordName.split('/')[0];
+    const baseChord = chordName.split('/')[0].split(' ')[0]; // quitar (?) y slash
     positionsEl.innerHTML = '';
 
     if (!CHORD_POSITIONS[baseChord]) {
@@ -393,7 +516,6 @@ function renderPositions(chordName) {
             });
             drawFretboard();
             detectChord();
-
             positionsEl.querySelectorAll('.position-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
         };
@@ -421,12 +543,11 @@ function updateScaleForChord(chordData) {
     const scaleMode = quality.scale;
 
     const scaleNotes = MODE_INTERVALS[scaleMode].map(i => NOTES[(scaleRootIndex + i) % 12]);
-
     const formulaSymbols = ['1', 'b2', '2', 'b3', '3', '4', 'b5', '5', 'b6', '6', 'b7', '7'];
     const formula = MODE_INTERVALS[scaleMode].map(i => formulaSymbols[i]).join(' ');
 
     infoBox.innerHTML = `
-        <h4>Escala de ${root} ${quality.scaleName}</h4>
+        <h4>Escala de ${root} — ${scaleMode.charAt(0).toUpperCase() + scaleMode.slice(1)}</h4>
         <p><strong>Notas:</strong> ${scaleNotes.join(' - ')}</p>
         <p><strong>Fórmula:</strong> ${formula}</p>
         <p><strong>Acorde base:</strong> ${chordData.primaryName} (${quality.name})</p>
@@ -443,13 +564,8 @@ function drawScaleFretboard(containerId, scaleNotes, rootIndex) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    const width = 800;
-    const height = 220;
-    const marginLeft = 55;
-    const marginTop = 35;
-    const marginRight = 15;
-    const marginBottom = 15;
-
+    const width = 800, height = 220;
+    const marginLeft = 55, marginTop = 35, marginRight = 15, marginBottom = 15;
     const drawWidth = width - marginLeft - marginRight;
     const drawHeight = height - marginTop - marginBottom;
     const stringSpacing = drawHeight / 5;
@@ -477,8 +593,7 @@ function drawScaleFretboard(containerId, scaleNotes, rootIndex) {
 
     for (let stringIndex = 0; stringIndex < 6; stringIndex++) {
         const y = marginTop + (stringIndex * stringSpacing);
-        const openNote = OPEN_NOTES[stringIndex];
-        const openIndex = NOTES.indexOf(openNote);
+        const openIndex = NOTES.indexOf(OPEN_NOTES[stringIndex]);
 
         for (let fret = 0; fret <= 12; fret++) {
             const noteIndex = (openIndex + fret) % 12;
@@ -516,22 +631,16 @@ function updateProgressionsForChord(chordData) {
     let degrees;
     if (isMinor) {
         degrees = {
-            'i': root + 'm',
-            'ii°': NOTES[(rootIndex + 2) % 12] + 'dim',
-            'III': NOTES[(rootIndex + 3) % 12],
-            'iv': NOTES[(rootIndex + 5) % 12] + 'm',
-            'v': NOTES[(rootIndex + 7) % 12] + 'm',
-            'VI': NOTES[(rootIndex + 8) % 12],
+            'i': root + 'm', 'ii°': NOTES[(rootIndex + 2) % 12] + 'dim',
+            'III': NOTES[(rootIndex + 3) % 12], 'iv': NOTES[(rootIndex + 5) % 12] + 'm',
+            'v': NOTES[(rootIndex + 7) % 12] + 'm', 'VI': NOTES[(rootIndex + 8) % 12],
             'VII': NOTES[(rootIndex + 10) % 12]
         };
     } else {
         degrees = {
-            'I': root,
-            'ii': NOTES[(rootIndex + 2) % 12] + 'm',
-            'iii': NOTES[(rootIndex + 4) % 12] + 'm',
-            'IV': NOTES[(rootIndex + 5) % 12],
-            'V': NOTES[(rootIndex + 7) % 12],
-            'vi': NOTES[(rootIndex + 9) % 12] + 'm',
+            'I': root, 'ii': NOTES[(rootIndex + 2) % 12] + 'm',
+            'iii': NOTES[(rootIndex + 4) % 12] + 'm', 'IV': NOTES[(rootIndex + 5) % 12],
+            'V': NOTES[(rootIndex + 7) % 12], 'vi': NOTES[(rootIndex + 9) % 12] + 'm',
             'vii°': NOTES[(rootIndex + 11) % 12] + 'dim'
         };
     }
@@ -567,7 +676,7 @@ function updateProgressionsForChord(chordData) {
 }
 
 // =====================================================
-// 6. MODOS CON MÁSTIL
+// 6. MODOS
 // =====================================================
 function updateModeForChord(chordData) {
     if (!chordData || !chordData.quality) return;
@@ -582,17 +691,7 @@ function updateModeInfo() {
     const mode = document.getElementById('mode-selector').value;
     const infoBox = document.getElementById('mode-info');
 
-    const modesData = {
-        'jónico': { formula: '1 2 3 4 5 6 7', uso: 'Mayor natural. Ideal para pop, rock y música clásica.' },
-        'dórico': { formula: '1 2 b3 4 5 6 b7', uso: 'Menor con 6ª mayor. Jazz, funk y rock progresivo.' },
-        'frigio': { formula: '1 b2 b3 4 5 b6 b7', uso: 'Sonido español/flamenco. Metal y rock.' },
-        'lidio': { formula: '1 2 3 #4 5 6 7', uso: 'Mayor con #4. Sonido etéreo, bandas sonoras.' },
-        'mixolidio': { formula: '1 2 3 4 5 6 b7', uso: 'Mayor con b7. Rock, blues y funk.' },
-        'eólico': { formula: '1 2 b3 4 5 b6 b7', uso: 'Menor natural. Baladas, rock y pop.' },
-        'locrio': { formula: '1 b2 b3 4 b5 b6 b7', uso: 'Disminuido. Jazz y metal extremo.' }
-    };
-
-    const data = modesData[mode];
+    const data = MODE_INFO[mode];
     if (!data) return;
 
     const root = currentChordData && currentChordData.root ? currentChordData.root : 'C';
@@ -697,12 +796,8 @@ function initCircleOfFifths() {
     const container = document.getElementById('circle-of-fifths');
     if (!container) return;
 
-    const size = 400;
-    const center = size / 2;
-    const radiusOuter = 170;
-    const radiusInner = 115;
-    const radiusCore = 60;
-
+    const size = 400, center = size / 2;
+    const radiusOuter = 170, radiusInner = 115, radiusCore = 60;
     const majorKeys = ['C', 'G', 'D', 'A', 'E', 'B', 'F#', 'C#', 'G#', 'D#', 'A#', 'F'];
     const minorKeys = ['Am', 'Em', 'Bm', 'F#m', 'C#m', 'G#m', 'D#m', 'A#m', 'Fm', 'Cm', 'Gm', 'Dm'];
 
@@ -766,10 +861,7 @@ function selectKey(key) {
 
     let scaleHTML = '<h4>Grados de la escala:</h4><ul>';
     scaleIntervals.forEach((interval, i) => {
-        const note = NOTES[(rootIndex + interval) % 12];
-        const degree = degreeNames[i];
-        const quality = degreeQualities[i];
-        scaleHTML += `<li><strong>${degree}:</strong> ${note}${quality}</li>`;
+        scaleHTML += `<li><strong>${degreeNames[i]}:</strong> ${NOTES[(rootIndex + interval) % 12]}${degreeQualities[i]}</li>`;
     });
     scaleHTML += '</ul>';
 
@@ -874,7 +966,6 @@ function calculateModulation() {
     const keys = ['C', 'G', 'D', 'A', 'E', 'B', 'F#', 'C#', 'G#', 'D#', 'A#', 'F'];
     let originIdx = keys.indexOf(origin);
     let destIdx = keys.indexOf(dest);
-
     let path = [];
     let current = originIdx;
 
@@ -924,6 +1015,8 @@ function resetFretboard() {
     document.getElementById('chord-alternatives').textContent = '';
     const posEl = document.getElementById('chord-positions');
     if (posEl) posEl.innerHTML = '';
+    const infoEl = document.getElementById('chord-info');
+    if (infoEl) infoEl.innerHTML = '';
     document.getElementById('progressions-list').innerHTML = '<p class="empty-state">Selecciona un acorde para ver progresiones.</p>';
     document.getElementById('scale-info').innerHTML = '<p class="empty-state">Selecciona un acorde para ver la escala.</p>';
     document.getElementById('scale-fretboard').innerHTML = '';

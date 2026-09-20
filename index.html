@@ -46,18 +46,6 @@
           <!-- Selectores de cuerdas generados por JS -->
         </div>
       </div>
-
-      <div class="quick-chords">
-        <span>Ejemplos rápidos:</span>
-        <button onclick="loadQuickChord('C')">C</button>
-        <button onclick="loadQuickChord('G')">G</button>
-        <button onclick="loadQuickChord('Em')">Em</button>
-        <button onclick="loadQuickChord('Am')">Am</button>
-        <button onclick="loadQuickChord('D')">D</button>
-        <button onclick="loadQuickChord('F')">F</button>
-        <button onclick="loadQuickChord('E')">E</button>
-        <button onclick="resetFretboard()" class="btn-reset">Reiniciar</button>
-      </div>
     </section>
 
     <!-- 2. DETECCIÓN Y AUDIO -->
@@ -67,9 +55,15 @@
         <div id="chord-name" class="chord-display">---</div>
         <div id="chord-alternatives" class="alternatives"></div>
         <div id="chord-positions" class="chord-positions"></div>
-        <button id="play-btn" class="btn-primary" onclick="playCurrentChord()">
-          <i class="fas fa-play"></i> Escuchar
-        </button>
+        <div id="chord-info" class="chord-info-box"></div>
+        <div class="result-buttons">
+          <button id="play-btn" class="btn-primary" onclick="playCurrentChord()">
+            <i class="fas fa-play"></i> Escuchar
+          </button>
+          <button class="btn-reset" onclick="resetFretboard()">
+            <i class="fas fa-redo"></i> Reiniciar
+          </button>
+        </div>
       </div>
     </section>
 
