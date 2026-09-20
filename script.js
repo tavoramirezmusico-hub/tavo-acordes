@@ -1,40 +1,47 @@
 // =====================================================
-// TAVO ACORDES - SCRIPT PRINCIPAL v2
+// TAVO ACORDES - SCRIPT PRINCIPAL v3
 // =====================================================
 
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-const NOTES_ES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 const STRINGS = ['E', 'A', 'D', 'G', 'B', 'e'];
 const OPEN_NOTES = ['E', 'A', 'D', 'G', 'B', 'E'];
 
-// --- BASE DE DATOS DE ACORDES ---
+// --- BASE DE DATOS DE ACORDES (orden: 6ª a 1ª cuerda) ---
 const CHORD_DB = {
+    // Mayores
     'C': [0, 3, 2, 0, 1, 0], 'C#': [null, 4, 6, 6, 6, 4], 'D': [null, null, 0, 2, 3, 2],
     'D#': [null, 6, 8, 8, 8, 6], 'E': [0, 2, 2, 1, 0, 0], 'F': [1, 3, 3, 2, 1, 1],
     'F#': [2, 4, 4, 3, 2, 2], 'G': [3, 2, 0, 0, 0, 3], 'G#': [4, 6, 6, 5, 4, 4],
     'A': [null, 0, 2, 2, 2, 0], 'A#': [null, 1, 3, 3, 3, 1], 'B': [null, 2, 4, 4, 4, 2],
+    // Menores
     'Cm': [null, 3, 5, 5, 4, 3], 'C#m': [null, 4, 6, 6, 5, 4], 'Dm': [null, null, 0, 2, 3, 1],
     'D#m': [null, 6, 8, 8, 7, 6], 'Em': [0, 2, 2, 0, 0, 0], 'Fm': [1, 3, 3, 1, 1, 1],
     'F#m': [2, 4, 4, 2, 2, 2], 'Gm': [3, 5, 5, 3, 3, 3], 'G#m': [4, 6, 6, 4, 4, 4],
     'Am': [null, 0, 2, 2, 1, 0], 'A#m': [null, 1, 3, 3, 2, 1], 'Bm': [null, 2, 4, 4, 3, 2],
+    // Séptimas dominantes
     'C7': [null, 3, 2, 3, 1, 0], 'D7': [null, null, 0, 2, 1, 2], 'E7': [0, 2, 0, 1, 0, 0],
     'F7': [1, 3, 1, 2, 1, 1], 'G7': [3, 2, 0, 0, 0, 1], 'A7': [null, 0, 2, 0, 2, 0], 'B7': [null, 2, 1, 2, 0, 2],
+    // Maj7
     'Cmaj7': [null, 3, 2, 0, 0, 0], 'Dmaj7': [null, null, 0, 2, 2, 2], 'Emaj7': [0, 2, 1, 1, 0, 0],
     'Fmaj7': [1, 3, 2, 2, 1, 0], 'Gmaj7': [3, 2, 0, 0, 0, 2], 'Amaj7': [null, 0, 2, 1, 2, 0], 'Bmaj7': [null, 2, 4, 3, 4, 2],
+    // m7
     'Cm7': [null, 3, 5, 3, 4, 3], 'Dm7': [null, null, 0, 2, 1, 1], 'Em7': [0, 2, 0, 0, 0, 0],
     'Fm7': [1, 3, 1, 1, 1, 1], 'Gm7': [3, 5, 3, 3, 3, 3], 'Am7': [null, 0, 2, 0, 1, 0], 'Bm7': [null, 2, 0, 2, 0, 2],
+    // Suspendidos
     'Csus2': [null, 3, 0, 0, 1, 3], 'Csus4': [null, 3, 3, 0, 1, 1], 'Dsus2': [null, null, 0, 2, 3, 0],
     'Dsus4': [null, null, 0, 2, 3, 3], 'Esus4': [0, 2, 2, 2, 0, 0], 'Gsus4': [3, 3, 0, 0, 1, 3],
     'Asus2': [null, 0, 2, 2, 0, 0], 'Asus4': [null, 0, 2, 2, 3, 0],
+    // Disminuidos
     'Cdim': [null, 3, 4, 5, 4, null], 'Ddim': [null, null, 0, 1, 3, 1], 'Edim': [0, 1, 2, 0, null, null],
     'F#dim': [2, 3, 4, 2, null, null], 'G#dim': [4, 5, 6, 4, null, null], 'Adim': [null, 0, 1, 2, 1, null],
+    // Aumentados
     'Caug': [null, 3, 2, 1, 1, 0], 'Eaug': [0, 3, 2, 1, 1, 0], 'Gaug': [3, 2, 1, 0, 0, 3],
+    // Sextas
     'C6': [null, 3, 2, 2, 1, 0], 'D6': [null, null, 0, 2, 0, 2], 'E6': [0, 2, 2, 1, 2, 0],
     'F6': [1, 3, 3, 2, 3, 1], 'G6': [3, 2, 0, 0, 0, 0], 'A6': [null, 0, 2, 2, 2, 2],
 };
 
-// --- TABLA DE CALIDADES DE ACORDES ---
-// Cada calidad define: intervalos (en semitonos desde la raíz) y las escalas/modos recomendados
+// --- CALIDADES DE ACORDES (intervalos desde la raíz) ---
 const CHORD_QUALITIES = {
     '': { name: 'Mayor', intervals: [0, 4, 7], scale: 'jónico', scaleName: 'Jónica (Mayor)' },
     'm': { name: 'Menor', intervals: [0, 3, 7], scale: 'eólico', scaleName: 'Eólica (Menor Natural)' },
@@ -42,19 +49,23 @@ const CHORD_QUALITIES = {
     'maj7': { name: 'Mayor 7', intervals: [0, 4, 7, 11], scale: 'jónico', scaleName: 'Jónica (Mayor)' },
     'm7': { name: 'Menor 7', intervals: [0, 3, 7, 10], scale: 'dórico', scaleName: 'Dórica' },
     'dim': { name: 'Disminuido', intervals: [0, 3, 6], scale: 'locrio', scaleName: 'Locria' },
-    'aug': { name: 'Aumentado', intervals: [0, 4, 8], scale: 'jónico', scaleName: 'Jónica (Mayor) - con #5' },
+    'aug': { name: 'Aumentado', intervals: [0, 4, 8], scale: 'jónico', scaleName: 'Jónica (Mayor) con #5' },
     'sus2': { name: 'Suspendido 2', intervals: [0, 2, 7], scale: 'jónico', scaleName: 'Jónica (Mayor)' },
     'sus4': { name: 'Suspendido 4', intervals: [0, 5, 7], scale: 'jónico', scaleName: 'Jónica (Mayor)' },
     '6': { name: 'Sexta', intervals: [0, 4, 7, 9], scale: 'jónico', scaleName: 'Jónica (Mayor)' },
     'm6': { name: 'Menor Sexta', intervals: [0, 3, 7, 9], scale: 'dórico', scaleName: 'Dórica' },
     'm7b5': { name: 'Semidisminuido', intervals: [0, 3, 6, 10], scale: 'locrio', scaleName: 'Locria' },
+    'add9': { name: 'Add 9', intervals: [0, 2, 4, 7], scale: 'jónico', scaleName: 'Jónica (Mayor)' },
+    '9': { name: 'Novena', intervals: [0, 2, 4, 7, 10], scale: 'mixolidio', scaleName: 'Mixolidia' },
 };
 
 let currentFretboard = [null, null, null, null, null, null];
 let audioCtx = null;
-let currentChordData = null; // Guarda el análisis del acorde actual
+let currentChordData = null;
 
-// --- INICIALIZACIÓN ---
+// =====================================================
+// INICIALIZACIÓN
+// =====================================================
 window.onload = function () {
     initFretboardUI();
     initCircleOfFifths();
@@ -96,7 +107,6 @@ function updateString(stringIndex, value) {
     detectChord();
 }
 
-// --- MÁSTIL PRINCIPAL (acorde seleccionado) ---
 function drawFretboard() {
     const container = document.querySelector('.fretboard-visual');
     if (!container) return;
@@ -116,14 +126,12 @@ function drawFretboard() {
     let svg = `<svg class="fretboard-svg" viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet">`;
     svg += `<rect x="0" y="0" width="${width}" height="${height}" fill="#2a1f1a" rx="10" />`;
 
-    // Trastes
     for (let i = 0; i <= 12; i++) {
         const x = marginLeft + (i * fretSpacing);
         const strokeW = (i === 0) ? 6 : 3;
         svg += `<line class="fret-line" x1="${x}" y1="${marginTop}" x2="${x}" y2="${height - marginBottom}" stroke-width="${strokeW}" />`;
     }
 
-    // Cuerdas
     for (let i = 0; i < 6; i++) {
         const y = marginTop + (i * stringSpacing);
         const strokeW = 5 - (i * 0.6);
@@ -131,13 +139,11 @@ function drawFretboard() {
         svg += `<text x="${marginLeft - 12}" y="${y}" fill="#ff6b00" font-size="14" font-weight="bold" text-anchor="end" dominant-baseline="middle">${STRINGS[i]}</text>`;
     }
 
-    // Números de traste
     for (let i = 1; i <= 12; i++) {
         const x = marginLeft + ((i - 0.5) * fretSpacing);
         svg += `<text x="${x}" y="${marginTop - 12}" fill="#888" font-size="12" text-anchor="middle">${i}</text>`;
     }
 
-    // Notas del acorde
     currentFretboard.forEach((fret, stringIndex) => {
         const y = marginTop + (stringIndex * stringSpacing);
 
@@ -163,7 +169,7 @@ function getNoteName(stringIndex, fret) {
 }
 
 // =====================================================
-// 2. DETECCIÓN DE ACORDES MEJORADA
+// 2. DETECCIÓN DE ACORDES (CORREGIDA)
 // =====================================================
 function detectChord() {
     const notes = [];
@@ -184,13 +190,19 @@ function detectChord() {
         return;
     }
 
-    // Analizar el acorde
-    currentChordData = analyzeChord(uniqueNotes);
+    // Analizar el acorde (probando TODAS las notas como posible raíz)
+    currentChordData = analyzeChord(uniqueNotes, notes);
 
-    // Mostrar nombre principal
-    chordNameEl.textContent = currentChordData.primaryName;
+    // Detección de inversión: si el bajo NO es la raíz
+    const bassNote = notes[0];
+    let displayName = currentChordData.primaryName;
+    if (currentChordData.root && bassNote !== currentChordData.root && currentChordData.quality) {
+        displayName = currentChordData.primaryName + '/' + bassNote;
+    }
 
-    // Mostrar nombres alternativos + notas
+    chordNameEl.textContent = displayName;
+
+    // Alternativas
     let altText = '';
     if (currentChordData.alternatives.length > 1) {
         altText = `También: ${currentChordData.alternatives.slice(1).join(', ')} · `;
@@ -198,62 +210,78 @@ function detectChord() {
     altText += `Notas: ${uniqueNotes.join(' - ')}`;
     altEl.textContent = altText;
 
-    // Actualizar escala, progresiones, modos
     updateScaleForChord(currentChordData);
     updateProgressionsForChord(currentChordData);
     updateModeForChord(currentChordData);
 }
 
-// Analiza un conjunto de notas y devuelve: raíz, calidad, nombres, escala
-function analyzeChord(notes) {
-    // Probar cada nota como posible raíz
+// Analiza un conjunto de notas probando CADA nota como raíz
+function analyzeChord(notes, orderedNotes) {
     const candidates = [];
+    const bassNote = orderedNotes ? orderedNotes[0] : notes[0];
 
     notes.forEach(rootNote => {
         const rootIndex = NOTES.indexOf(rootNote);
         const intervals = notes.map(n => (NOTES.indexOf(n) - rootIndex + 12) % 12).sort((a, b) => a - b);
 
-        // Probar cada calidad de acorde
         for (const [suffix, quality] of Object.entries(CHORD_QUALITIES)) {
             const requiredIntervals = quality.intervals;
-            // Verificar si TODOS los intervalos requeridos están presentes
             const matches = requiredIntervals.every(i => intervals.includes(i));
-            // Y que no sobre ningún intervalo extraño
             const extras = intervals.filter(i => !requiredIntervals.includes(i));
 
             if (matches && extras.length === 0) {
+                // Prioridad:
+                // - 100 por cada intervalo (acordes más específicos ganan)
+                // - +200 si la raíz es la nota más grave (bajo)
+                // - -50 si el acorde requiere inversión (bajo no es raíz)
+                let priority = requiredIntervals.length * 100;
+
+                if (rootNote === bassNote) {
+                    priority += 200;
+                } else {
+                    priority -= 50;
+                }
+
                 candidates.push({
                     root: rootNote,
                     suffix: suffix,
                     name: rootNote + suffix,
                     quality: quality,
-                    priority: requiredIntervals.length * 10 + (rootNote === notes[0] ? 5 : 0) // priorizar bajo en la raíz
+                    priority: priority
                 });
             }
         }
     });
 
-    // Ordenar por prioridad
+    // Eliminar duplicados por nombre
+    const uniqueCandidates = [];
+    const seenNames = new Set();
     candidates.sort((a, b) => b.priority - a.priority);
 
-    if (candidates.length === 0) {
-        // No se reconoció: mostrar la raíz más probable con "?"
+    for (const c of candidates) {
+        if (!seenNames.has(c.name)) {
+            seenNames.add(c.name);
+            uniqueCandidates.push(c);
+        }
+    }
+
+    if (uniqueCandidates.length === 0) {
         return {
             root: notes[0],
             suffix: '',
             primaryName: notes[0] + ' (?)',
-            alternatives: [notes.join(' - ')],
+            alternatives: [],
             quality: null,
             intervals: []
         };
     }
 
-    const best = candidates[0];
+    const best = uniqueCandidates[0];
     return {
         root: best.root,
         suffix: best.suffix,
         primaryName: best.name,
-        alternatives: candidates.map(c => c.name),
+        alternatives: uniqueCandidates.map(c => c.name),
         quality: best.quality,
         intervals: best.quality.intervals
     };
@@ -272,19 +300,11 @@ function updateScaleForChord(chordData) {
         return;
     }
 
-    // Determinar la tónica y el modo según la calidad
     const root = chordData.root;
     const quality = chordData.quality;
-
-    // Determinar la raíz de la escala
-    // Si el acorde es menor (m, m7, m6), la escala se construye desde esa raíz en modo eólico/dórico
-    // Si es mayor/maj7, modo jónico
-    // Si es dominante (7), modo mixolidio
-    // Si es dim, modo locrio
     const scaleRootIndex = NOTES.indexOf(root);
     const scaleMode = quality.scale;
 
-    // Obtener las 7 notas de la escala
     const modeIntervals = {
         'jónico': [0, 2, 4, 5, 7, 9, 11],
         'dórico': [0, 2, 3, 5, 7, 9, 10],
@@ -297,23 +317,24 @@ function updateScaleForChord(chordData) {
 
     const scaleNotes = modeIntervals[scaleMode].map(i => NOTES[(scaleRootIndex + i) % 12]);
 
-    // Mostrar info de la escala
+    // Formato de fórmula: 1 2 3 4 5 6 7 (con alteraciones)
+    const formulaSymbols = ['1', 'b2', '2', 'b3', '3', '4', 'b5', '5', 'b6', '6', 'b7', '7'];
+    const formula = modeIntervals[scaleMode].map(i => formulaSymbols[i]).join(' ');
+
     infoBox.innerHTML = `
         <h4>Escala de ${root} ${quality.scaleName}</h4>
         <p><strong>Notas:</strong> ${scaleNotes.join(' - ')}</p>
-        <p><strong>Fórmula:</strong> ${modeIntervals[scaleMode].map(i => i === 0 ? '1' : (i + 1)).join(' ')}</p>
+        <p><strong>Fórmula:</strong> ${formula}</p>
         <p><strong>Acorde base:</strong> ${chordData.primaryName} (${quality.name})</p>
         <p style="margin-top:10px; font-size:0.9em; color:#888;">
-            <strong>Uso:</strong> Esta es la escala que debes usar para improvisar sobre ${chordData.primaryName}. 
-            Las notas resaltadas en el mástil son las que componen la escala.
+            <strong>Uso:</strong> Esta es la escala recomendada para improvisar sobre ${chordData.primaryName}.
+            La nota naranja en el mástil es la raíz (${root}); las azules son las demás notas de la escala.
         </p>
     `;
 
-    // Dibujar el mástil completo con las notas de la escala
     drawScaleFretboard(scaleNotes, scaleRootIndex);
 }
 
-// Dibuja el mástil completo mostrando TODAS las notas de la escala en todo el mástil
 function drawScaleFretboard(scaleNotes, rootIndex) {
     const container = document.getElementById('scale-fretboard');
     if (!container) return;
@@ -328,18 +349,16 @@ function drawScaleFretboard(scaleNotes, rootIndex) {
     const drawWidth = width - marginLeft - marginRight;
     const drawHeight = height - marginTop - marginBottom;
     const stringSpacing = drawHeight / 5;
-    const fretSpacing = drawWidth / 13; // 13 espacios (0-12)
+    const fretSpacing = drawWidth / 13;
 
     let svg = `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet" style="background:#2a1f1a; border-radius:10px; width:100%; height:auto; display:block;">`;
 
-    // Trastes
     for (let i = 0; i <= 13; i++) {
         const x = marginLeft + (i * fretSpacing);
         const strokeW = (i === 0) ? 6 : 2;
         svg += `<line x1="${x}" y1="${marginTop}" x2="${x}" y2="${height - marginBottom}" stroke="#777" stroke-width="${strokeW}" />`;
     }
 
-    // Cuerdas
     for (let i = 0; i < 6; i++) {
         const y = marginTop + (i * stringSpacing);
         const strokeW = 5 - (i * 0.6);
@@ -347,13 +366,11 @@ function drawScaleFretboard(scaleNotes, rootIndex) {
         svg += `<text x="${marginLeft - 12}" y="${y}" fill="#ff6b00" font-size="13" font-weight="bold" text-anchor="end" dominant-baseline="middle">${STRINGS[i]}</text>`;
     }
 
-    // Números de traste
     for (let i = 1; i <= 12; i++) {
         const x = marginLeft + ((i - 0.5) * fretSpacing);
         svg += `<text x="${x}" y="${marginTop - 12}" fill="#888" font-size="11" text-anchor="middle">${i}</text>`;
     }
 
-    // Dibujar TODAS las notas de la escala en todo el mástil
     for (let stringIndex = 0; stringIndex < 6; stringIndex++) {
         const y = marginTop + (stringIndex * stringSpacing);
         const openNote = OPEN_NOTES[stringIndex];
@@ -367,10 +384,9 @@ function drawScaleFretboard(scaleNotes, rootIndex) {
                 const x = (fret === 0) ? marginLeft - 15 : marginLeft + ((fret - 0.5) * fretSpacing);
                 const isRoot = noteIndex === rootIndex;
                 const fillColor = isRoot ? '#ff6b00' : '#4a9eff';
-                const textColor = '#000';
 
                 svg += `<circle cx="${x}" cy="${y}" r="11" fill="${fillColor}" stroke="#000" stroke-width="1.5" />`;
-                svg += `<text x="${x}" y="${y}" fill="${textColor}" font-size="10" font-weight="bold" text-anchor="middle" dominant-baseline="middle">${noteName}</text>`;
+                svg += `<text x="${x}" y="${y}" fill="#000" font-size="10" font-weight="bold" text-anchor="middle" dominant-baseline="middle">${noteName}</text>`;
             }
         }
     }
@@ -393,7 +409,6 @@ function updateProgressionsForChord(chordData) {
     const rootIndex = NOTES.indexOf(root);
     const isMinor = chordData.suffix.includes('m') && !chordData.suffix.includes('maj');
 
-    // Definir los grados según mayor o menor
     let degrees;
     if (isMinor) {
         degrees = {
@@ -417,7 +432,6 @@ function updateProgressionsForChord(chordData) {
         };
     }
 
-    // Progresiones típicas adaptadas
     const progressions = isMinor ? [
         `i - iv - v - i  (${degrees['i']} → ${degrees['iv']} → ${degrees['v']} → ${degrees['i']})`,
         `i - VI - III - VII  (${degrees['i']} → ${degrees['VI']} → ${degrees['III']} → ${degrees['VII']})`,
@@ -432,7 +446,7 @@ function updateProgressionsForChord(chordData) {
         <div style="margin-bottom:15px;">
             <strong style="color:#ff6b00;">Tonalidad sugerida:</strong> ${root} ${isMinor ? 'menor' : 'mayor'}
         </div>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:8px; margin-bottom:15px;">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(100px,1fr)); gap:8px; margin-bottom:15px;">
     `;
 
     Object.entries(degrees).forEach(([degree, chord]) => {
@@ -453,20 +467,13 @@ function updateProgressionsForChord(chordData) {
 // =====================================================
 function updateModeForChord(chordData) {
     if (!chordData || !chordData.quality) return;
-
-    // Pre-seleccionar el modo en el selector
     const modeSelector = document.getElementById('mode-selector');
     if (modeSelector && chordData.quality.scale) {
         modeSelector.value = chordData.quality.scale;
     }
-
-    // Actualizar info del modo
     updateModeInfo();
 }
 
-// =====================================================
-// 6. MODOS (función original)
-// =====================================================
 function updateModeInfo() {
     const mode = document.getElementById('mode-selector').value;
     const infoBox = document.getElementById('mode-info');
@@ -513,7 +520,7 @@ function getScaleNotes(root, mode) {
 }
 
 // =====================================================
-// 7. AUDIO
+// 6. AUDIO
 // =====================================================
 function initAudio() {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -583,7 +590,7 @@ function getFrequency(note) {
 }
 
 // =====================================================
-// 8. CÍRCULO DE QUINTAS
+// 7. CÍRCULO DE QUINTAS
 // =====================================================
 function initCircleOfFifths() {
     const container = document.getElementById('circle-of-fifths');
@@ -681,7 +688,7 @@ function selectKey(key) {
 }
 
 // =====================================================
-// 9. UTILIDADES Y OTROS
+// 8. BÚSQUEDA Y UTILIDADES
 // =====================================================
 function searchChord() {
     const query = document.getElementById('search-input').value.trim();
