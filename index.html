@@ -7,11 +7,12 @@
   <title>Tavo Acordes - Armonía y Guitarra</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Tone.js para audio realista -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
 </head>
 
 <body>
 
-  <!-- LOGO Y CABECERA -->
   <header class="main-header">
     <div class="logo-container">
       <img src="logo.png" alt="Tavo Acordes Logo" class="logo-img">
@@ -20,7 +21,6 @@
     <p class="subtitle">Guitarra • Armonía • Círculo de Quintas • Modos</p>
   </header>
 
-  <!-- NAVEGACIÓN STICKY -->
   <nav class="sticky-nav">
     <a href="#trastes">Trastes</a>
     <a href="#buscar">Buscar</a>
@@ -34,11 +34,9 @@
 
   <main class="container">
 
-    <!-- SECCIÓN 1: SELECCIÓN DE TRASTES Y MÁSTIL -->
     <section id="trastes" class="card">
       <h2>1. Selección de Acordes (Trastes)</h2>
       <div class="fretboard-controls">
-        <!-- El mástil ahora está arriba y los selectores abajo -->
         <div class="fretboard-visual-container">
           <div class="fretboard-visual">
             <!-- SVG generado por JS -->
@@ -62,7 +60,6 @@
       </div>
     </section>
 
-    <!-- SECCIÓN 2: DETECCIÓN Y AUDIO -->
     <section id="resultado" class="card">
       <h2>2. Detección y Audio</h2>
       <div class="result-box">
@@ -74,17 +71,16 @@
       </div>
     </section>
 
-    <!-- SECCIÓN 3: BÚSQUEDA DE ACORDES -->
     <section id="buscar" class="card">
       <h2>3. Buscar Acorde por Nombre</h2>
       <div class="search-box">
-        <input type="text" id="search-input" placeholder="Ej: Am, Cmaj7, F#m7, G7...">
+        <input type="text" id="search-input"
+          placeholder="Busca entre más de 100 acordes... Ej: Am, Cmaj7, F#m7, G7, Csus4...">
         <button onclick="searchChord()" class="btn-primary">Buscar</button>
       </div>
       <div id="search-results" class="search-results"></div>
     </section>
 
-    <!-- SECCIÓN 4: PROGRESIONES SUGERIDAS -->
     <section id="progresiones" class="card">
       <h2>4. Progresiones Sugeridas</h2>
       <div id="progressions-list" class="progressions-container">
@@ -92,7 +88,6 @@
       </div>
     </section>
 
-    <!-- SECCIÓN 5: CÍRCULO DE QUINTAS INTERACTIVO -->
     <section id="circulo" class="card">
       <h2>5. Círculo de Quintas Interactivo</h2>
       <div class="circle-container">
@@ -100,12 +95,11 @@
           <!-- SVG Generado por JS -->
         </div>
         <div id="circle-info" class="circle-info">
-          <p class="empty-state">Selecciona una tonalidad en el círculo para ver su espectro armónico.</p>
+          <p class="empty-state">Selecciona una tonalidad en el círculo para ver su espectro armónico completo.</p>
         </div>
       </div>
     </section>
 
-    <!-- SECCIÓN 6: MODOS -->
     <section id="modos" class="card">
       <h2>6. Modos, Usos y Sustituciones</h2>
       <div class="modes-container">
@@ -125,7 +119,6 @@
       </div>
     </section>
 
-    <!-- SECCIÓN 7: MODULACIÓN -->
     <section id="modulacion" class="card">
       <h2>7. Modulación Paso a Paso</h2>
       <div class="modulation-controls">
@@ -138,7 +131,6 @@
       </div>
     </section>
 
-    <!-- SECCIÓN 8: DOMINANTES SECUNDARIOS -->
     <section id="dominantes" class="card">
       <h2>8. Dominantes Secundarios y Tritono</h2>
       <div class="dominant-controls">

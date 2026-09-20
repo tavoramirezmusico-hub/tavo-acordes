@@ -1,4 +1,3 @@
-/* VARIABLES DE COLOR */
 :root {
     --bg-color: #0d0d0d;
     --card-bg: #1a1a1a;
@@ -6,8 +5,8 @@
     --text-main: #e8e8e8;
     --text-muted: #888888;
     --border-color: #333333;
-    --string-color: #b0b0b0;
-    --fret-color: #555;
+    --string-color: #cccccc;
+    --fret-color: #666;
     --red-mute: #ff3333;
     --wood-color: #2a1f1a;
 }
@@ -26,7 +25,6 @@ body {
     padding-bottom: 50px;
 }
 
-/* HEADER Y LOGO */
 .main-header {
     text-align: center;
     padding: 30px 20px;
@@ -59,7 +57,6 @@ body {
     letter-spacing: 1px;
 }
 
-/* NAVEGACIÓN STICKY */
 .sticky-nav {
     position: sticky;
     top: 0;
@@ -86,7 +83,6 @@ body {
     color: var(--accent);
 }
 
-/* CONTENEDOR PRINCIPAL */
 .container {
     max-width: 1000px;
     margin: 20px auto;
@@ -96,7 +92,6 @@ body {
     gap: 30px;
 }
 
-/* TARJETAS (CARDS) */
 .card {
     background-color: var(--card-bg);
     border-radius: 12px;
@@ -113,7 +108,6 @@ body {
     padding-bottom: 10px;
 }
 
-/* BOTONES */
 button {
     cursor: pointer;
     border: none;
@@ -147,7 +141,7 @@ button {
     color: #fff;
 }
 
-/* MÁSTIL Y SELECCIÓN DE TRASTES */
+/* MÁSTIL */
 .fretboard-controls {
     display: flex;
     flex-direction: column;
@@ -171,7 +165,7 @@ button {
     grid-template-columns: repeat(6, 1fr);
     gap: 10px;
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
     text-align: center;
 }
 
@@ -198,7 +192,6 @@ button {
     text-align: center;
 }
 
-/* DIAGRAMA DEL MÁSTIL (AHORA HORIZONTAL COMO GUITARRA REAL) */
 .fretboard-svg {
     background-color: var(--wood-color);
     border-radius: 8px;
@@ -250,7 +243,7 @@ button {
     text-anchor: middle;
 }
 
-/* RESULTADO Y AUDIO */
+/* RESULTADO */
 .result-box {
     text-align: center;
 }
@@ -289,6 +282,9 @@ button {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
     gap: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 5px;
 }
 
 .result-item {
@@ -305,7 +301,7 @@ button {
     border-color: var(--accent);
 }
 
-/* CÍRCULO DE QUINTAS */
+/* CÍRCULO */
 .circle-container {
     display: flex;
     flex-direction: column;
@@ -424,7 +420,6 @@ footer {
     margin-top: 30px;
 }
 
-/* RESPONSIVE */
 @media (max-width: 600px) {
     .string-selectors {
         grid-template-columns: repeat(3, 1fr);
