@@ -20,7 +20,7 @@
     padding: 0;
 }
 
-/* ===== FONDO ANIMADO (LIGERO) ===== */
+/* ===== FONDO ===== */
 body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     background-color: #0d0d0d;
@@ -33,7 +33,7 @@ body {
     min-height: 100vh;
 }
 
-/* ===== PENTAGRAMAS DE FONDO (SIN ANIMACIÓN, ESTÁTICOS) ===== */
+/* ===== PENTAGRAMAS DE FONDO ===== */
 body::before {
     content: '';
     position: fixed;
@@ -72,7 +72,7 @@ body::before {
     background-size: 100% 100%;
 }
 
-/* ===== NOTAS MUSICALES FLOTANTES (ANIMACIÓN LIGERA) ===== */
+/* ===== NOTAS MUSICALES FLOTANTES ===== */
 body::after {
     content: '♪ ♫ ♬ ♩ ♭ ♯ 𝄞 ♪ ♫ 𝄢 ♬ ♩ 𝄞 ♭ ♪ ♫ 𝄢 ♪ ♫ ♬ ♩';
     position: fixed;
@@ -111,13 +111,146 @@ body::after {
     }
 }
 
-/* Contenido sobre el fondo */
 .main-header,
-.sticky-nav,
 .container,
 footer {
     position: relative;
     z-index: 1;
+}
+
+/* ===== BOTÓN HAMBURGUESA ===== */
+.menu-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1100;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #ff8533);
+    color: #000;
+    border: none;
+    font-size: 1.3em;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 107, 0, 0.4);
+    transition: transform 0.25s, box-shadow 0.25s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-toggle:hover {
+    transform: scale(1.1) rotate(90deg);
+    box-shadow: 0 6px 25px rgba(255, 107, 0, 0.7);
+}
+
+.menu-toggle:active {
+    transform: scale(0.95);
+}
+
+/* ===== OVERLAY DEL MENÚ ===== */
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    z-index: 1050;
+}
+
+.menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ===== MENÚ LATERAL ===== */
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 320px;
+    max-width: 85vw;
+    height: 100vh;
+    background: linear-gradient(180deg, #1a1a1a, #0d0d0d);
+    border-right: 2px solid var(--accent);
+    box-shadow: 4px 0 25px rgba(0, 0, 0, 0.8);
+    transform: translateX(-100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1060;
+    overflow-y: auto;
+    padding: 20px 0;
+}
+
+.side-menu.active {
+    transform: translateX(0);
+}
+
+.menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px 15px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 10px;
+}
+
+.menu-title {
+    color: var(--accent);
+    font-weight: bold;
+    font-size: 1.2em;
+    letter-spacing: 1px;
+}
+
+.menu-close {
+    background-color: transparent;
+    color: var(--text-muted);
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-close:hover {
+    color: var(--red-mute);
+    background-color: rgba(255, 51, 51, 0.1);
+    transform: rotate(90deg);
+}
+
+.menu-list {
+    list-style: none;
+    padding: 0;
+}
+
+.menu-list li {
+    margin: 0;
+}
+
+.menu-list a {
+    display: block;
+    padding: 12px 20px;
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95em;
+    border-left: 3px solid transparent;
+    transition: all 0.25s;
+}
+
+.menu-list a:hover {
+    background-color: rgba(255, 107, 0, 0.1);
+    border-left-color: var(--accent);
+    color: var(--accent);
+    padding-left: 28px;
 }
 
 /* ===== SCROLLBAR ===== */
@@ -139,7 +272,7 @@ footer {
     background: var(--accent-hover);
 }
 
-/* ===== HEADER Y LOGO ===== */
+/* ===== HEADER ===== */
 @keyframes logoGlow {
 
     0%,
@@ -218,35 +351,6 @@ h1 {
     letter-spacing: 2px;
 }
 
-/* ===== NAVEGACIÓN STICKY ===== */
-.sticky-nav {
-    position: sticky;
-    top: 0;
-    background-color: rgba(13, 13, 13, 0.98);
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 5px;
-    padding: 15px;
-    border-bottom: 1px solid var(--border-color);
-    z-index: 1000;
-}
-
-.sticky-nav a {
-    color: var(--text-main);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.9em;
-    padding: 8px 15px;
-    border-radius: 20px;
-    transition: color 0.25s, background-color 0.25s;
-}
-
-.sticky-nav a:hover {
-    color: var(--accent);
-    background-color: rgba(255, 107, 0, 0.1);
-}
-
 /* ===== CONTENEDOR PRINCIPAL ===== */
 .container {
     max-width: 1000px;
@@ -257,7 +361,7 @@ h1 {
     gap: 30px;
 }
 
-/* ===== TARJETAS (SIN BACKDROP-FILTER) ===== */
+/* ===== TARJETAS ===== */
 .card {
     background-color: var(--card-bg);
     border-radius: 12px;
@@ -437,7 +541,6 @@ button {
     text-anchor: middle;
 }
 
-/* Notas del mástil con animación ligera */
 @keyframes noteAppear {
     0% {
         opacity: 0;
@@ -657,6 +760,122 @@ button {
     color: #000;
     border-color: var(--accent);
     box-shadow: 0 0 15px var(--accent-glow);
+}
+
+/* ===== ANÁLISIS ARMÓNICO (NUEVA SECCIÓN) ===== */
+#analysis-content {
+    background-color: #0a0a0a;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    transition: border-color 0.3s;
+}
+
+#analysis-content:hover {
+    border-color: rgba(255, 107, 0, 0.4);
+}
+
+.analysis-block {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.analysis-block:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.analysis-block h4 {
+    color: var(--accent);
+    font-size: 1.05em;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.5px;
+}
+
+.analysis-block p {
+    color: var(--text-main);
+    font-size: 0.95em;
+    margin-bottom: 6px;
+    line-height: 1.6;
+}
+
+.analysis-block strong {
+    color: var(--accent);
+}
+
+.analysis-block ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 8px;
+}
+
+.analysis-block li {
+    padding: 6px 0 6px 20px;
+    position: relative;
+    color: var(--text-main);
+    font-size: 0.9em;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.analysis-block li:last-child {
+    border-bottom: none;
+}
+
+.analysis-block li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: bold;
+}
+
+.analysis-block li:hover {
+    padding-left: 24px;
+    color: var(--accent);
+    transition: all 0.2s;
+}
+
+.function-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 0.85em;
+    margin-right: 8px;
+    background: linear-gradient(135deg, var(--accent), #ff8533);
+    color: #000;
+    box-shadow: 0 2px 8px rgba(255, 107, 0, 0.4);
+}
+
+.function-badge.tonic {
+    background: linear-gradient(135deg, #4a9eff, #2d7dd2);
+    color: #fff;
+}
+
+.function-badge.subdominant {
+    background: linear-gradient(135deg, #4caf50, #2e7d32);
+    color: #fff;
+}
+
+.function-badge.dominant {
+    background: linear-gradient(135deg, #ff6b00, #cc5500);
+    color: #fff;
+}
+
+.role-tag {
+    display: inline-block;
+    background-color: rgba(255, 107, 0, 0.15);
+    color: var(--accent);
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 0.8em;
+    font-weight: bold;
+    margin-left: 8px;
 }
 
 /* ===== BÚSQUEDA ===== */
@@ -1059,6 +1278,22 @@ footer::before {
     }
 
     .chord-info-box .info-label {
+        min-width: 80px;
+    }
+
+    .menu-toggle {
+        top: 15px;
+        left: 15px;
+        width: 45px;
+        height: 45px;
+        font-size: 1.1em;
+    }
+
+    .side-menu {
+        width: 280px;
+    }
+
+    .analysis-block .info-label {
         min-width: 80px;
     }
 }

@@ -1,5 +1,5 @@
 // =====================================================
-// TAVO ACORDES - SCRIPT PRINCIPAL v6
+// TAVO ACORDES - SCRIPT PRINCIPAL v7 (Fase 1)
 // =====================================================
 
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -170,6 +170,22 @@ const MODE_INFO = {
     'locrio': { formula: '1 b2 b3 4 b5 b6 b7', uso: 'Disminuido. Jazz y metal extremo.' }
 };
 
+// Roles de cada intervalo dentro del acorde
+const INTERVAL_ROLES = {
+    0: 'Raíz (1)',
+    1: '2ª menor (b9)',
+    2: '2ª mayor (9)',
+    3: '3ª menor (b3)',
+    4: '3ª mayor (3)',
+    5: '4ª justa (11)',
+    6: '5ª disminuida (b5)',
+    7: '5ª justa (5)',
+    8: '5ª aumentada (#5)',
+    9: '6ª mayor (13)',
+    10: '7ª menor (b7)',
+    11: '7ª mayor (7)'
+};
+
 let currentFretboard = [null, null, null, null, null, null];
 let audioCtx = null;
 let currentChordData = null;
@@ -183,7 +199,44 @@ window.onload = function () {
     initSelectors();
     resetFretboard();
     updateModeInfo();
+    initMenuEvents();
 };
+
+// =====================================================
+// MENÚ HAMBURGUESA
+// =====================================================
+function toggleMenu() {
+    const menu = document.getElementById('side-menu');
+    const overlay = document.getElementById('menu-overlay');
+    if (!menu || !overlay) return;
+
+    const isOpen = menu.classList.contains('active');
+
+    if (isOpen) {
+        closeMenu();
+    } else {
+        menu.classList.add('active');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeMenu() {
+    const menu = document.getElementById('side-menu');
+    const overlay = document.getElementById('menu-overlay');
+    if (!menu || !overlay) return;
+
+    menu.classList.remove('active');
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function initMenuEvents() {
+    // Cerrar con tecla ESC
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeMenu();
+    });
+}
 
 // =====================================================
 // 1. INTERFAZ DEL MÁSTIL
@@ -274,7 +327,8 @@ function getNoteName(stringIndex, fret) {
 }
 
 // =====================================================
-// 2. DETECCIÓN DE ACORDES// =====================================================
+// 2. DETECCIÓN DE ACORDES
+// =====================================================
 function detectChord() {
     const notes = [];
     currentFretboard.forEach((fret, i) => {
@@ -295,6 +349,7 @@ function detectChord() {
         document.getElementById('scale-info').innerHTML = '<p class="empty-state">Toca al menos 2 cuerdas para ver la escala.</p>';
         document.getElementById('scale-fretboard').innerHTML = '';
         document.getElementById('dominant-result').innerHTML = '<p class="empty-state">Toca un acorde primero para ver sus dominantes secundarios y sustitutos de tritono.</p>';
+        document.getElementById('analysis-content').innerHTML = '<p class="empty-state">Toca un acorde para ver su análisis armónico completo.</p>';
         currentChordData = null;
         return;
     }
@@ -319,7 +374,8 @@ function detectChord() {
     updateScaleForChord(currentChordData);
     updateProgressionsForChord(currentChordData);
     updateModeForChord(currentChordData);
-    calculateDominants(); // Se ejecuta automáticamente con el acorde detectado
+    calculateDominants();
+    renderHarmonicAnalysis(currentChordData, uniqueNotes);
 }
 
 function analyzeChord(notes, orderedNotes) {
@@ -340,11 +396,9 @@ function analyzeChord(notes, orderedNotes) {
                 if (rootNote === bassNote) priority += 150;
 
                 candidates.push({
-                    root: rootNote,
-                    suffix: suffix,
+                    root: rootNote, suffix: suffix,
                     name: rootNote + suffix,
-                    quality: quality,
-                    priority: priority
+                    quality: quality, priority: priority
                 });
             }
         }
@@ -361,7 +415,6 @@ function analyzeChord(notes, orderedNotes) {
     }
 
     if (uniqueCandidates.length === 0) {
-        // Detección flexible: buscar el que más se acerque
         let bestFlexible = null;
         notes.forEach(rootNote => {
             const rootIndex = NOTES.indexOf(rootNote);
@@ -492,7 +545,328 @@ function renderPositions(chordName) {
 }
 
 // =====================================================
-// 4. ESCALA DEL ACORDE
+// 4. ANÁLISIS ARMÓNICO (NUEVA FUNCIÓN FASE 1)
+// =====================================================
+function renderHarmonicAnalysis(chordData, notes) {
+    const container = document.getElementById('analysis-content');
+    if (!container) return;
+
+    if (!chordData || !chordData.quality || !chordData.root) {
+        container.innerHTML = '<p class="empty-state">Toca un acorde para ver su análisis armónico completo.</p>';
+        return;
+    }
+
+    const root = chordData.root;
+    const rootIndex = NOTES.indexOf(root);
+    const quality = chordData.quality;
+    const intervals = quality.intervals;
+
+    // --- 1. Función armónica ---
+    const functionInfo = getHarmonicFunction(chordData);
+
+    // --- 2. Notas con su rol ---
+    const noteRoles = intervals.map(interval => {
+        const noteName = NOTES[(rootIndex + interval) % 12];
+        const role = INTERVAL_ROLES[interval] || `Intervalo ${interval}`;
+        return { note: noteName, role: role };
+    });
+
+    // --- 3. Tonalidades donde aparece ---
+    const appearances = getChordAppearances(chordData);
+
+    // --- 4. Tensiones disponibles ---
+    const tensions = getAvailableTensions(chordData);
+
+    // --- 5. Resoluciones naturales ---
+    const resolutions = getNaturalResolutions(chordData);
+
+    // ===== Construir HTML =====
+    let html = '';
+
+    // Encabezado
+    html += `
+        <div class="analysis-block">
+            <h4>📊 ${chordData.primaryName}</h4>
+            <p>Análisis armónico de las notas: <strong>${notes.join(' - ')}</strong></p>
+        </div>
+    `;
+
+    // Función armónica
+    html += `
+        <div class="analysis-block">
+            <h4>🎯 Función armónica</h4>
+            <p>
+                <span class="function-badge ${functionInfo.category}">${functionInfo.name}</span>
+                ${functionInfo.description}
+            </p>
+        </div>
+    `;
+
+    // Notas con su rol
+    html += `
+        <div class="analysis-block">
+            <h4>🎼 Notas del acorde y su función</h4>
+            <ul>
+    `;
+    noteRoles.forEach(nr => {
+        html += `<li><strong>${nr.note}</strong><span class="role-tag">${nr.role}</span></li>`;
+    });
+    html += `</ul></div>`;
+
+    // Tonalidades donde aparece
+    html += `
+        <div class="analysis-block">
+            <h4>🔀 Tonalidades donde aparece</h4>
+            <ul>
+    `;
+    appearances.forEach(a => {
+        html += `<li>En <strong>${a.key}</strong> ${a.mode} → <strong>${a.degree}</strong> (${a.role})</li>`;
+    });
+    html += `</ul></div>`;
+
+    // Tensiones
+    html += `
+        <div class="analysis-block">
+            <h4>✨ Tensiones disponibles</h4>
+            <ul>
+    `;
+    tensions.forEach(t => {
+        html += `<li><strong>${t.name}</strong> — ${t.description}</li>`;
+    });
+    html += `</ul></div>`;
+
+    // Resoluciones
+    html += `
+        <div class="analysis-block">
+            <h4>➡️ Resoluciones naturales</h4>
+            <ul>
+    `;
+    resolutions.forEach(r => {
+        html += `<li>${r.from} → <strong>${r.to}</strong> (${r.reason})</li>`;
+    });
+    html += `</ul></div>`;
+
+    container.innerHTML = html;
+}
+
+// ===== Función armónica =====
+function getHarmonicFunction(chordData) {
+    const root = chordData.root;
+    const suffix = chordData.suffix;
+
+    // Tónica: I, i, Imaj7, imaj7, i7(maj7)
+    if (suffix === '' || suffix === 'maj7' || suffix === 'm' || suffix === 'mMaj7') {
+        return {
+            name: 'Tónica',
+            category: 'tonic',
+            description: 'Puede funcionar como centro tonal. Genera sensación de reposo y estabilidad. Es el punto de llegada natural.'
+        };
+    }
+
+    // Dominante: 7, 9, 11, 13, 7b9, 7#9, aug7...
+    if (suffix.includes('7') && !suffix.includes('maj') && !suffix.includes('m')) {
+        return {
+            name: 'Dominante',
+            category: 'dominant',
+            description: 'Genera tensión fuerte. Resuelve naturalmente a la tónica (a una 5ª justa por debajo). Es el motor de la armonía tonal.'
+        };
+    }
+
+    // Subdominante: ii, IV, vi, m7, etc.
+    if (suffix === 'm7' || suffix === 'm9' || suffix === 'm11' || suffix === '6' || suffix === 'm6') {
+        return {
+            name: 'Subdominante / Predominante',
+            category: 'subdominant',
+            description: 'Prepara el camino hacia el dominante. Aporta color y movimiento sin resolver directamente.'
+        };
+    }
+
+    // Disminuidos
+    if (suffix.includes('dim')) {
+        return {
+            name: 'Tensión / Disminuido',
+            category: 'dominant',
+            description: 'Acorde inestable que resuelve por semitono. Muy usado en cadencias y modulaciones.'
+        };
+    }
+
+    // Aumentados
+    if (suffix.includes('aug')) {
+        return {
+            name: 'Tensión / Aumentado',
+            category: 'dominant',
+            description: 'Acorde simétrico con sonido flotante. Puede resolver a múltiples tonalidades.'
+        };
+    }
+
+    // Suspendidos
+    if (suffix.includes('sus')) {
+        return {
+            name: 'Suspendido',
+            category: 'subdominant',
+            description: 'Sustituye la 3ª por la 2ª o 4ª. Suena ambiguo (ni mayor ni menor) y suele resolver al acorde mayor o menor correspondiente.'
+        };
+    }
+
+    return {
+        name: 'Función variable',
+        category: 'subdominant',
+        description: 'Su función depende del contexto tonal en el que se use.'
+    };
+}
+
+// ===== Tonalidades donde aparece =====
+function getChordAppearances(chordData) {
+    const root = chordData.root;
+    const rootIndex = NOTES.indexOf(root);
+    const suffix = chordData.suffix;
+    const appearances = [];
+
+    // Determinar si el acorde es mayor, menor o dominante
+    const isMinor = suffix.includes('m') && !suffix.includes('maj');
+    const isDominant = suffix.includes('7') && !suffix.includes('maj') && !isMinor;
+
+    if (isMinor) {
+        // Aparece como: i en su tonalidad menor, ii/iii/vi en tonalidades mayores
+        appearances.push({
+            key: root, mode: 'menor',
+            degree: 'i', role: 'Tónica'
+        });
+        // Como vi en la relativa mayor
+        const relativeMajor = NOTES[(rootIndex + 3) % 12];
+        appearances.push({
+            key: relativeMajor, mode: 'mayor',
+            degree: 'vi', role: 'Submediante'
+        });
+        // Como ii en tonalidad mayor (a una 5ª arriba)
+        const majorOfII = NOTES[(rootIndex + 5) % 12];
+        appearances.push({
+            key: majorOfII, mode: 'mayor',
+            degree: 'ii', role: 'Supertónica'
+        });
+        // Como iii en tonalidad mayor (a una 4ª arriba)
+        const majorOfIII = NOTES[(rootIndex + 8) % 12];
+        appearances.push({
+            key: majorOfIII, mode: 'mayor',
+            degree: 'iii', role: 'Mediante'
+        });
+    } else if (isDominant) {
+        // Como V7 en la tonalidad a una 5ª por debajo
+        const targetKey = NOTES[(rootIndex + 5) % 12];
+        appearances.push({
+            key: targetKey, mode: 'mayor',
+            degree: 'V7', role: 'Dominante'
+        });
+        // Como V7 en la tonalidad menor
+        appearances.push({
+            key: targetKey, mode: 'menor',
+            degree: 'V7', role: 'Dominante'
+        });
+        // Como dominante secundario en varias tonalidades
+        appearances.push({
+            key: NOTES[(rootIndex - 2 + 12) % 12], mode: 'mayor',
+            degree: 'V7/IV', role: 'Dominante secundario'
+        });
+    } else {
+        // Mayor
+        appearances.push({
+            key: root, mode: 'mayor',
+            degree: 'I', role: 'Tónica'
+        });
+        // Como IV en la tonalidad a una 5ª arriba
+        const keyOfIV = NOTES[(rootIndex + 7) % 12];
+        appearances.push({
+            key: keyOfIV, mode: 'mayor',
+            degree: 'IV', role: 'Subdominante'
+        });
+        // Como V en la tonalidad a una 5ª abajo
+        const keyOfV = NOTES[(rootIndex + 5) % 12];
+        appearances.push({
+            key: keyOfV, mode: 'mayor',
+            degree: 'V', role: 'Dominante'
+        });
+        // Como VI en la relativa menor
+        const relativeMinor = NOTES[(rootIndex + 9) % 12];
+        appearances.push({
+            key: relativeMinor, mode: 'menor',
+            degree: 'VI', role: 'Submediante'
+        });
+    }
+
+    return appearances;
+}
+
+// ===== Tensiones disponibles =====
+function getAvailableTensions(chordData) {
+    const suffix = chordData.suffix;
+    const isMinor = suffix.includes('m') && !suffix.includes('maj');
+    const isDominant = suffix.includes('7') && !suffix.includes('maj') && !isMinor;
+    const isMajor7 = suffix.includes('maj7');
+
+    const tensions = [];
+
+    if (isMajor7) {
+        tensions.push({ name: '9 (2ª mayor)', description: 'Añade color brillante sin romper la estabilidad.' });
+        tensions.push({ name: '#11 (4ª aumentada)', description: 'Sonido lidio, muy cinematográfico.' });
+        tensions.push({ name: '13 (6ª mayor)', description: 'Sonido cálido y sofisticado.' });
+    } else if (isMinor) {
+        tensions.push({ name: '9 (2ª mayor)', description: 'Añade color moderno, muy usado en neo-soul.' });
+        tensions.push({ name: '11 (4ª justa)', description: 'Disponible en m7 y m9. Cuidado en tríadas menores puras.' });
+        tensions.push({ name: '13 (6ª mayor)', description: 'Cuidado: puede sonar a relativa mayor. Usar en m6 o m13.' });
+    } else if (isDominant) {
+        tensions.push({ name: 'b9 (2ª menor)', description: 'Tensión fuerte, resuelve muy bien a menor.' });
+        tensions.push({ name: '#9 (2ª aumentada)', description: 'Sonido Hendrix, bluesy y agresivo.' });
+        tensions.push({ name: 'b13 (6ª menor)', description: 'Tensión hacia el acorde menor de destino.' });
+        tensions.push({ name: '#11 (4ª aumentada)', description: 'Sonido lidio dominante, muy moderno.' });
+        tensions.push({ name: '13 (6ª mayor)', description: 'Sonido cálido, común en blues y jazz.' });
+    } else {
+        tensions.push({ name: '9 (2ª mayor)', description: 'Añade color sin alterar la función del acorde.' });
+        tensions.push({ name: '6/13 (6ª mayor)', description: 'Sonido jazzy estable.' });
+        tensions.push({ name: 'add9', description: 'Añade la 9ª sin la 7ª, mantiene sencillez.' });
+    }
+
+    return tensions;
+}
+
+// ===== Resoluciones naturales =====
+function getNaturalResolutions(chordData) {
+    const root = chordData.root;
+    const rootIndex = NOTES.indexOf(root);
+    const suffix = chordData.suffix;
+    const isMinor = suffix.includes('m') && !suffix.includes('maj');
+    const isDominant = suffix.includes('7') && !suffix.includes('maj') && !isMinor;
+
+    const resolutions = [];
+
+    if (isDominant) {
+        // Un dominante resuelve a la tónica (5ª abajo)
+        const targetKey = NOTES[(rootIndex + 5) % 12];
+        resolutions.push({ from: chordData.primaryName, to: targetKey, reason: 'Resolución dominante → tónica' });
+        resolutions.push({ from: chordData.primaryName, to: targetKey + 'm', reason: 'Resolución a tónica menor' });
+        // También puede resolver al relativo menor (deceptiva)
+        resolutions.push({ from: chordData.primaryName, to: NOTES[(rootIndex + 8) % 12] + 'm', reason: 'Resolución deceptiva (al vi grado)' });
+    } else if (isMinor) {
+        // Un menor puede ir a su subdominante menor (5ª arriba)
+        resolutions.push({ from: chordData.primaryName, to: NOTES[(rootIndex + 5) % 12] + 'm', reason: 'Movimiento por 4ª a iv grado' });
+        // O a su relativa mayor (3ª arriba)
+        resolutions.push({ from: chordData.primaryName, to: NOTES[(rootIndex + 3) % 12], reason: 'A relativa mayor' });
+        // O a su dominante
+        resolutions.push({ from: chordData.primaryName, to: NOTES[(rootIndex + 7) % 12] + '7', reason: 'A dominante (V7)' });
+        // O al VI grado
+        resolutions.push({ from: chordData.primaryName, to: NOTES[(rootIndex + 8) % 12], reason: 'Al VI grado' });
+    } else {
+        // Mayor puede ir a muchos sitios
+        resolutions.push({ from: chordData.primaryName, to: NOTES[(rootIndex + 5) % 12], reason: 'A IV grado (subdominante)' });
+        resolutions.push({ from: chordData.primaryName, to: NOTES[(rootIndex + 7) % 12], reason: 'A V grado (dominante)' });
+        resolutions.push({ from: chordData.primaryName, to: NOTES[(rootIndex + 9) % 12] + 'm', reason: 'A vi grado (relativo menor)' });
+        resolutions.push({ from: chordData.primaryName, to: NOTES[(rootIndex + 2) % 12] + 'm', reason: 'A ii grado (supertónica)' });
+    }
+
+    return resolutions;
+}
+
+// =====================================================
+// 5. ESCALA DEL ACORDE
 // =====================================================
 function updateScaleForChord(chordData) {
     const infoBox = document.getElementById('scale-info');
@@ -582,7 +956,7 @@ function drawScaleFretboard(containerId, scaleNotes, rootIndex) {
 }
 
 // =====================================================
-// 5. PROGRESIONES
+// 6. PROGRESIONES
 // =====================================================
 function updateProgressionsForChord(chordData) {
     const container = document.getElementById('progressions-list');
@@ -643,7 +1017,7 @@ function updateProgressionsForChord(chordData) {
 }
 
 // =====================================================
-// 6. MODOS
+// 7. MODOS
 // =====================================================
 function updateModeForChord(chordData) {
     if (!chordData || !chordData.quality) return;
@@ -687,7 +1061,7 @@ function playModeScale() {
 }
 
 // =====================================================
-// 7. AUDIO
+// 8. AUDIO
 // =====================================================
 function initAudio() {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -757,7 +1131,7 @@ function getFrequency(note) {
 }
 
 // =====================================================
-// 8. CÍRCULO DE QUINTAS
+// 9. CÍRCULO DE QUINTAS
 // =====================================================
 function initCircleOfFifths() {
     const container = document.getElementById('circle-of-fifths');
@@ -848,7 +1222,7 @@ function selectKey(key) {
 }
 
 // =====================================================
-// 9. BÚSQUEDA Y UTILIDADES
+// 10. BÚSQUEDA Y UTILIDADES
 // =====================================================
 function searchChord() {
     const query = document.getElementById('search-input').value.trim();
@@ -945,14 +1319,10 @@ function calculateModulation() {
     `;
 }
 
-// =====================================================
-// 10. DOMINANTES SECUNDARIOS (AUTOMÁTICOS SEGÚN ACORDE)
-// =====================================================
 function calculateDominants() {
     const resultBox = document.getElementById('dominant-result');
     if (!resultBox) return;
 
-    // Si no hay acorde detectado, mostrar mensaje
     if (!currentChordData || !currentChordData.root || !currentChordData.quality) {
         resultBox.innerHTML = '<p class="empty-state">Toca un acorde primero para ver sus dominantes secundarios y sustitutos de tritono.</p>';
         return;
@@ -1014,7 +1384,6 @@ function calculateDominants() {
     });
     html += `</div>`;
 
-    // Dominante principal V7
     const vRoot = NOTES[(rootIndex + 7) % 12];
     const vTritone = NOTES[(NOTES.indexOf(vRoot) + 6) % 12] + '7';
 
@@ -1058,4 +1427,5 @@ function resetFretboard() {
     document.getElementById('scale-info').innerHTML = '<p class="empty-state">Selecciona un acorde para ver la escala.</p>';
     document.getElementById('scale-fretboard').innerHTML = '';
     document.getElementById('dominant-result').innerHTML = '<p class="empty-state">Toca un acorde primero para ver sus dominantes secundarios y sustitutos de tritono.</p>';
+    document.getElementById('analysis-content').innerHTML = '<p class="empty-state">Toca un acorde para ver su análisis armónico completo.</p>';
 }

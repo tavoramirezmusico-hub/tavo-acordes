@@ -11,6 +11,43 @@
 
 <body>
 
+  <!-- ===== BOTÓN HAMBURGUESA ===== -->
+  <button id="menu-toggle" class="menu-toggle" onclick="toggleMenu()" aria-label="Menú">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- ===== OVERLAY DEL MENÚ ===== -->
+  <div id="menu-overlay" class="menu-overlay" onclick="closeMenu()"></div>
+
+  <!-- ===== MENÚ LATERAL ===== -->
+  <nav id="side-menu" class="side-menu">
+    <div class="menu-header">
+      <span class="menu-title">🎸 Menú</span>
+      <button class="menu-close" onclick="closeMenu()" aria-label="Cerrar menú">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <ul class="menu-list">
+      <li><a href="#trastes" onclick="closeMenu()">🔧 Constructor de Acordes</a></li>
+      <li><a href="#resultado" onclick="closeMenu()">📊 Detección y Audio</a></li>
+      <li><a href="#analisis" onclick="closeMenu()">🎓 Análisis Armónico</a></li>
+      <li><a href="#buscar" onclick="closeMenu()">🔍 Buscar Acorde</a></li>
+      <li><a href="#escala" onclick="closeMenu()">🎼 Escala del Acorde</a></li>
+      <li><a href="#que-toco" onclick="closeMenu()">🎯 ¿Qué toco sobre esto?</a></li>
+      <li><a href="#progresiones" onclick="closeMenu()">🎵 Progresiones</a></li>
+      <li><a href="#circulo" onclick="closeMenu()">🎨 Círculo de Quintas</a></li>
+      <li><a href="#modos" onclick="closeMenu()">🎓 Modos</a></li>
+      <li><a href="#mapa-escalas" onclick="closeMenu()">🗺️ Mapa de Escalas</a></li>
+      <li><a href="#modulacion" onclick="closeMenu()">🔄 Modulación</a></li>
+      <li><a href="#dominantes" onclick="closeMenu()">⚡ Dominantes Secundarios</a></li>
+      <li><a href="#analizador" onclick="closeMenu()">🎼 Analizador de Progresiones</a></li>
+      <li><a href="#navegador" onclick="closeMenu()">🧭 Navegador de Tonalidades</a></li>
+      <li><a href="#lecciones" onclick="closeMenu()">📚 Lecciones Interactivas</a></li>
+      <li><a href="#practica" onclick="closeMenu()">🎯 Práctica Guiada</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== HEADER ===== -->
   <header class="main-header">
     <div class="logo-container">
       <img src="logo.png" alt="Tavo Acordes Logo" class="logo-img">
@@ -18,18 +55,6 @@
     <h1>Tavo Acordes</h1>
     <p class="subtitle">Guitarra • Armonía • Círculo de Quintas • Modos</p>
   </header>
-
-  <nav class="sticky-nav">
-    <a href="#trastes">Trastes</a>
-    <a href="#resultado">Resultado</a>
-    <a href="#buscar">Buscar</a>
-    <a href="#escala">Escala</a>
-    <a href="#progresiones">Progresiones</a>
-    <a href="#circulo">Círculo</a>
-    <a href="#modos">Modos</a>
-    <a href="#modulacion">Modulación</a>
-    <a href="#dominantes">Dominantes</a>
-  </nav>
 
   <main class="container">
 
@@ -63,9 +88,17 @@
       </div>
     </section>
 
-    <!-- 3. BUSCAR ACORDE -->
+    <!-- 3. ANÁLISIS ARMÓNICO (NUEVA) -->
+    <section id="analisis" class="card">
+      <h2>🎓 Análisis Armónico</h2>
+      <div id="analysis-content">
+        <p class="empty-state">Toca un acorde para ver su análisis armónico completo.</p>
+      </div>
+    </section>
+
+    <!-- 4. BUSCAR ACORDE -->
     <section id="buscar" class="card">
-      <h2>3. Buscar Acorde por Nombre</h2>
+      <h2>4. Buscar Acorde por Nombre</h2>
       <div class="search-box">
         <input type="text" id="search-input" placeholder="Escribe para filtrar... Ej: Am, Cmaj7, G7">
         <button onclick="searchChord()" class="btn-primary">Buscar</button>
@@ -76,26 +109,35 @@
       </div>
     </section>
 
-    <!-- 3.5. ESCALA DEL ACORDE DETECTADO -->
+    <!-- 5. ESCALA DEL ACORDE -->
     <section id="escala" class="card">
-      <h2>3.5. Escala del Acorde Detectado</h2>
+      <h2>5. Escala del Acorde Detectado</h2>
       <div id="scale-info" class="mode-info-box">
         <p class="empty-state">Toca un acorde para ver su escala.</p>
       </div>
       <div id="scale-fretboard" style="margin-top:15px;"></div>
     </section>
 
-    <!-- 4. PROGRESIONES SUGERIDAS -->
+    <!-- 6. ¿QUÉ TOCO SOBRE ESTE ACORDE? (PLACEHOLDER - FASE 3) -->
+    <section id="que-toco" class="card">
+      <h2>🎯 ¿Qué toco sobre este acorde?</h2>
+      <div id="what-to-play-content">
+        <p class="empty-state">Próximamente: sugerencias de escalas, arpegios y voicings para improvisar sobre el acorde
+          detectado.</p>
+      </div>
+    </section>
+
+    <!-- 7. PROGRESIONES -->
     <section id="progresiones" class="card">
-      <h2>4. Progresiones Sugeridas</h2>
+      <h2>7. Progresiones Sugeridas</h2>
       <div id="progressions-list" class="progressions-container">
         <p class="empty-state">Selecciona un acorde para ver progresiones.</p>
       </div>
     </section>
 
-    <!-- 5. CÍRCULO DE QUINTAS -->
+    <!-- 8. CÍRCULO DE QUINTAS -->
     <section id="circulo" class="card">
-      <h2>5. Círculo de Quintas Interactivo</h2>
+      <h2>8. Círculo de Quintas Interactivo</h2>
       <div class="circle-container">
         <div id="circle-of-fifths" class="circle-svg-container"></div>
         <div id="circle-info" class="circle-info">
@@ -104,9 +146,9 @@
       </div>
     </section>
 
-    <!-- 6. MODOS -->
+    <!-- 9. MODOS -->
     <section id="modos" class="card">
-      <h2>6. Modos, Usos y Sustituciones</h2>
+      <h2>9. Modos, Usos y Sustituciones</h2>
       <div class="modes-container">
         <select id="mode-selector" onchange="updateModeInfo()">
           <option value="jónico">Jónico (Mayor)</option>
@@ -125,9 +167,18 @@
       </div>
     </section>
 
-    <!-- 7. MODULACIÓN -->
+    <!-- 10. MAPA DE ESCALAS (PLACEHOLDER - FASE 3) -->
+    <section id="mapa-escalas" class="card">
+      <h2>🗺️ Mapa de Escalas Interactivo</h2>
+      <div id="scale-map-content">
+        <p class="empty-state">Próximamente: explorador visual de escalas con todas las posiciones del mástil y colores
+          por función.</p>
+      </div>
+    </section>
+
+    <!-- 11. MODULACIÓN -->
     <section id="modulacion" class="card">
-      <h2>7. Modulación Paso a Paso</h2>
+      <h2>11. Modulación Paso a Paso</h2>
       <div class="modulation-controls">
         <label>Origen: <select id="mod-origin"></select></label>
         <label>Destino: <select id="mod-dest"></select></label>
@@ -136,9 +187,9 @@
       <div id="modulation-result" class="modulation-result"></div>
     </section>
 
-    <!-- 8. DOMINANTES SECUNDARIOS (basados en el acorde detectado) -->
+    <!-- 12. DOMINANTES SECUNDARIOS -->
     <section id="dominantes" class="card">
-      <h2>8. Dominantes Secundarios y Tritono</h2>
+      <h2>12. Dominantes Secundarios y Tritono</h2>
       <div style="margin-bottom:15px;">
         <p style="color:#888; font-size:0.9em;">
           Se calculan automáticamente según el acorde que toques en el mástil.
@@ -146,6 +197,41 @@
       </div>
       <div id="dominant-result" class="dominant-result">
         <p class="empty-state">Toca un acorde primero para ver sus dominantes secundarios y sustitutos de tritono.</p>
+      </div>
+    </section>
+
+    <!-- 13. ANALIZADOR DE PROGRESIONES (PLACEHOLDER - FASE 2) -->
+    <section id="analizador" class="card">
+      <h2>🎼 Analizador de Progresiones</h2>
+      <div id="progression-analyzer-content">
+        <p class="empty-state">Próximamente: escribe o toca una secuencia de acordes y analiza su tonalidad, grados y
+          funciones.</p>
+      </div>
+    </section>
+
+    <!-- 14. NAVEGADOR DE TONALIDADES (PLACEHOLDER - FASE 2) -->
+    <section id="navegador" class="card">
+      <h2>🧭 Navegador de Tonalidades</h2>
+      <div id="key-navigator-content">
+        <p class="empty-state">Próximamente: explora todas las tonalidades, sus relaciones y modulaciones típicas.</p>
+      </div>
+    </section>
+
+    <!-- 15. LECCIONES INTERACTIVAS (PLACEHOLDER - FASE 4) -->
+    <section id="lecciones" class="card">
+      <h2>📚 Lecciones Interactivas</h2>
+      <div id="lessons-content">
+        <p class="empty-state">Próximamente: lecciones cortas de teoría musical con ejemplos interactivos en el mástil.
+        </p>
+      </div>
+    </section>
+
+    <!-- 16. PRÁCTICA GUIADA (PLACEHOLDER - FASE 4) -->
+    <section id="practica" class="card">
+      <h2>🎯 Práctica Guiada</h2>
+      <div id="practice-content">
+        <p class="empty-state">Próximamente: ejercicios progresivos para dominar intervalos, acordes y escalas en el
+          mástil.</p>
       </div>
     </section>
 
