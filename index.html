@@ -88,7 +88,7 @@
       </div>
     </section>
 
-    <!-- 3. ANÁLISIS ARMÓNICO (NUEVA) -->
+    <!-- 3. ANÁLISIS ARMÓNICO -->
     <section id="analisis" class="card">
       <h2>🎓 Análisis Armónico</h2>
       <div id="analysis-content">
@@ -118,7 +118,7 @@
       <div id="scale-fretboard" style="margin-top:15px;"></div>
     </section>
 
-    <!-- 6. ¿QUÉ TOCO SOBRE ESTE ACORDE? (PLACEHOLDER - FASE 3) -->
+    <!-- 6. ¿QUÉ TOCO SOBRE ESTE ACORDE? (FASE 3) -->
     <section id="que-toco" class="card">
       <h2>🎯 ¿Qué toco sobre este acorde?</h2>
       <div id="what-to-play-content">
@@ -135,7 +135,7 @@
       </div>
     </section>
 
-    <!-- 8. CÍRCULO DE QUINTAS -->
+    <!-- 8. CÍRCULO DE QUINTAS MEJORADO (FASE 2) -->
     <section id="circulo" class="card">
       <h2>8. Círculo de Quintas Interactivo</h2>
       <div class="circle-container">
@@ -167,7 +167,7 @@
       </div>
     </section>
 
-    <!-- 10. MAPA DE ESCALAS (PLACEHOLDER - FASE 3) -->
+    <!-- 10. MAPA DE ESCALAS (FASE 3) -->
     <section id="mapa-escalas" class="card">
       <h2>🗺️ Mapa de Escalas Interactivo</h2>
       <div id="scale-map-content">
@@ -200,24 +200,67 @@
       </div>
     </section>
 
-    <!-- 13. ANALIZADOR DE PROGRESIONES (PLACEHOLDER - FASE 2) -->
+    <!-- 13. ANALIZADOR DE PROGRESIONES (FASE 2) -->
     <section id="analizador" class="card">
       <h2>🎼 Analizador de Progresiones</h2>
-      <div id="progression-analyzer-content">
-        <p class="empty-state">Próximamente: escribe o toca una secuencia de acordes y analiza su tonalidad, grados y
-          funciones.</p>
+      <p style="color:#888; font-size:0.9em; margin-bottom:15px;">
+        Escribe una progresión o añade acordes con los botones. Máximo 8 acordes.
+      </p>
+
+      <div class="analyzer-input-row">
+        <input type="text" id="progression-input" placeholder="Ej: C Am F G"
+          onkeydown="if(event.key==='Enter') analyzeProgression()">
+        <button onclick="analyzeProgression()" class="btn-primary">
+          <i class="fas fa-search"></i> Analizar
+        </button>
+      </div>
+
+      <div class="analyzer-chips-container">
+        <div id="progression-chips" class="progression-chips">
+          <!-- Chips de acordes añadidos -->
+        </div>
+        <div class="analyzer-actions">
+          <button onclick="showChordPicker()" class="btn-show">+ Añadir acorde</button>
+          <button onclick="clearProgression()" class="btn-reset"
+            style="padding:8px 15px; font-size:0.9em;">Limpiar</button>
+        </div>
+      </div>
+
+      <div id="chord-picker" class="chord-picker" style="display:none;">
+        <div class="chord-picker-header">
+          <span>Selecciona un acorde:</span>
+          <button onclick="hideChordPicker()" class="btn-reset" style="padding:5px 10px; font-size:0.8em;">✕</button>
+        </div>
+        <div id="chord-picker-grid" class="chord-picker-grid"></div>
+      </div>
+
+      <div id="progression-result" class="progression-result">
+        <p class="empty-state">Añade acordes para ver el análisis de la progresión.</p>
       </div>
     </section>
 
-    <!-- 14. NAVEGADOR DE TONALIDADES (PLACEHOLDER - FASE 2) -->
+    <!-- 14. NAVEGADOR DE TONALIDADES (FASE 2) -->
     <section id="navegador" class="card">
       <h2>🧭 Navegador de Tonalidades</h2>
-      <div id="key-navigator-content">
-        <p class="empty-state">Próximamente: explora todas las tonalidades, sus relaciones y modulaciones típicas.</p>
+      <p style="color:#888; font-size:0.9em; margin-bottom:15px;">
+        Explora las tonalidades vecinas, sus relaciones y modulaciones típicas.
+      </p>
+
+      <div class="key-nav-controls">
+        <label>Tonalidad actual:
+          <select id="key-nav-selector" onchange="updateKeyNavigator()"></select>
+        </label>
+      </div>
+
+      <div class="key-nav-container">
+        <div id="mini-circle" class="mini-circle-container"></div>
+        <div id="key-nav-info" class="key-nav-info">
+          <p class="empty-state">Selecciona una tonalidad para ver su mapa de relaciones.</p>
+        </div>
       </div>
     </section>
 
-    <!-- 15. LECCIONES INTERACTIVAS (PLACEHOLDER - FASE 4) -->
+    <!-- 15. LECCIONES INTERACTIVAS (FASE 4) -->
     <section id="lecciones" class="card">
       <h2>📚 Lecciones Interactivas</h2>
       <div id="lessons-content">
@@ -226,7 +269,7 @@
       </div>
     </section>
 
-    <!-- 16. PRÁCTICA GUIADA (PLACEHOLDER - FASE 4) -->
+    <!-- 16. PRÁCTICA GUIADA (FASE 4) -->
     <section id="practica" class="card">
       <h2>🎯 Práctica Guiada</h2>
       <div id="practice-content">
