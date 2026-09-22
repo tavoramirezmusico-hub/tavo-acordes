@@ -47,12 +47,11 @@
     </ul>
   </nav>
 
-  <!-- ===== HEADER ===== -->
+  <!-- ===== HEADER (SIN TÍTULO, SOLO LOGO Y SUBTÍTULO) ===== -->
   <header class="main-header">
     <div class="logo-container">
       <img src="logo.png" alt="Tavo Acordes Logo" class="logo-img">
     </div>
-    <h1>Tavo Acordes</h1>
     <p class="subtitle">Guitarra • Armonía • Círculo de Quintas • Modos</p>
   </header>
 
@@ -121,9 +120,11 @@
     <!-- 6. ¿QUÉ TOCO SOBRE ESTE ACORDE? (FASE 3) -->
     <section id="que-toco" class="card">
       <h2>🎯 ¿Qué toco sobre este acorde?</h2>
+      <p style="color:#888; font-size:0.9em; margin-bottom:15px;">
+        Toca un acorde para recibir sugerencias de escalas, arpegios y notas para improvisar.
+      </p>
       <div id="what-to-play-content">
-        <p class="empty-state">Próximamente: sugerencias de escalas, arpegios y voicings para improvisar sobre el acorde
-          detectado.</p>
+        <p class="empty-state">Aún no hay un acorde detectado. Toca uno en el mástil para ver las sugerencias.</p>
       </div>
     </section>
 
@@ -135,13 +136,13 @@
       </div>
     </section>
 
-    <!-- 8. CÍRCULO DE QUINTAS MEJORADO (FASE 2) -->
+    <!-- 8. CÍRCULO DE QUINTAS MEJORADO -->
     <section id="circulo" class="card">
       <h2>8. Círculo de Quintas Interactivo</h2>
       <div class="circle-container">
         <div id="circle-of-fifths" class="circle-svg-container"></div>
         <div id="circle-info" class="circle-info">
-          <p class="empty-state">Selecciona una tonalidad en el círculo para ver su espectro armónico completo.</p>
+          <p class="empty-state">Selecciona una tonalidad en el círculo o toca un acorde para ver su tonalidad.</p>
         </div>
       </div>
     </section>
@@ -167,13 +168,36 @@
       </div>
     </section>
 
-    <!-- 10. MAPA DE ESCALAS (FASE 3) -->
+    <!-- 10. MAPA DE ESCALAS INTERACTIVO (FASE 3) -->
     <section id="mapa-escalas" class="card">
       <h2>🗺️ Mapa de Escalas Interactivo</h2>
-      <div id="scale-map-content">
-        <p class="empty-state">Próximamente: explorador visual de escalas con todas las posiciones del mástil y colores
-          por función.</p>
+      <p style="color:#888; font-size:0.9em; margin-bottom:15px;">
+        Explora cualquier escala en todo el mástil. Cambia la tónica, el modo y el sistema de visualización.
+      </p>
+
+      <div class="scale-map-controls">
+        <label>Tónica:
+          <select id="map-tonic" onchange="updateScaleMap()"></select>
+        </label>
+        <label>Escala:
+          <select id="map-scale" onchange="updateScaleMap()"></select>
+        </label>
+        <label>Ver:
+          <select id="map-view" onchange="updateScaleMap()">
+            <option value="notes">Notas</option>
+            <option value="intervals">Intervalos</option>
+          </select>
+        </label>
+        <button id="caged-toggle" class="btn-show" onclick="toggleCaged()">
+          <i class="fas fa-th"></i> CAGED
+        </button>
+        <button class="btn-primary" onclick="playScaleMap()">
+          <i class="fas fa-play"></i> Escuchar
+        </button>
       </div>
+
+      <div id="scale-map-info" class="scale-map-info"></div>
+      <div id="scale-map-fretboard" class="scale-map-fretboard"></div>
     </section>
 
     <!-- 11. MODULACIÓN -->
@@ -190,17 +214,15 @@
     <!-- 12. DOMINANTES SECUNDARIOS -->
     <section id="dominantes" class="card">
       <h2>12. Dominantes Secundarios y Tritono</h2>
-      <div style="margin-bottom:15px;">
-        <p style="color:#888; font-size:0.9em;">
-          Se calculan automáticamente según el acorde que toques en el mástil.
-        </p>
-      </div>
+      <p style="color:#888; font-size:0.9em; margin-bottom:15px;">
+        Se calculan automáticamente según el acorde que toques en el mástil.
+      </p>
       <div id="dominant-result" class="dominant-result">
         <p class="empty-state">Toca un acorde primero para ver sus dominantes secundarios y sustitutos de tritono.</p>
       </div>
     </section>
 
-    <!-- 13. ANALIZADOR DE PROGRESIONES (FASE 2) -->
+    <!-- 13. ANALIZADOR DE PROGRESIONES -->
     <section id="analizador" class="card">
       <h2>🎼 Analizador de Progresiones</h2>
       <p style="color:#888; font-size:0.9em; margin-bottom:15px;">
@@ -216,9 +238,7 @@
       </div>
 
       <div class="analyzer-chips-container">
-        <div id="progression-chips" class="progression-chips">
-          <!-- Chips de acordes añadidos -->
-        </div>
+        <div id="progression-chips" class="progression-chips"></div>
         <div class="analyzer-actions">
           <button onclick="showChordPicker()" class="btn-show">+ Añadir acorde</button>
           <button onclick="clearProgression()" class="btn-reset"
@@ -239,7 +259,7 @@
       </div>
     </section>
 
-    <!-- 14. NAVEGADOR DE TONALIDADES (FASE 2) -->
+    <!-- 14. NAVEGADOR DE TONALIDADES -->
     <section id="navegador" class="card">
       <h2>🧭 Navegador de Tonalidades</h2>
       <p style="color:#888; font-size:0.9em; margin-bottom:15px;">
