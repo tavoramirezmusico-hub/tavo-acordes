@@ -47,7 +47,7 @@
     </ul>
   </nav>
 
-  <!-- ===== HEADER (SIN TÍTULO, SOLO LOGO Y SUBTÍTULO) ===== -->
+  <!-- ===== HEADER ===== -->
   <header class="main-header">
     <div class="logo-container">
       <img src="logo.png" alt="Tavo Acordes Logo" class="logo-img">
@@ -117,7 +117,7 @@
       <div id="scale-fretboard" style="margin-top:15px;"></div>
     </section>
 
-    <!-- 6. ¿QUÉ TOCO SOBRE ESTE ACORDE? (FASE 3) -->
+    <!-- 6. ¿QUÉ TOCO SOBRE ESTE ACORDE? -->
     <section id="que-toco" class="card">
       <h2>🎯 ¿Qué toco sobre este acorde?</h2>
       <p style="color:#888; font-size:0.9em; margin-bottom:15px;">
@@ -136,7 +136,7 @@
       </div>
     </section>
 
-    <!-- 8. CÍRCULO DE QUINTAS MEJORADO -->
+    <!-- 8. CÍRCULO DE QUINTAS -->
     <section id="circulo" class="card">
       <h2>8. Círculo de Quintas Interactivo</h2>
       <div class="circle-container">
@@ -168,7 +168,7 @@
       </div>
     </section>
 
-    <!-- 10. MAPA DE ESCALAS INTERACTIVO (FASE 3) -->
+    <!-- 10. MAPA DE ESCALAS INTERACTIVO -->
     <section id="mapa-escalas" class="card">
       <h2>🗺️ Mapa de Escalas Interactivo</h2>
       <p style="color:#888; font-size:0.9em; margin-bottom:15px;">
@@ -194,6 +194,95 @@
         <button class="btn-primary" onclick="playScaleMap()">
           <i class="fas fa-play"></i> Escuchar
         </button>
+      </div>
+
+      <!-- LEYENDA DE COLORES -->
+      <div class="scale-legend">
+        <div class="legend-title">🎨 Leyenda de colores (función de cada nota):</div>
+        <div class="legend-items">
+          <div class="legend-item">
+            <span class="legend-color" style="background: var(--root-color);"></span>
+            <div class="legend-text">
+              <strong>Raíz (1)</strong>
+              <span>Nota que da nombre a la escala. Centro tonal.</span>
+            </div>
+          </div>
+          <div class="legend-item">
+            <span class="legend-color" style="background: var(--third-color);"></span>
+            <div class="legend-text">
+              <strong>3ª (b3 o 3)</strong>
+              <span>Define si es mayor (3) o menor (b3). Da el carácter.</span>
+            </div>
+          </div>
+          <div class="legend-item">
+            <span class="legend-color" style="background: var(--fifth-color);"></span>
+            <div class="legend-text">
+              <strong>5ª (b5, 5, #5)</strong>
+              <span>Nota de estabilidad. La 5ª justa es la más consonante tras la raíz.</span>
+            </div>
+          </div>
+          <div class="legend-item">
+            <span class="legend-color" style="background: var(--seventh-color);"></span>
+            <div class="legend-text">
+              <strong>7ª (b7 o 7)</strong>
+              <span>Define el tipo de acorde: 7ª mayor (maj7) o menor (7).</span>
+            </div>
+          </div>
+          <div class="legend-item">
+            <span class="legend-color" style="background: var(--tension-color);"></span>
+            <div class="legend-text">
+              <strong>Tensiones (2, 4, 6)</strong>
+              <span>Notas de color: 2ª, 4ª, 6ª. Aportan sabor sin definir el acorde.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXPLICACIÓN DEL SISTEMA CAGED -->
+      <div id="caged-explanation" class="caged-explanation" style="display:none;">
+        <h3>🎸 ¿Qué es el sistema CAGED?</h3>
+        <p>
+          El <strong>CAGED</strong> es un sistema que divide el mástil de la guitarra en <strong>5 posiciones</strong> o
+          "cajas".
+          Cada caja se corresponde con la forma de uno de los 5 acordes mayores abiertos: <strong>C, A, G, E,
+            D</strong>.
+        </p>
+        <p>
+          La clave es que <strong>un mismo acorde se puede tocar en 5 lugares distintos del mástil</strong>,
+          y cada posición tiene su propia forma de escala asociada. Así puedes tocar cualquier escala en cualquier zona
+          del mástil.
+        </p>
+        <div class="caged-diagram">
+          <div class="caged-box">
+            <strong>Caja C</strong>
+            <span>Trastes 0-3</span>
+            <small>Forma del acorde Do abierto</small>
+          </div>
+          <div class="caged-box">
+            <strong>Caja A</strong>
+            <span>Trastes 2-5</span>
+            <small>Forma del acorde La abierto</small>
+          </div>
+          <div class="caged-box">
+            <strong>Caja G</strong>
+            <span>Trastes 4-7</span>
+            <small>Forma del acorde Sol abierto</small>
+          </div>
+          <div class="caged-box">
+            <strong>Caja E</strong>
+            <span>Trastes 7-10</span>
+            <small>Forma del acorde Mi abierto</small>
+          </div>
+          <div class="caged-box">
+            <strong>Caja D</strong>
+            <span>Trastes 9-12</span>
+            <small>Forma del acorde Re abierto</small>
+          </div>
+        </div>
+        <p class="caged-tip">
+          💡 <strong>Tip:</strong> Cuando practiques una escala, aprende una caja a la vez.
+          Una vez dominada, pasa a la siguiente. Al unirlas tendrás toda la escala a lo largo del mástil.
+        </p>
       </div>
 
       <div id="scale-map-info" class="scale-map-info"></div>
@@ -306,5 +395,3 @@
 
   <script src="script.js"></script>
 </body>
-
-</html>
