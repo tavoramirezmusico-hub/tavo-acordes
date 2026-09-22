@@ -1,5 +1,5 @@
 // =====================================================
-// TAVO ACORDES - SCRIPT PRINCIPAL v10 (Fase 3 ampliada)
+// TAVO ACORDES - SCRIPT PRINCIPAL v11
 // =====================================================
 
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -143,6 +143,7 @@ window.onload = function () {
     initCircleOfFifths();
     initSelectors();
     initScaleMap();
+    drawLegendExampleFretboard(); // NUEVO
     resetFretboard();
     updateModeInfo();
     initMenuEvents();
@@ -258,6 +259,73 @@ function drawFretboard() {
 function getNoteName(stringIndex, fret) {
     const openIndex = NOTES.indexOf(OPEN_NOTES[stringIndex]);
     return NOTES[(openIndex + fret) % 12];
+}
+
+// =====================================================
+// LEYENDA DE COLORES - EJEMPLO VISUAL (NUEVO)
+// =====================================================
+function drawLegendExampleFretboard() {
+    const container = document.getElementById('legend-example-fretboard');
+    if (!container) return;
+
+    // Escala de C mayor
+    const tonic = 'C';
+    const scaleKey = 'jónico';
+    const scale = SCALES_DB[scaleKey];
+    const rootIndex = NOTES.indexOf(tonic);
+    const scaleNotesSet = new Set(scale.intervals.map(i => (rootIndex + i) % 12));
+
+    const width = 700, height = 200;
+    const marginLeft = 55, marginTop = 30, marginRight = 15, marginBottom = 15;
+    const drawWidth = width - marginLeft - marginRight;
+    const drawHeight = height - marginTop - marginBottom;
+    const stringSpacing = drawHeight / 5;
+    const fretSpacing = drawWidth / 13;
+
+    let svg = `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet" style="background:#2a1f1a; border-radius:8px; width:100%; height:auto; display:block;">`;
+
+    // Trastes
+    for (let i = 0; i <= 12; i++) {
+        svg += `<line x1="${marginLeft + (i * fretSpacing)}" y1="${marginTop}" x2="${marginLeft + (i * fretSpacing)}" y2="${height - marginBottom}" stroke="#777" stroke-width="${i === 0 ? 5 : 2}" />`;
+    }
+
+    // Cuerdas
+    for (let i = 0; i < 6; i++) {
+        const y = marginTop + (i * stringSpacing);
+        svg += `<line x1="${marginLeft}" y1="${y}" x2="${width - marginRight}" y2="${y}" stroke="#ccc" stroke-width="${4 - (i * 0.5)}" />`;
+        svg += `<text x="${marginLeft - 10}" y="${y}" fill="#ff6b00" font-size="12" font-weight="bold" text-anchor="end" dominant-baseline="middle">${STRINGS[i]}</text>`;
+    }
+
+    // Números de traste
+    for (let i = 1; i <= 12; i++) {
+        svg += `<text x="${marginLeft + ((i - 0.5) * fretSpacing)}" y="${marginTop - 10}" fill="#888" font-size="10" text-anchor="middle">${i}</text>`;
+    }
+
+    // Notas de la escala con colores por función
+    for (let stringIndex = 0; stringIndex < 6; stringIndex++) {
+        const y = marginTop + (stringIndex * stringSpacing);
+        const openIndex = NOTES.indexOf(OPEN_NOTES[stringIndex]);
+
+        for (let fret = 0; fret <= 12; fret++) {
+            const noteIndex = (openIndex + fret) % 12;
+            if (scaleNotesSet.has(noteIndex)) {
+                const x = (fret === 0) ? marginLeft - 15 : marginLeft + ((fret - 0.5) * fretSpacing);
+                const intervalFromRoot = (noteIndex - rootIndex + 12) % 12;
+
+                let fillColor = 'var(--tension-color)';
+                if (intervalFromRoot === 0) fillColor = 'var(--root-color)';
+                else if (intervalFromRoot === 3 || intervalFromRoot === 4) fillColor = 'var(--third-color)';
+                else if (intervalFromRoot === 6 || intervalFromRoot === 7 || intervalFromRoot === 8) fillColor = 'var(--fifth-color)';
+                else if (intervalFromRoot === 10 || intervalFromRoot === 11) fillColor = 'var(--seventh-color)';
+
+                svg += `<circle cx="${x}" cy="${y}" r="11" fill="${fillColor}" stroke="#000" stroke-width="1.5" />`;
+                svg += `<text x="${x}" y="${y}" fill="#000" font-size="10" font-weight="bold" text-anchor="middle" dominant-baseline="middle">${NOTES[noteIndex]}</text>`;
+            }
+        }
+    }
+
+    svg += `</svg>`;
+    container.innerHTML = svg;
 }
 
 // =====================================================
@@ -757,7 +825,6 @@ function drawScaleMapFretboard(tonic, scale, viewMode) {
 
     let svg = `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet" style="background:#2a1f1a; border-radius:10px; width:100%; height:auto; display:block;">`;
 
-    // CAGED regions con etiquetas mejoradas
     if (cagedActive) {
         const cagedNames = ['C', 'A', 'G', 'E', 'D'];
         const cagedRanges = [[0, 3], [2, 5], [4, 7], [7, 10], [9, 12]];
@@ -767,7 +834,6 @@ function drawScaleMapFretboard(tonic, scale, viewMode) {
             const centerX = (x1 + x2) / 2;
 
             svg += `<rect class="caged-region" x="${x1}" y="${marginTop - 10}" width="${x2 - x1}" height="${drawHeight + 20}" />`;
-
             svg += `<rect x="${centerX - 30}" y="${marginTop - 32}" width="60" height="18" rx="9" fill="#ff6b00" opacity="0.9" />`;
             svg += `<text class="caged-label" x="${centerX}" y="${marginTop - 19}" text-anchor="middle" fill="#000" font-size="11" font-weight="bold">Caja ${cagedNames[i]}</text>`;
         });
@@ -820,7 +886,6 @@ function toggleCaged() {
     const btn = document.getElementById('caged-toggle');
     if (btn) btn.classList.toggle('active', cagedActive);
 
-    // Mostrar/ocultar la explicación
     const explanation = document.getElementById('caged-explanation');
     if (explanation) {
         explanation.style.display = cagedActive ? 'block' : 'none';
@@ -1044,10 +1109,8 @@ function playNotes(notes) {
 // =====================================================
 function highlightCircleForKey(key) {
     document.querySelectorAll('.circle-segment').forEach(el => el.classList.remove('auto-highlight', 'active'));
-
     const majorSeg = document.getElementById(`seg-major-${key}`);
     if (majorSeg) majorSeg.classList.add('auto-highlight');
-
     selectKey(key);
 }
 

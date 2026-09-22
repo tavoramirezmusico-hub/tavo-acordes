@@ -196,43 +196,88 @@
         </button>
       </div>
 
-      <!-- LEYENDA DE COLORES -->
-      <div class="scale-legend">
-        <div class="legend-title">🎨 Leyenda de colores (función de cada nota):</div>
-        <div class="legend-items">
-          <div class="legend-item">
-            <span class="legend-color" style="background: var(--root-color);"></span>
-            <div class="legend-text">
-              <strong>Raíz (1)</strong>
-              <span>Nota que da nombre a la escala. Centro tonal.</span>
+      <!-- LEYENDA DE COLORES MEJORADA -->
+      <div class="scale-legend-new">
+        <div class="legend-header">
+          <h4>🎨 ¿Qué significa cada color?</h4>
+          <p>Cada nota de la escala se colorea según su <strong>función</strong> dentro del acorde. Míralo con un
+            ejemplo real:</p>
+        </div>
+
+        <div class="legend-main">
+          <!-- Leyenda de colores -->
+          <div class="legend-items-new">
+            <div class="legend-item-new">
+              <div class="legend-color-big" style="background: var(--root-color);">
+                <span>1</span>
+              </div>
+              <div class="legend-info">
+                <strong>Raíz (1) · Naranja</strong>
+                <p>La nota que da nombre a la escala. Es el centro tonal, el punto de reposo.</p>
+                <small>Ejemplo: en <strong>C</strong> mayor, la raíz es <strong>C</strong>.</small>
+              </div>
+            </div>
+
+            <div class="legend-item-new">
+              <div class="legend-color-big" style="background: var(--third-color);">
+                <span>3</span>
+              </div>
+              <div class="legend-info">
+                <strong>3ª (b3 o 3) · Azul</strong>
+                <p>Define si la escala es mayor o menor. Es la nota que da el "carácter" emocional.</p>
+                <small>Ejemplo: en <strong>C</strong> mayor, la 3ª es <strong>E</strong>. En C menor, sería Eb.</small>
+              </div>
+            </div>
+
+            <div class="legend-item-new">
+              <div class="legend-color-big" style="background: var(--fifth-color);">
+                <span>5</span>
+              </div>
+              <div class="legend-info">
+                <strong>5ª (b5, 5, #5) · Verde</strong>
+                <p>Nota de estabilidad y consonancia. La 5ª justa es la más consonante después de la raíz.</p>
+                <small>Ejemplo: en <strong>C</strong> mayor, la 5ª es <strong>G</strong>.</small>
+              </div>
+            </div>
+
+            <div class="legend-item-new">
+              <div class="legend-color-big" style="background: var(--seventh-color);">
+                <span>7</span>
+              </div>
+              <div class="legend-info">
+                <strong>7ª (b7 o 7) · Morado</strong>
+                <p>Define el tipo de acorde: 7ª mayor (sonido suave, jazz) o 7ª menor (sonido blues, dominante).</p>
+                <small>Ejemplo: en <strong>C</strong> mayor, la 7ª mayor es <strong>B</strong>; la 7ª menor sería
+                  Bb.</small>
+              </div>
+            </div>
+
+            <div class="legend-item-new">
+              <div class="legend-color-big" style="background: var(--tension-color);">
+                <span>2</span>
+              </div>
+              <div class="legend-info">
+                <strong>2ª, 4ª, 6ª · Gris</strong>
+                <p>Notas de color (tensiones). Aportan sabor sin definir si el acorde es mayor o menor.</p>
+                <small>Ejemplo: en <strong>C</strong> mayor, las tensiones son <strong>D</strong> (2ª),
+                  <strong>F</strong> (4ª) y <strong>A</strong> (6ª).</small>
+              </div>
             </div>
           </div>
-          <div class="legend-item">
-            <span class="legend-color" style="background: var(--third-color);"></span>
-            <div class="legend-text">
-              <strong>3ª (b3 o 3)</strong>
-              <span>Define si es mayor (3) o menor (b3). Da el carácter.</span>
-            </div>
-          </div>
-          <div class="legend-item">
-            <span class="legend-color" style="background: var(--fifth-color);"></span>
-            <div class="legend-text">
-              <strong>5ª (b5, 5, #5)</strong>
-              <span>Nota de estabilidad. La 5ª justa es la más consonante tras la raíz.</span>
-            </div>
-          </div>
-          <div class="legend-item">
-            <span class="legend-color" style="background: var(--seventh-color);"></span>
-            <div class="legend-text">
-              <strong>7ª (b7 o 7)</strong>
-              <span>Define el tipo de acorde: 7ª mayor (maj7) o menor (7).</span>
-            </div>
-          </div>
-          <div class="legend-item">
-            <span class="legend-color" style="background: var(--tension-color);"></span>
-            <div class="legend-text">
-              <strong>Tensiones (2, 4, 6)</strong>
-              <span>Notas de color: 2ª, 4ª, 6ª. Aportan sabor sin definir el acorde.</span>
+
+          <!-- Ejemplo visual: escala de C mayor -->
+          <div class="legend-example">
+            <div class="legend-example-title">📍 Así se ve la <strong>escala de C mayor</strong> con los colores
+              aplicados:</div>
+            <div id="legend-example-fretboard" class="legend-example-fretboard"></div>
+            <div class="legend-example-notes">
+              <span class="note-pill" style="background: var(--root-color);">C · 1 (raíz)</span>
+              <span class="note-pill" style="background: var(--tension-color);">D · 2</span>
+              <span class="note-pill" style="background: var(--third-color);">E · 3</span>
+              <span class="note-pill" style="background: var(--tension-color);">F · 4</span>
+              <span class="note-pill" style="background: var(--fifth-color);">G · 5</span>
+              <span class="note-pill" style="background: var(--tension-color);">A · 6</span>
+              <span class="note-pill" style="background: var(--seventh-color);">B · 7</span>
             </div>
           </div>
         </div>
@@ -369,7 +414,7 @@
       </div>
     </section>
 
-    <!-- 15. LECCIONES INTERACTIVAS (FASE 4) -->
+    <!-- 15. LECCIONES INTERACTIVAS -->
     <section id="lecciones" class="card">
       <h2>📚 Lecciones Interactivas</h2>
       <div id="lessons-content">
@@ -378,7 +423,7 @@
       </div>
     </section>
 
-    <!-- 16. PRÁCTICA GUIADA (FASE 4) -->
+    <!-- 16. PRÁCTICA GUIADA -->
     <section id="practica" class="card">
       <h2>🎯 Práctica Guiada</h2>
       <div id="practice-content">
@@ -395,3 +440,5 @@
 
   <script src="script.js"></script>
 </body>
+
+</html>
