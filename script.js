@@ -1,5 +1,5 @@
 // =====================================================
-// TAVO ACORDES - SCRIPT PRINCIPAL v13 (Fase 5)
+// TAVO ACORDES - SCRIPT PRINCIPAL v13.1 (Fase 5 corregido)
 // =====================================================
 
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -83,7 +83,7 @@ const MODE_INFO = {
 };
 
 // =====================================================
-// LECCIONES (resumidas - todas las 10)
+// LECCIONES
 // =====================================================
 const LESSONS_DB = [
     { id: 'intervalos', icon: '🎵', title: 'Los intervalos', subtitle: 'Las distancias entre notas', content: '<p>Un <strong>intervalo</strong> es la distancia entre dos notas. Se mide en semitonos (1 traste = 1 semitono).</p><ul><li><strong>3ª mayor:</strong> Do → Mi. Alegre.</li><li><strong>3ª menor:</strong> Do → Mib. Melancólico.</li><li><strong>5ª justa:</strong> Do → Sol. Muy consonante.</li><li><strong>Octava:</strong> Do → Do agudo. Misma nota.</li></ul><p><strong>Clave:</strong> la 3ª define si un acorde es mayor o menor.</p>', exampleNotes: ['C', 'E', 'G', 'B'], exampleTitle: 'Intervalos de C mayor', exercise: 'Toca cada intervalo en el mástil: la 3ª mayor está 4 trastes arriba.' },
@@ -151,8 +151,6 @@ let currentChordData = null;
 let progressionChords = [];
 let cagedActive = false;
 let openLessonId = null;
-
-// Práctica
 let currentExercise = null;
 let exerciseState = null;
 let practiceStats = null;
@@ -609,7 +607,6 @@ function updateScaleForChord(chordData) {
     drawScaleFretboard('scale-fretboard', scaleNotes, scaleRootIndex);
 }
 
-// Dibuja mástil con colores por función
 function drawScaleFretboard(containerId, scaleNotes, rootIndex) {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -722,7 +719,6 @@ function updateModeInfo() {
         <p><strong>Uso:</strong> ${data.uso}</p>
     `;
 
-    // Leyenda específica para modos
     const legendBox = document.getElementById('mode-legend');
     if (legendBox) {
         legendBox.innerHTML = `
@@ -1445,7 +1441,6 @@ function renderPracticeMenu() {
         container.appendChild(btn);
     });
 
-    // Botón de reiniciar stats
     const resetBtn = document.createElement('button');
     resetBtn.className = 'reset-stats-btn';
     resetBtn.textContent = '🗑️ Reiniciar estadísticas';
@@ -1462,7 +1457,6 @@ function renderPracticeMenu() {
 function startExercise(typeId) {
     currentExercise = typeId;
 
-    // Marcar botón activo
     document.querySelectorAll('.practice-menu-btn').forEach(btn => btn.classList.remove('active'));
     const btns = document.querySelectorAll('.practice-menu-btn');
     EXERCISE_TYPES.forEach((ex, i) => {
@@ -1476,7 +1470,6 @@ function generateExercise() {
     const container = document.getElementById('practice-exercise');
     if (!container || !currentExercise) return;
 
-    // Generar pregunta aleatoria según el tipo
     let question, options, correctIndex, explanation;
 
     if (currentExercise === 'intervalos') {
@@ -1489,13 +1482,21 @@ function generateExercise() {
 
         question = `¿Qué intervalo hay entre <strong>${rootNote}</strong> y <strong>${secondNote}</strong>?`;
 
-        const wrongOptions = ALL_INTERVALS
+        const nearbySemitones = ALL_INTERVALS
             .filter(i => i.semitones !== intervalSemitones)
             .sort(() => 0.5 - Math.random())
             .slice(0, 3);
 
-        options = [correctInterval, ...wrongOptions].sort(() => 0.5 - Math.random());
-        correctIndex = options.indexOf(correctInterval);
+        // ✅ CORREGIDO: usar .name en lugar del objeto
+        const allOptions = [
+            correctInterval.name,
+            nearbySemitones[0].name,
+            nearbySemitones[1].name,
+            nearbySemitones[2].name
+        ];
+
+        options = allOptions.sort(() => 0.5 - Math.random());
+        correctIndex = options.indexOf(correctInterval.name);
         explanation = `${rootNote} → ${secondNote} = ${intervalSemitones} semitonos = ${correctInterval.name}`;
 
     } else if (currentExercise === 'terceras') {
@@ -1544,7 +1545,6 @@ function generateExercise() {
         explanation = `${chord}: raíz + ${isMinor ? '3ª menor' : '3ª mayor'} + 5ª justa${(is7 || isMaj7 || isM7) ? ' + 7ª' : ''}`;
 
     } else if (currentExercise === 'funciones') {
-        const keyRoot = 'C';
         const tones = ['C', 'Dm', 'Em', 'F', 'G7', 'Am'];
         const functions = ['Tónica (I)', 'Subdominante (ii)', 'Mediante (iii)', 'Subdominante (IV)', 'Dominante (V7)', 'Submediante (vi)'];
         const idx = Math.floor(Math.random() * tones.length);
@@ -1583,7 +1583,6 @@ function generateExercise() {
         explanation = `La raíz es ${rootNote} porque el acorde se llama ${chord}`;
     }
 
-    // Guardar estado del ejercicio
     exerciseState = {
         type: currentExercise,
         question: question,
@@ -1635,7 +1634,6 @@ function renderExercise() {
 
     container.innerHTML = html;
 
-    // Si ya está respondido, marcar visualmente las opciones
     if (exerciseState.answered) {
         const options = container.querySelectorAll('.exercise-option');
         options.forEach((opt, i) => {
@@ -1661,7 +1659,6 @@ function checkAnswer(index) {
         practiceStats.streak = 0;
     }
 
-    // Stats por tipo de ejercicio
     if (!practiceStats.byExercise[exerciseState.type]) {
         practiceStats.byExercise[exerciseState.type] = { correct: 0, wrong: 0 };
     }
