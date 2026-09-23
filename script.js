@@ -1,5 +1,6 @@
 // =====================================================
-// TAVO ACORDES - SCRIPT PRINCIPAL v13.1 (Fase 5 corregido)
+// TAVO ACORDES - SCRIPT PRINCIPAL v14.0
+// Base de datos expandida (~180 acordes) + inversiones
 // =====================================================
 
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -99,34 +100,229 @@ const LESSONS_DB = [
 ];
 
 // =====================================================
-// BASE DE DATOS DE ACORDES
+// BASE DE DATOS DE ACORDES (EXPANDIDA ~180 acordes)
 // =====================================================
 const CHORD_DB = {
-    'C': [0, 3, 2, 0, 1, 0], 'C#': [null, 4, 6, 6, 6, 4], 'D': [null, null, 0, 2, 3, 2],
-    'D#': [null, 6, 8, 8, 8, 6], 'E': [0, 2, 2, 1, 0, 0], 'F': [1, 3, 3, 2, 1, 1],
-    'F#': [2, 4, 4, 3, 2, 2], 'G': [3, 2, 0, 0, 0, 3], 'G#': [4, 6, 6, 5, 4, 4],
-    'A': [null, 0, 2, 2, 2, 0], 'A#': [null, 1, 3, 3, 3, 1], 'B': [null, 2, 4, 4, 4, 2],
-    'Cm': [null, 3, 5, 5, 4, 3], 'C#m': [null, 4, 6, 6, 5, 4], 'Dm': [null, null, 0, 2, 3, 1],
-    'D#m': [null, 6, 8, 8, 7, 6], 'Em': [0, 2, 2, 0, 0, 0], 'Fm': [1, 3, 3, 1, 1, 1],
-    'F#m': [2, 4, 4, 2, 2, 2], 'Gm': [3, 5, 5, 3, 3, 3], 'G#m': [4, 6, 6, 4, 4, 4],
-    'Am': [null, 0, 2, 2, 1, 0], 'A#m': [null, 1, 3, 3, 2, 1], 'Bm': [null, 2, 4, 4, 3, 2],
-    'C7': [null, 3, 2, 3, 1, 0], 'D7': [null, null, 0, 2, 1, 2], 'E7': [0, 2, 0, 1, 0, 0],
-    'F7': [1, 3, 1, 2, 1, 1], 'G7': [3, 2, 0, 0, 0, 1], 'A7': [null, 0, 2, 0, 2, 0], 'B7': [null, 2, 1, 2, 0, 2],
-    'Cmaj7': [null, 3, 2, 0, 0, 0], 'Dmaj7': [null, null, 0, 2, 2, 2], 'Emaj7': [0, 2, 1, 1, 0, 0],
-    'Fmaj7': [1, 3, 2, 2, 1, 0], 'Gmaj7': [3, 2, 0, 0, 0, 2], 'Amaj7': [null, 0, 2, 1, 2, 0], 'Bmaj7': [null, 2, 4, 3, 4, 2],
-    'Cm7': [null, 3, 5, 3, 4, 3], 'Dm7': [null, null, 0, 2, 1, 1], 'Em7': [0, 2, 0, 0, 0, 0],
-    'Fm7': [1, 3, 1, 1, 1, 1], 'Gm7': [3, 5, 3, 3, 3, 3], 'Am7': [null, 0, 2, 0, 1, 0], 'Bm7': [null, 2, 0, 2, 0, 2],
-    'Csus2': [null, 3, 0, 0, 1, 3], 'Csus4': [null, 3, 3, 0, 1, 1], 'Dsus2': [null, null, 0, 2, 3, 0],
-    'Dsus4': [null, null, 0, 2, 3, 3], 'Esus4': [0, 2, 2, 2, 0, 0], 'Gsus4': [3, 3, 0, 0, 1, 3],
-    'Asus2': [null, 0, 2, 2, 0, 0], 'Asus4': [null, 0, 2, 2, 3, 0],
-    'Cdim': [null, 3, 4, 5, 4, null], 'Ddim': [null, null, 0, 1, 3, 1], 'Edim': [0, 1, 2, 0, null, null],
-    'Caug': [null, 3, 2, 1, 1, 0], 'Eaug': [0, 3, 2, 1, 1, 0],
-    'C6': [null, 3, 2, 2, 1, 0], 'E6': [0, 2, 2, 1, 2, 0], 'G6': [3, 2, 0, 0, 0, 0], 'A6': [null, 0, 2, 2, 2, 2],
-    'Cm7b5': [null, 3, 4, 3, 4, null], 'Dm7b5': [null, null, 0, 1, 1, 1],
-    'Cadd9': [null, 3, 2, 0, 3, 0], 'Dadd9': [null, null, 0, 2, 3, 0], 'Eadd9': [0, 2, 2, 1, 0, 2],
-    'Gadd9': [3, 2, 0, 2, 0, 3], 'Aadd9': [null, 0, 2, 4, 2, 0],
-    'C9': [null, 3, 2, 3, 3, null], 'D9': [null, null, 0, 2, 1, 0], 'E9': [0, 2, 0, 1, 0, 2],
-    'G9': [3, 2, 0, 2, 0, 1], 'A9': [null, 0, 2, 0, 2, 2],
+    // ===== MAYORES =====
+    'C': [0, 3, 2, 0, 1, 0], 'C#': [null, 4, 6, 6, 6, 4], 'Db': [null, 4, 6, 6, 6, 4],
+    'D': [null, null, 0, 2, 3, 2], 'D#': [null, 6, 8, 8, 8, 6], 'Eb': [null, 6, 8, 8, 8, 6],
+    'E': [0, 2, 2, 1, 0, 0], 'F': [1, 3, 3, 2, 1, 1], 'F#': [2, 4, 4, 3, 2, 2],
+    'Gb': [2, 4, 4, 3, 2, 2], 'G': [3, 2, 0, 0, 0, 3], 'G#': [4, 6, 6, 5, 4, 4],
+    'Ab': [4, 6, 6, 5, 4, 4], 'A': [null, 0, 2, 2, 2, 0], 'A#': [null, 1, 3, 3, 3, 1],
+    'Bb': [null, 1, 3, 3, 3, 1], 'B': [null, 2, 4, 4, 4, 2],
+
+    // ===== MENORES =====
+    'Cm': [null, 3, 5, 5, 4, 3], 'C#m': [null, 4, 6, 6, 5, 4], 'Dbm': [null, 4, 6, 6, 5, 4],
+    'Dm': [null, null, 0, 2, 3, 1], 'D#m': [null, 6, 8, 8, 7, 6], 'Ebm': [null, 6, 8, 8, 7, 6],
+    'Em': [0, 2, 2, 0, 0, 0], 'Fm': [1, 3, 3, 1, 1, 1], 'F#m': [2, 4, 4, 2, 2, 2],
+    'Gbm': [2, 4, 4, 2, 2, 2], 'Gm': [3, 5, 5, 3, 3, 3], 'G#m': [4, 6, 6, 4, 4, 4],
+    'Abm': [4, 6, 6, 4, 4, 4], 'Am': [null, 0, 2, 2, 1, 0], 'A#m': [null, 1, 3, 3, 2, 1],
+    'Bbm': [null, 1, 3, 3, 2, 1], 'Bm': [null, 2, 4, 4, 3, 2],
+
+    // ===== DOMINANTES 7 =====
+    'C7': [null, 3, 2, 3, 1, 0], 'C#7': [null, 4, 6, 4, 6, 4], 'Db7': [null, 4, 6, 4, 6, 4],
+    'D7': [null, null, 0, 2, 1, 2], 'D#7': [null, 6, 8, 6, 8, 6], 'Eb7': [null, 6, 8, 6, 8, 6],
+    'E7': [0, 2, 0, 1, 0, 0], 'F7': [1, 3, 1, 2, 1, 1], 'F#7': [2, 4, 2, 3, 2, 2],
+    'Gb7': [2, 4, 2, 3, 2, 2], 'G7': [3, 2, 0, 0, 0, 1], 'G#7': [4, 6, 4, 5, 4, 4],
+    'Ab7': [4, 6, 4, 5, 4, 4], 'A7': [null, 0, 2, 0, 2, 0], 'A#7': [null, 1, 3, 1, 3, 1],
+    'Bb7': [null, 1, 3, 1, 3, 1], 'B7': [null, 2, 1, 2, 0, 2],
+
+    // ===== MAJ7 =====
+    'Cmaj7': [null, 3, 2, 0, 0, 0], 'C#maj7': [null, 4, 6, 5, 6, 4], 'Dbmaj7': [null, 4, 6, 5, 6, 4],
+    'Dmaj7': [null, null, 0, 2, 2, 2], 'D#maj7': [null, 6, 8, 7, 8, 6], 'Ebmaj7': [null, 6, 8, 7, 8, 6],
+    'Emaj7': [0, 2, 1, 1, 0, 0], 'Fmaj7': [1, 3, 2, 2, 1, 0], 'F#maj7': [2, 4, 3, 3, 2, 2],
+    'Gbmaj7': [2, 4, 3, 3, 2, 2], 'Gmaj7': [3, 2, 0, 0, 0, 2], 'G#maj7': [4, 6, 5, 5, 4, 4],
+    'Abmaj7': [4, 6, 5, 5, 4, 4], 'Amaj7': [null, 0, 2, 1, 2, 0], 'A#maj7': [null, 1, 3, 2, 3, 1],
+    'Bbmaj7': [null, 1, 3, 2, 3, 1], 'Bmaj7': [null, 2, 4, 3, 4, 2],
+
+    // ===== m7 =====
+    'Cm7': [null, 3, 5, 3, 4, 3], 'C#m7': [null, 4, 6, 4, 5, 4], 'Dbm7': [null, 4, 6, 4, 5, 4],
+    'Dm7': [null, null, 0, 2, 1, 1], 'D#m7': [null, 6, 8, 6, 7, 6], 'Ebm7': [null, 6, 8, 6, 7, 6],
+    'Em7': [0, 2, 0, 0, 0, 0], 'Fm7': [1, 3, 1, 1, 1, 1], 'F#m7': [2, 4, 2, 2, 2, 2],
+    'Gbm7': [2, 4, 2, 2, 2, 2], 'Gm7': [3, 5, 3, 3, 3, 3], 'G#m7': [4, 6, 4, 4, 4, 4],
+    'Abm7': [4, 6, 4, 4, 4, 4], 'Am7': [null, 0, 2, 0, 1, 0], 'A#m7': [null, 1, 3, 1, 2, 1],
+    'Bbm7': [null, 1, 3, 1, 2, 1], 'Bm7': [null, 2, 0, 2, 0, 2],
+
+    // ===== m7b5 (semidisminuidos) =====
+    'Cm7b5': [null, 3, 4, 3, 4, null], 'C#m7b5': [null, 4, 5, 4, 5, null],
+    'Dm7b5': [null, null, 0, 1, 1, 1], 'D#m7b5': [null, 6, 7, 6, 7, null],
+    'Em7b5': [0, 1, 2, 0, 3, null], 'Fm7b5': [1, 2, 3, 1, 4, null],
+    'F#m7b5': [2, 3, 4, 2, 5, null], 'Gm7b5': [3, 4, 5, 3, 6, null],
+    'G#m7b5': [4, 5, 6, 4, 7, null], 'Am7b5': [null, 0, 1, 0, 1, null],
+    'A#m7b5': [null, 1, 2, 1, 2, null], 'Bm7b5': [null, 2, 3, 2, 3, null],
+
+    // ===== SUS2 =====
+    'Csus2': [null, 3, 0, 0, 1, 3], 'C#sus2': [null, 4, 6, 6, 4, 4], 'Dsus2': [null, null, 0, 2, 3, 0],
+    'D#sus2': [null, 6, 8, 8, 6, 6], 'Esus2': [0, 2, 4, 4, 0, 0], 'Fsus2': [1, 3, 3, 0, 1, 1],
+    'F#sus2': [2, 4, 4, 1, 2, 2], 'Gsus2': [3, 0, 0, 0, 3, 3], 'G#sus2': [4, 6, 6, 3, 4, 4],
+    'Asus2': [null, 0, 2, 2, 0, 0], 'A#sus2': [null, 1, 3, 3, 1, 1], 'Bsus2': [null, 2, 4, 4, 2, 2],
+
+    // ===== SUS4 =====
+    'Csus4': [null, 3, 3, 0, 1, 1], 'C#sus4': [null, 4, 6, 6, 7, 4], 'Dsus4': [null, null, 0, 2, 3, 3],
+    'D#sus4': [null, 6, 8, 8, 9, 6], 'Esus4': [0, 2, 2, 2, 0, 0], 'Fsus4': [1, 3, 3, 3, 1, 1],
+    'F#sus4': [2, 4, 4, 4, 2, 2], 'Gsus4': [3, 3, 0, 0, 1, 3], 'G#sus4': [4, 6, 6, 6, 4, 4],
+    'Asus4': [null, 0, 2, 2, 3, 0], 'A#sus4': [null, 1, 3, 3, 4, 1], 'Bsus4': [null, 2, 4, 4, 5, 2],
+
+    // ===== 6 =====
+    'C6': [null, 3, 2, 2, 1, 0], 'C#6': [null, 4, 6, 6, 6, 6], 'D6': [null, null, 0, 2, 0, 2],
+    'D#6': [null, 6, 8, 8, 8, 8], 'E6': [0, 2, 2, 1, 2, 0], 'F6': [1, 3, 3, 2, 3, 1],
+    'F#6': [2, 4, 4, 3, 4, 2], 'G6': [3, 2, 0, 0, 0, 0], 'G#6': [4, 6, 6, 5, 6, 4],
+    'A6': [null, 0, 2, 2, 2, 2], 'A#6': [null, 1, 3, 3, 3, 3], 'B6': [null, 2, 4, 4, 4, 4],
+
+    // ===== m6 =====
+    'Cm6': [null, 3, 5, 5, 4, 5], 'C#m6': [null, 4, 6, 6, 5, 6], 'Dm6': [null, null, 0, 2, 0, 1],
+    'D#m6': [null, 6, 8, 8, 7, 8], 'Em6': [0, 2, 2, 0, 2, 0], 'Fm6': [1, 3, 3, 1, 3, 1],
+    'F#m6': [2, 4, 4, 2, 4, 2], 'Gm6': [3, 5, 5, 3, 5, 3], 'G#m6': [4, 6, 6, 4, 6, 4],
+    'Am6': [null, 0, 2, 2, 1, 2], 'A#m6': [null, 1, 3, 3, 2, 3], 'Bm6': [null, 2, 4, 4, 3, 4],
+
+    // ===== dim =====
+    'Cdim': [null, 3, 4, 5, 4, null], 'C#dim': [null, 4, 5, 6, 5, null], 'Ddim': [null, null, 0, 1, 3, 1],
+    'D#dim': [null, 6, 7, 8, 7, null], 'Edim': [0, 1, 2, 0, null, null], 'Fdim': [1, 2, 3, 1, null, null],
+    'F#dim': [2, 3, 4, 2, null, null], 'Gdim': [3, 4, 5, 3, null, null], 'G#dim': [4, 5, 6, 4, null, null],
+    'Adim': [null, 0, 1, 2, 1, null], 'A#dim': [null, 1, 2, 3, 2, null], 'Bdim': [null, 2, 3, 4, 3, null],
+
+    // ===== dim7 =====
+    'Cdim7': [null, 3, 4, 2, 4, null], 'C#dim7': [null, 4, 5, 3, 5, null], 'Ddim7': [null, null, 0, 1, 0, 1],
+    'D#dim7': [null, 6, 7, 5, 7, null], 'Edim7': [0, 1, 2, 0, 2, 0], 'Fdim7': [1, 2, 3, 1, 3, 1],
+    'F#dim7': [2, 3, 4, 2, 4, 2], 'Gdim7': [3, 4, 5, 3, 5, 3], 'G#dim7': [4, 5, 6, 4, 6, 4],
+    'Adim7': [null, 0, 1, 2, 1, 2], 'A#dim7': [null, 1, 2, 3, 2, 3], 'Bdim7': [null, 2, 3, 4, 3, 4],
+
+    // ===== aug =====
+    'Caug': [null, 3, 2, 1, 1, 0], 'C#aug': [null, 4, 3, 2, 2, 1], 'Daug': [null, null, 0, 3, 3, 2],
+    'D#aug': [null, 6, 5, 4, 4, 3], 'Eaug': [0, 3, 2, 1, 1, 0], 'Faug': [1, 4, 3, 2, 2, 1],
+    'F#aug': [2, 5, 4, 3, 3, 2], 'Gaug': [3, 6, 5, 4, 4, 3], 'G#aug': [4, 7, 6, 5, 5, 4],
+    'Aaug': [null, 0, 3, 2, 2, 1], 'A#aug': [null, 1, 4, 3, 3, 2], 'Baug': [null, 2, 5, 4, 4, 3],
+
+    // ===== add9 =====
+    'Cadd9': [null, 3, 2, 0, 3, 0], 'C#add9': [null, 4, 6, 6, 4, 4], 'Dadd9': [null, null, 0, 2, 3, 0],
+    'D#add9': [null, 6, 8, 8, 6, 6], 'Eadd9': [0, 2, 2, 1, 0, 2], 'Fadd9': [1, 3, 3, 2, 1, 3],
+    'F#add9': [2, 4, 4, 3, 2, 4], 'Gadd9': [3, 2, 0, 2, 0, 3], 'G#add9': [4, 6, 6, 5, 4, 6],
+    'Aadd9': [null, 0, 2, 4, 2, 0], 'A#add9': [null, 1, 3, 5, 3, 1], 'Badd9': [null, 2, 4, 6, 4, 2],
+
+    // ===== madd9 =====
+    'Cmadd9': [null, 3, 5, 5, 3, 3], 'Dmadd9': [null, null, 0, 2, 3, 0], 'Emadd9': [0, 2, 2, 0, 0, 2],
+    'Fmadd9': [1, 3, 3, 1, 1, 3], 'Gmadd9': [3, 5, 5, 3, 3, 5], 'Amadd9': [null, 0, 2, 2, 1, 0],
+    'Bmadd9': [null, 2, 4, 4, 3, 2],
+
+    // ===== 9 =====
+    'C9': [null, 3, 2, 3, 3, null], 'C#9': [null, 4, 6, 4, 6, 6], 'D9': [null, null, 0, 2, 1, 0],
+    'D#9': [null, 6, 8, 6, 8, 8], 'E9': [0, 2, 0, 1, 0, 2], 'F9': [1, 3, 1, 2, 1, 3],
+    'F#9': [2, 4, 2, 3, 2, 4], 'G9': [3, 2, 0, 2, 0, 1], 'G#9': [4, 6, 4, 5, 4, 6],
+    'A9': [null, 0, 2, 0, 2, 2], 'A#9': [null, 1, 3, 1, 3, 3], 'B9': [null, 2, 1, 2, 2, 2],
+
+    // ===== maj9 =====
+    'Cmaj9': [null, 3, 0, 0, 0, 0], 'Dmaj9': [null, null, 0, 2, 2, 0], 'Emaj9': [0, 2, 1, 1, 0, 2],
+    'Fmaj9': [1, 3, 0, 2, 1, 0], 'Gmaj9': [3, 2, 0, 2, 0, 2], 'Amaj9': [null, 0, 2, 1, 2, 2],
+    'Bmaj9': [null, 2, 4, 3, 4, 4],
+
+    // ===== m9 =====
+    'Cm9': [null, 3, 5, 3, 3, 3], 'Dm9': [null, null, 0, 2, 1, 0], 'Em9': [0, 2, 0, 0, 0, 2],
+    'Fm9': [1, 3, 1, 1, 1, 3], 'Gm9': [3, 5, 3, 3, 3, 5], 'Am9': [null, 0, 2, 0, 1, 0],
+    'Bm9': [null, 2, 0, 2, 0, 2],
+
+    // ===== 7b9 =====
+    'C7b9': [null, 3, 2, 3, 2, null], 'D7b9': [null, null, 0, 2, 1, 1], 'E7b9': [0, 2, 0, 1, 0, 1],
+    'F7b9': [1, 3, 1, 2, 1, 2], 'G7b9': [3, 2, 0, 1, 0, 1], 'A7b9': [null, 0, 2, 0, 2, 1],
+    'B7b9': [null, 2, 1, 2, 1, 2],
+
+    // ===== 7#9 =====
+    'C7#9': [null, 3, 2, 3, 4, null], 'D7#9': [null, null, 0, 2, 1, 4], 'E7#9': [0, 2, 0, 1, 3, 0],
+    'F7#9': [1, 3, 1, 2, 4, 1], 'G7#9': [3, 2, 0, 3, 0, 1], 'A7#9': [null, 0, 2, 0, 2, 3],
+    'B7#9': [null, 2, 1, 2, 4, 2],
+
+    // ===== 13 =====
+    'C13': [null, 3, 2, 3, 5, null], 'D13': [null, null, 0, 2, 1, 2], 'E13': [0, 2, 0, 1, 2, 0],
+    'F13': [1, 3, 1, 2, 3, 1], 'G13': [3, 2, 0, 2, 0, 1], 'A13': [null, 0, 2, 0, 2, 2],
+    'B13': [null, 2, 1, 2, 2, 2],
+
+    // ===== 7b5 =====
+    'C7b5': [null, 3, 2, 3, 2, 1], 'D7b5': [null, null, 0, 2, 1, 0], 'E7b5': [0, 2, 0, 1, 3, 0],
+    'F7b5': [1, 3, 1, 2, 2, 1], 'G7b5': [3, 2, 0, 3, 0, 1], 'A7b5': [null, 0, 2, 0, 3, 0],
+    'B7b5': [null, 2, 1, 2, 4, 2],
+
+    // ===== 7#5 =====
+    'C7#5': [null, 3, 2, 3, 1, 2], 'D7#5': [null, null, 0, 2, 1, 3], 'E7#5': [0, 2, 0, 1, 2, 3],
+    'F7#5': [1, 3, 1, 2, 4, 2], 'G7#5': [3, 2, 0, 3, 3, 1], 'A7#5': [null, 0, 2, 0, 2, 3],
+    'B7#5': [null, 2, 1, 2, 4, 4],
+
+    // ===== 7sus4 =====
+    'C7sus4': [null, 3, 3, 3, 1, 1], 'D7sus4': [null, null, 0, 2, 1, 3], 'E7sus4': [0, 2, 0, 2, 0, 0],
+    'F7sus4': [1, 3, 1, 3, 1, 1], 'G7sus4': [3, 3, 0, 0, 1, 1], 'A7sus4': [null, 0, 2, 0, 3, 0],
+    'B7sus4': [null, 2, 4, 2, 0, 0],
+
+    // ===== 5 (Power) =====
+    'C5': [null, 3, 5, 5, null, null], 'D5': [null, null, 0, 2, 3, null],
+    'E5': [0, 2, 2, null, null, null], 'F5': [1, 3, 3, null, null, null],
+    'G5': [3, 5, 5, null, null, null], 'A5': [null, 0, 2, 2, null, null],
+    'B5': [null, 2, 4, 4, null, null],
+
+    // ===== INVERSIONES Y BAJOS ALTERNATIVOS =====
+    // C con bajo alternativo
+    'C/E': [0, 3, 2, 0, 1, 0], 'C/G': [3, 3, 2, 0, 1, 0],
+    'C/B': [null, 3, 2, 0, 0, 0], 'C/F': [1, 3, 2, 0, 1, 0],
+    'C/A': [null, 0, 2, 0, 1, 0], 'C/D': [null, null, 0, 2, 3, 0],
+
+    // D con bajo alternativo
+    'D/F#': [2, 0, 0, 2, 3, 2], 'D/A': [null, 0, 0, 2, 3, 2],
+    'D/C': [null, 3, 0, 2, 3, 2], 'D/B': [null, 2, 0, 2, 3, 2],
+    'D/G': [3, 0, 0, 2, 3, 2], 'D/E': [0, 0, 0, 2, 3, 2],
+
+    // E con bajo alternativo
+    'E/G#': [4, 2, 2, 1, 0, 0], 'E/B': [null, 2, 2, 1, 0, 0],
+    'E/D': [null, 2, 2, 1, 0, 0], 'E/C#': [null, 4, 2, 1, 0, 0],
+    'E/A': [null, 0, 2, 1, 0, 0], 'E/F#': [2, 2, 2, 1, 0, 0],
+
+    // F con bajo alternativo
+    'F/A': [null, 0, 3, 2, 1, 1], 'F/C': [null, 3, 3, 2, 1, 1],
+    'F/E': [0, 3, 3, 2, 1, 1], 'F/D': [null, null, 0, 2, 1, 1],
+    'F/G': [3, 3, 3, 2, 1, 1], 'F/Bb': [null, 1, 3, 2, 1, 1],
+
+    // G con bajo alternativo
+    'G/B': [null, 2, 0, 0, 0, 3], 'G/D': [null, null, 0, 0, 0, 3],
+    'G/F': [1, 2, 0, 0, 0, 3], 'G/E': [0, 2, 0, 0, 0, 3],
+    'G/A': [null, 0, 0, 0, 0, 3], 'G/C': [null, 3, 0, 0, 0, 3],
+
+    // A con bajo alternativo
+    'A/C#': [null, 4, 2, 2, 2, 0], 'A/E': [0, 0, 2, 2, 2, 0],
+    'A/G': [3, 0, 2, 2, 2, 0], 'A/F#': [2, 0, 2, 2, 2, 0],
+    'A/B': [null, 2, 2, 2, 2, 0], 'A/D': [null, null, 0, 2, 2, 0],
+
+    // B con bajo alternativo
+    'B/D#': [null, 6, 4, 4, 4, 2], 'B/F#': [2, 2, 4, 4, 4, 2],
+    'B/A': [null, 0, 4, 4, 4, 2], 'B/G#': [4, 2, 4, 4, 4, 2],
+    'B/C#': [null, 4, 4, 4, 4, 2], 'B/E': [0, 2, 4, 4, 4, 2],
+
+    // Inversiones de menores
+    'Am/C': [null, 3, 2, 2, 1, 0], 'Am/E': [0, 0, 2, 2, 1, 0],
+    'Am/G': [3, 0, 2, 2, 1, 0], 'Am/F': [1, 0, 2, 2, 1, 0],
+    'Am/D': [null, null, 0, 2, 1, 0], 'Am/B': [null, 2, 2, 2, 1, 0],
+
+    'Em/G': [3, 2, 2, 0, 0, 0], 'Em/B': [null, 2, 2, 0, 0, 0],
+    'Em/D': [null, null, 0, 0, 0, 0], 'Em/C': [null, 3, 2, 0, 0, 0],
+
+    'Dm/F': [1, null, 0, 2, 3, 1], 'Dm/A': [null, 0, 0, 2, 3, 1],
+    'Dm/C': [null, 3, 0, 2, 3, 1], 'Dm/G': [3, null, 0, 2, 3, 1],
+
+    // Inversiones de séptimas
+    'G7/B': [null, 2, 0, 0, 0, 1], 'G7/F': [1, 2, 0, 0, 0, 1],
+    'D7/F#': [2, null, 0, 2, 1, 2], 'D7/C': [null, 3, 0, 2, 1, 2],
+    'C7/E': [0, 3, 2, 3, 1, 0], 'C7/Bb': [null, 1, 2, 3, 1, 0],
+
+    // Cmaj7 inversiones
+    'Cmaj7/E': [0, 3, 2, 0, 0, 0], 'Cmaj7/B': [null, 2, 2, 0, 0, 0],
+    'Cmaj7/G': [3, 3, 2, 0, 0, 0],
+
+    // Am7 inversiones
+    'Am7/G': [3, 0, 2, 0, 1, 0], 'Am7/C': [null, 3, 2, 0, 1, 0],
+    'Am7/E': [0, 0, 2, 0, 1, 0],
+
+    // Fmaj7 inversiones
+    'Fmaj7/A': [null, 0, 3, 2, 1, 0], 'Fmaj7/C': [null, 3, 3, 2, 1, 0],
+    'Fmaj7/E': [0, 3, 2, 2, 1, 0],
+
+    // Dm7 inversiones
+    'Dm7/F': [1, null, 0, 2, 1, 1], 'Dm7/A': [null, 0, 0, 2, 1, 1],
+    'Dm7/C': [null, 3, 0, 2, 1, 1],
 };
 
 const CHORD_POSITIONS = {
@@ -1343,7 +1539,7 @@ function playLessonExample(lessonId) {
 }
 
 // =====================================================
-// PRÁCTICA GUIADA (FASE 5)
+// PRÁCTICA GUIADA
 // =====================================================
 const EXERCISE_TYPES = [
     { id: 'intervalos', title: '🎵 Identifica el intervalo', desc: 'Te damos dos notas, elige el intervalo correcto' },
@@ -1487,7 +1683,6 @@ function generateExercise() {
             .sort(() => 0.5 - Math.random())
             .slice(0, 3);
 
-        // ✅ CORREGIDO: usar .name en lugar del objeto
         const allOptions = [
             correctInterval.name,
             nearbySemitones[0].name,
@@ -2132,11 +2327,15 @@ function analyzeProgressionData(chords) {
     return { key: bestKey, keyRoot, isMinor, chordDegrees, cadence, scale: scaleNotes, substitutions };
 }
 
+// ⭐ ACTUALIZADO: ahora maneja también acordes con bajo tipo C/G
 function extractRoot(chord) {
-    if (chord.length >= 2 && (chord[1] === '#' || chord[1] === 'b')) {
-        if (chord[1] === '#' && NOTES.includes(chord.substring(0, 2))) return chord.substring(0, 2);
+    if (!chord) return 'C';
+    // Si tiene slash (ej: C/G, D/F#), nos quedamos solo con la parte de la izquierda
+    const mainPart = chord.split('/')[0];
+    if (mainPart.length >= 2 && (mainPart[1] === '#' || mainPart[1] === 'b')) {
+        return mainPart.substring(0, 2);
     }
-    return chord[0];
+    return mainPart[0];
 }
 
 function detectCadence(chordDegrees) {
