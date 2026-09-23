@@ -29,19 +29,19 @@
     </div>
     <ul class="menu-list">
       <li><a href="#trastes" onclick="closeMenu()">🔧 Constructor de Acordes</a></li>
+      <li><a href="#buscar" onclick="closeMenu()">🔍 Buscar Acorde</a></li>
       <li><a href="#resultado" onclick="closeMenu()">📊 Detección y Audio</a></li>
       <li><a href="#analisis" onclick="closeMenu()">🎓 Análisis Armónico</a></li>
-      <li><a href="#buscar" onclick="closeMenu()">🔍 Buscar Acorde</a></li>
       <li><a href="#escala" onclick="closeMenu()">🎼 Escala del Acorde</a></li>
-      <li><a href="#que-toco" onclick="closeMenu()">🎯 ¿Qué toco sobre esto?</a></li>
+      <li><a href="#que-toco" onclick="closeMenu()">🎯 ¿Qué toco?</a></li>
       <li><a href="#progresiones" onclick="closeMenu()">🎵 Progresiones</a></li>
+      <li><a href="#dominantes" onclick="closeMenu()">⚡ Dominantes Secundarios</a></li>
       <li><a href="#circulo" onclick="closeMenu()">🎨 Círculo de Quintas</a></li>
       <li><a href="#modos" onclick="closeMenu()">🎓 Modos</a></li>
       <li><a href="#mapa-escalas" onclick="closeMenu()">🗺️ Mapa de Escalas</a></li>
       <li><a href="#modulacion" onclick="closeMenu()">🔄 Modulación</a></li>
-      <li><a href="#dominantes" onclick="closeMenu()">⚡ Dominantes Secundarios</a></li>
-      <li><a href="#analizador" onclick="closeMenu()">🎼 Analizador de Progresiones</a></li>
       <li><a href="#navegador" onclick="closeMenu()">🧭 Navegador de Tonalidades</a></li>
+      <li><a href="#analizador" onclick="closeMenu()">🎼 Analizador de Progresiones</a></li>
       <li><a href="#lecciones" onclick="closeMenu()">📚 Lecciones Interactivas</a></li>
       <li><a href="#practica" onclick="closeMenu()">🎯 Práctica Guiada</a></li>
     </ul>
@@ -57,9 +57,12 @@
 
   <main class="container">
 
-    <!-- 1. SELECCIÓN DE ACORDES -->
+    <!-- 1. CONSTRUCTOR DE ACORDES -->
     <section id="trastes" class="card">
-      <h2>1. Selección de Acordes (Trastes)</h2>
+      <h2>1. Constructor de Acordes</h2>
+      <p style="color:#888; font-size:0.9em; margin-bottom:15px;">
+        Marca dónde va cada dedo en el mástil, o carga un acorde desde el buscador.
+      </p>
       <div class="fretboard-controls">
         <div class="fretboard-visual-container">
           <div class="fretboard-visual"></div>
@@ -68,9 +71,25 @@
       </div>
     </section>
 
-    <!-- 2. DETECCIÓN Y AUDIO -->
+    <!-- 2. BUSCAR ACORDE -->
+    <section id="buscar" class="card">
+      <h2>2. Buscar Acorde</h2>
+      <p style="color:#888; font-size:0.9em; margin-bottom:15px;">
+        Escribe un nombre o pulsa "Mostrar Todos". Al hacer clic, el acorde se carga en el mástil de arriba.
+      </p>
+      <div class="search-box">
+        <input type="text" id="search-input" placeholder="Ej: Am, Cmaj7, G7, F#m7b5...">
+        <button onclick="searchChord()" class="btn-primary">Buscar</button>
+        <button onclick="showAllChords()" class="btn-show">Mostrar Todos</button>
+      </div>
+      <div id="search-results" class="search-results">
+        <p class="empty-state">Escribe un acorde o pulsa "Mostrar Todos" para ver la lista completa.</p>
+      </div>
+    </section>
+
+    <!-- 3. DETECCIÓN Y AUDIO -->
     <section id="resultado" class="card">
-      <h2>2. Detección y Audio</h2>
+      <h2>3. Detección y Audio</h2>
       <div class="result-box">
         <div id="chord-name" class="chord-display">---</div>
         <div id="chord-alternatives" class="alternatives"></div>
@@ -87,30 +106,17 @@
       </div>
     </section>
 
-    <!-- 3. ANÁLISIS ARMÓNICO -->
+    <!-- 4. ANÁLISIS ARMÓNICO -->
     <section id="analisis" class="card">
-      <h2>🎓 Análisis Armónico</h2>
+      <h2>4. Análisis Armónico</h2>
       <div id="analysis-content">
         <p class="empty-state">Toca un acorde para ver su análisis armónico completo.</p>
       </div>
     </section>
 
-    <!-- 4. BUSCAR ACORDE -->
-    <section id="buscar" class="card">
-      <h2>4. Buscar Acorde por Nombre</h2>
-      <div class="search-box">
-        <input type="text" id="search-input" placeholder="Escribe para filtrar... Ej: Am, Cmaj7, G7">
-        <button onclick="searchChord()" class="btn-primary">Buscar</button>
-        <button onclick="showAllChords()" class="btn-show">Mostrar Todos</button>
-      </div>
-      <div id="search-results" class="search-results">
-        <p class="empty-state">Escribe un acorde o pulsa "Mostrar Todos" para ver la lista completa.</p>
-      </div>
-    </section>
-
     <!-- 5. ESCALA DEL ACORDE -->
     <section id="escala" class="card">
-      <h2>5. Escala del Acorde Detectado</h2>
+      <h2>5. Escala del Acorde</h2>
       <div id="scale-info" class="mode-info-box">
         <p class="empty-state">Toca un acorde para ver su escala.</p>
       </div>
@@ -119,12 +125,12 @@
 
     <!-- 6. ¿QUÉ TOCO SOBRE ESTE ACORDE? -->
     <section id="que-toco" class="card">
-      <h2>🎯 ¿Qué toco sobre este acorde?</h2>
+      <h2>6. ¿Qué toco sobre este acorde?</h2>
       <p style="color:#888; font-size:0.9em; margin-bottom:15px;">
         Toca un acorde para recibir sugerencias de escalas, arpegios y notas para improvisar.
       </p>
       <div id="what-to-play-content">
-        <p class="empty-state">Aún no hay un acorde detectado. Toca uno en el mástil para ver las sugerencias.</p>
+        <p class="empty-state">Aún no hay un acorde detectado.</p>
       </div>
     </section>
 
@@ -136,20 +142,34 @@
       </div>
     </section>
 
-    <!-- 8. CÍRCULO DE QUINTAS -->
+    <!-- 8. DOMINANTES SECUNDARIOS -->
+    <section id="dominantes" class="card">
+      <h2>8. Dominantes Secundarios y Tritono</h2>
+      <p style="color:#888; font-size:0.9em; margin-bottom:15px;">
+        Se calculan automáticamente según el acorde que toques en el mástil.
+      </p>
+      <div id="dominant-result" class="dominant-result">
+        <p class="empty-state">Toca un acorde primero.</p>
+      </div>
+    </section>
+
+    <!-- 9. CÍRCULO DE QUINTAS -->
     <section id="circulo" class="card">
-      <h2>8. Círculo de Quintas Interactivo</h2>
+      <h2>9. Círculo de Quintas Interactivo</h2>
       <div class="circle-container">
         <div id="circle-of-fifths" class="circle-svg-container"></div>
         <div id="circle-info" class="circle-info">
-          <p class="empty-state">Selecciona una tonalidad en el círculo o toca un acorde para ver su tonalidad.</p>
+          <p class="empty-state">Selecciona una tonalidad en el círculo o toca un acorde.</p>
         </div>
       </div>
     </section>
 
-    <!-- 9. MODOS -->
+    <!-- 10. MODOS CON COLORES -->
     <section id="modos" class="card">
-      <h2>9. Modos, Usos y Sustituciones</h2>
+      <h2>10. Modos, Usos y Sustituciones</h2>
+      <p style="color:#888; font-size:0.9em; margin-bottom:15px;">
+        Los 7 modos griegos. Los colores muestran la función de cada nota dentro de la escala.
+      </p>
       <div class="modes-container">
         <select id="mode-selector" onchange="updateModeInfo()">
           <option value="jónico">Jónico (Mayor)</option>
@@ -161,6 +181,7 @@
           <option value="locrio">Locrio</option>
         </select>
         <div id="mode-info" class="mode-info-box"></div>
+        <div id="mode-legend" class="mode-legend"></div>
         <div id="mode-fretboard" style="margin-top:15px;"></div>
         <button onclick="playModeScale()" class="btn-primary" style="margin-top:15px;">
           <i class="fas fa-play"></i> Escuchar Escala
@@ -168,9 +189,9 @@
       </div>
     </section>
 
-    <!-- 10. MAPA DE ESCALAS INTERACTIVO -->
+    <!-- 11. MAPA DE ESCALAS -->
     <section id="mapa-escalas" class="card">
-      <h2>🗺️ Mapa de Escalas Interactivo</h2>
+      <h2>11. Mapa de Escalas Interactivo</h2>
       <p style="color:#888; font-size:0.9em; margin-bottom:15px;">
         Explora cualquier escala en todo el mástil. Cambia la tónica, el modo y el sistema de visualización.
       </p>
@@ -196,16 +217,14 @@
         </button>
       </div>
 
-      <!-- LEYENDA DE COLORES MEJORADA -->
+      <!-- LEYENDA DE COLORES -->
       <div class="scale-legend-new">
         <div class="legend-header">
           <h4>🎨 ¿Qué significa cada color?</h4>
-          <p>Cada nota de la escala se colorea según su <strong>función</strong> dentro del acorde. Míralo con un
-            ejemplo real:</p>
+          <p>Cada nota de la escala se colorea según su <strong>función</strong> dentro del acorde.</p>
         </div>
 
         <div class="legend-main">
-          <!-- Leyenda de colores -->
           <div class="legend-items-new">
             <div class="legend-item-new">
               <div class="legend-color-big" style="background: var(--root-color);">
@@ -213,8 +232,8 @@
               </div>
               <div class="legend-info">
                 <strong>Raíz (1) · Naranja</strong>
-                <p>La nota que da nombre a la escala. Es el centro tonal, el punto de reposo.</p>
-                <small>Ejemplo: en <strong>C</strong> mayor, la raíz es <strong>C</strong>.</small>
+                <p>La nota que da nombre a la escala. Centro tonal, punto de reposo.</p>
+                <small>Ej: en <strong>C</strong> mayor, la raíz es <strong>C</strong>.</small>
               </div>
             </div>
 
@@ -224,8 +243,8 @@
               </div>
               <div class="legend-info">
                 <strong>3ª (b3 o 3) · Azul</strong>
-                <p>Define si la escala es mayor o menor. Es la nota que da el "carácter" emocional.</p>
-                <small>Ejemplo: en <strong>C</strong> mayor, la 3ª es <strong>E</strong>. En C menor, sería Eb.</small>
+                <p>Define si es mayor (3) o menor (b3). Da el carácter emocional.</p>
+                <small>Ej: en <strong>C</strong> mayor, la 3ª es <strong>E</strong>. En C menor, sería Eb.</small>
               </div>
             </div>
 
@@ -235,8 +254,8 @@
               </div>
               <div class="legend-info">
                 <strong>5ª (b5, 5, #5) · Verde</strong>
-                <p>Nota de estabilidad y consonancia. La 5ª justa es la más consonante después de la raíz.</p>
-                <small>Ejemplo: en <strong>C</strong> mayor, la 5ª es <strong>G</strong>.</small>
+                <p>Nota de estabilidad y consonancia. La 5ª justa es la más consonante tras la raíz.</p>
+                <small>Ej: en <strong>C</strong> mayor, la 5ª es <strong>G</strong>.</small>
               </div>
             </div>
 
@@ -246,9 +265,8 @@
               </div>
               <div class="legend-info">
                 <strong>7ª (b7 o 7) · Morado</strong>
-                <p>Define el tipo de acorde: 7ª mayor (sonido suave, jazz) o 7ª menor (sonido blues, dominante).</p>
-                <small>Ejemplo: en <strong>C</strong> mayor, la 7ª mayor es <strong>B</strong>; la 7ª menor sería
-                  Bb.</small>
+                <p>Define el tipo de acorde: 7ª mayor (jazz, suave) o 7ª menor (blues, dominante).</p>
+                <small>Ej: en <strong>C</strong> mayor, la 7ª mayor es <strong>B</strong>; la 7ª menor sería Bb.</small>
               </div>
             </div>
 
@@ -258,14 +276,13 @@
               </div>
               <div class="legend-info">
                 <strong>2ª, 4ª, 6ª · Gris</strong>
-                <p>Notas de color (tensiones). Aportan sabor sin definir si el acorde es mayor o menor.</p>
-                <small>Ejemplo: en <strong>C</strong> mayor, las tensiones son <strong>D</strong> (2ª),
-                  <strong>F</strong> (4ª) y <strong>A</strong> (6ª).</small>
+                <p>Tensiones. Aportan color sin definir si el acorde es mayor o menor.</p>
+                <small>Ej: en <strong>C</strong> mayor, son <strong>D</strong> (2ª), <strong>F</strong> (4ª) y
+                  <strong>A</strong> (6ª).</small>
               </div>
             </div>
           </div>
 
-          <!-- Ejemplo visual: escala de C mayor -->
           <div class="legend-example">
             <div class="legend-example-title">📍 Así se ve la <strong>escala de C mayor</strong> con los colores
               aplicados:</div>
@@ -283,50 +300,89 @@
         </div>
       </div>
 
-      <!-- EXPLICACIÓN DEL SISTEMA CAGED -->
+      <!-- EXPLICACIÓN CAGED MEJORADA (para principiantes) -->
       <div id="caged-explanation" class="caged-explanation" style="display:none;">
-        <h3>🎸 ¿Qué es el sistema CAGED?</h3>
-        <p>
-          El <strong>CAGED</strong> es un sistema que divide el mástil de la guitarra en <strong>5 posiciones</strong> o
-          "cajas".
-          Cada caja se corresponde con la forma de uno de los 5 acordes mayores abiertos: <strong>C, A, G, E,
-            D</strong>.
-        </p>
-        <p>
-          La clave es que <strong>un mismo acorde se puede tocar en 5 lugares distintos del mástil</strong>,
-          y cada posición tiene su propia forma de escala asociada. Así puedes tocar cualquier escala en cualquier zona
-          del mástil.
-        </p>
+        <h3>🎸 ¿Qué es el sistema CAGED? (Explicación para principiantes)</h3>
+
+        <p>Imagina que la guitarra es un mapa. El sistema <strong>CAGED</strong> te ayuda a saber <em>dónde están las
+            cosas</em> en ese mapa.</p>
+
+        <p><strong>El punto de partida:</strong> los 5 acordes abiertos que ya conoces (o deberías conocer):</p>
+        <div class="caged-intro-chords">
+          <div class="caged-intro-chord">
+            <strong>C</strong>
+            <span>Do mayor</span>
+          </div>
+          <div class="caged-intro-chord">
+            <strong>A</strong>
+            <span>La mayor</span>
+          </div>
+          <div class="caged-intro-chord">
+            <strong>G</strong>
+            <span>Sol mayor</span>
+          </div>
+          <div class="caged-intro-chord">
+            <strong>E</strong>
+            <span>Mi mayor</span>
+          </div>
+          <div class="caged-intro-chord">
+            <strong>D</strong>
+            <span>Re mayor</span>
+          </div>
+        </div>
+
+        <p><strong>La idea clave:</strong> cada uno de estos 5 acordes se puede "mover" por el mástil usando una cejilla
+          (barra). Cuando lo mueves, cambias de tonalidad, pero la <em>forma</em> sigue siendo la misma.</p>
+
+        <p><strong>Ejemplo:</strong> si tocas un Fa mayor con cejilla en el traste 1, estás usando la <em>forma de
+            E</em>. Si mueves esa forma al traste 3, se convierte en Sol mayor. Al traste 5, en La mayor. ¡La forma es
+          siempre la misma!</p>
+
+        <p><strong>Los 5 "moldes" y sus zonas del mástil:</strong></p>
         <div class="caged-diagram">
           <div class="caged-box">
             <strong>Caja C</strong>
             <span>Trastes 0-3</span>
-            <small>Forma del acorde Do abierto</small>
+            <small>Forma del Do abierto</small>
           </div>
           <div class="caged-box">
             <strong>Caja A</strong>
             <span>Trastes 2-5</span>
-            <small>Forma del acorde La abierto</small>
+            <small>Forma del La abierto</small>
           </div>
           <div class="caged-box">
             <strong>Caja G</strong>
             <span>Trastes 4-7</span>
-            <small>Forma del acorde Sol abierto</small>
+            <small>Forma del Sol abierto</small>
           </div>
           <div class="caged-box">
             <strong>Caja E</strong>
             <span>Trastes 7-10</span>
-            <small>Forma del acorde Mi abierto</small>
+            <small>Forma del Mi abierto</small>
           </div>
           <div class="caged-box">
             <strong>Caja D</strong>
             <span>Trastes 9-12</span>
-            <small>Forma del acorde Re abierto</small>
+            <small>Forma del Re abierto</small>
           </div>
         </div>
+
+        <p><strong>¿Para qué sirve esto?</strong></p>
+        <ul style="list-style:none; padding-left:0;">
+          <li>🎯 <strong>Para saber dónde están las notas</strong> de cualquier acorde a lo largo de todo el mástil.
+          </li>
+          <li>🎯 <strong>Para tocar escalas</strong>: cada caja tiene su propia forma de escala asociada.</li>
+          <li>🎯 <strong>Para improvisar</strong>: puedes moverte por el mástil usando las 5 posiciones sin perderte.
+          </li>
+        </ul>
+
+        <p><strong>Cómo practicarlo:</strong> aprende una caja a la vez. Empieza por la <strong>Caja E</strong> (la más
+          común) y domínala antes de pasar a la siguiente. Cuando las tengas todas, sabrás tocar cualquier escala en
+          cualquier parte del mástil.</p>
+
         <p class="caged-tip">
-          💡 <strong>Tip:</strong> Cuando practiques una escala, aprende una caja a la vez.
-          Una vez dominada, pasa a la siguiente. Al unirlas tendrás toda la escala a lo largo del mástil.
+          💡 <strong>Consejo:</strong> cada caja se solapa con la siguiente. Si tocas la Caja C en Do mayor, la Caja A
+          empieza justo donde termina. Al unirlas, cubres todo el mástil.
         </p>
       </div>
 
@@ -334,9 +390,9 @@
       <div id="scale-map-fretboard" class="scale-map-fretboard"></div>
     </section>
 
-    <!-- 11. MODULACIÓN -->
+    <!-- 12. MODULACIÓN -->
     <section id="modulacion" class="card">
-      <h2>11. Modulación Paso a Paso</h2>
+      <h2>12. Modulación Paso a Paso</h2>
       <div class="modulation-controls">
         <label>Origen: <select id="mod-origin"></select></label>
         <label>Destino: <select id="mod-dest"></select></label>
@@ -345,20 +401,30 @@
       <div id="modulation-result" class="modulation-result"></div>
     </section>
 
-    <!-- 12. DOMINANTES SECUNDARIOS -->
-    <section id="dominantes" class="card">
-      <h2>12. Dominantes Secundarios y Tritono</h2>
+    <!-- 13. NAVEGADOR DE TONALIDADES -->
+    <section id="navegador" class="card">
+      <h2>13. Navegador de Tonalidades</h2>
       <p style="color:#888; font-size:0.9em; margin-bottom:15px;">
-        Se calculan automáticamente según el acorde que toques en el mástil.
+        Explora las tonalidades vecinas, sus relaciones y modulaciones típicas.
       </p>
-      <div id="dominant-result" class="dominant-result">
-        <p class="empty-state">Toca un acorde primero para ver sus dominantes secundarios y sustitutos de tritono.</p>
+
+      <div class="key-nav-controls">
+        <label>Tonalidad actual:
+          <select id="key-nav-selector" onchange="updateKeyNavigator()"></select>
+        </label>
+      </div>
+
+      <div class="key-nav-container">
+        <div id="mini-circle" class="mini-circle-container"></div>
+        <div id="key-nav-info" class="key-nav-info">
+          <p class="empty-state">Selecciona una tonalidad para ver su mapa de relaciones.</p>
+        </div>
       </div>
     </section>
 
-    <!-- 13. ANALIZADOR DE PROGRESIONES -->
+    <!-- 14. ANALIZADOR DE PROGRESIONES -->
     <section id="analizador" class="card">
-      <h2>🎼 Analizador de Progresiones</h2>
+      <h2>14. Analizador de Progresiones</h2>
       <p style="color:#888; font-size:0.9em; margin-bottom:15px;">
         Escribe una progresión o añade acordes con los botones. Máximo 8 acordes.
       </p>
@@ -393,44 +459,28 @@
       </div>
     </section>
 
-    <!-- 14. NAVEGADOR DE TONALIDADES -->
-    <section id="navegador" class="card">
-      <h2>🧭 Navegador de Tonalidades</h2>
-      <p style="color:#888; font-size:0.9em; margin-bottom:15px;">
-        Explora las tonalidades vecinas, sus relaciones y modulaciones típicas.
-      </p>
-
-      <div class="key-nav-controls">
-        <label>Tonalidad actual:
-          <select id="key-nav-selector" onchange="updateKeyNavigator()"></select>
-        </label>
-      </div>
-
-      <div class="key-nav-container">
-        <div id="mini-circle" class="mini-circle-container"></div>
-        <div id="key-nav-info" class="key-nav-info">
-          <p class="empty-state">Selecciona una tonalidad para ver su mapa de relaciones.</p>
-        </div>
-      </div>
-    </section>
-
     <!-- 15. LECCIONES INTERACTIVAS -->
     <section id="lecciones" class="card">
-      <h2>📚 Lecciones Interactivas</h2>
+      <h2>15. Lecciones Interactivas</h2>
       <p style="color:#888; font-size:0.9em; margin-bottom:15px;">
         Lecciones cortas de teoría musical con ejemplos auditivos y visuales. Haz clic en cada lección para abrirla.
       </p>
-      <div id="lessons-content">
-        <!-- Acordeón de lecciones generado por JS -->
-      </div>
+      <div id="lessons-content"></div>
     </section>
 
     <!-- 16. PRÁCTICA GUIADA (FASE 5) -->
     <section id="practica" class="card">
-      <h2>🎯 Práctica Guiada</h2>
+      <h2>16. Práctica Guiada</h2>
+      <p style="color:#888; font-size:0.9em; margin-bottom:15px;">
+        Ejercicios interactivos con validación y estadísticas. Elige un tipo de ejercicio y practica.
+      </p>
+
       <div id="practice-content">
-        <p class="empty-state">Próximamente en la Fase 5: ejercicios progresivos con validación y estadísticas
-          guardadas.</p>
+        <div id="practice-stats" class="practice-stats"></div>
+        <div id="practice-exercise" class="practice-exercise">
+          <p class="empty-state">Elige un tipo de ejercicio para empezar.</p>
+        </div>
+        <div id="practice-menu" class="practice-menu"></div>
       </div>
     </section>
 

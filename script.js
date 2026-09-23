@@ -1,5 +1,5 @@
 // =====================================================
-// TAVO ACORDES - SCRIPT PRINCIPAL v12 (Fase 4 - Lecciones)
+// TAVO ACORDES - SCRIPT PRINCIPAL v13 (Fase 5)
 // =====================================================
 
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -83,228 +83,19 @@ const MODE_INFO = {
 };
 
 // =====================================================
-// LECCIONES INTERACTIVAS (FASE 4)
+// LECCIONES (resumidas - todas las 10)
 // =====================================================
 const LESSONS_DB = [
-    {
-        id: 'intervalos',
-        icon: '🎵',
-        title: 'Los intervalos',
-        subtitle: 'Las distancias entre notas: el alfabeto de la música',
-        content: `
-            <p>Un <strong>intervalo</strong> es la distancia entre dos notas. Es la unidad más básica de la música: todo (acordes, escalas, melodías) se construye a partir de intervalos.</p>
-            <p>Los intervalos se miden en <strong>semitonos</strong> (la distancia más pequeña en la guitarra = 1 traste).</p>
-            <ul>
-                <li><strong>2ª mayor (2 semitonos):</strong> Do → Re</li>
-                <li><strong>3ª mayor (4 semitonos):</strong> Do → Mi. Suena alegre, brillante.</li>
-                <li><strong>3ª menor (3 semitonos):</strong> Do → Mib. Suena melancólico, triste.</li>
-                <li><strong>4ª justa (5 semitonos):</strong> Do → Fa. Sonido suspendido.</li>
-                <li><strong>5ª justa (7 semitonos):</strong> Do → Sol. Muy consonante, estable.</li>
-                <li><strong>7ª mayor (11 semitonos):</strong> Do → Si. Tensión que resuelve.</li>
-                <li><strong>Octava (12 semitonos):</strong> Do → Do agudo. Misma nota, diferente altura.</li>
-            </ul>
-            <p><strong>Clave:</strong> la 3ª define si un acorde es mayor o menor. La 5ª da estabilidad. La 7ª añade color.</p>
-        `,
-        exampleNotes: ['C', 'E', 'G', 'B'],
-        exampleTitle: 'Escucha los intervalos de C mayor (Do - Mi - Sol - Si)',
-        exercise: 'Toca cada intervalo en el mástil: encuentra la 3ª mayor de cualquier nota (siempre está 4 trastes arriba en la misma cuerda).'
-    },
-    {
-        id: 'acordes',
-        icon: '🎸',
-        title: 'Formación de acordes',
-        subtitle: 'Cómo se construyen las tríadas mayores y menores',
-        content: `
-            <p>Un <strong>acorde</strong> es un conjunto de 3 o más notas que suenan juntas. La base es la <strong>tríada</strong>, que tiene 3 notas:</p>
-            <ul>
-                <li><strong>Raíz (1):</strong> la nota que da nombre al acorde</li>
-                <li><strong>3ª (3 o b3):</strong> define si es mayor o menor</li>
-                <li><strong>5ª (5):</strong> da estabilidad</li>
-            </ul>
-            <p>Una tríada mayor tiene la fórmula <strong>1 - 3 - 5</strong> (raíz + 3ª mayor + 5ª justa).</p>
-            <p>Una tríada menor tiene la fórmula <strong>1 - b3 - 5</strong> (raíz + 3ª menor + 5ª justa).</p>
-            <p>Ejemplo: <strong>C mayor</strong> = C - E - G. <strong>C menor</strong> = C - Eb - G. Solo cambia la 3ª.</p>
-            <p><strong>Tip:</strong> para hacer un acorde menor, baja la 3ª un semitono (1 traste). ¡Así de simple!</p>
-        `,
-        exampleNotes: ['C', 'E', 'G', 'C', 'Eb', 'G'],
-        exampleTitle: 'Compara C mayor (Do-Mi-Sol) con C menor (Do-Mib-Sol)',
-        exercise: 'Toca C, luego Cm. Solo cambia un traste. Después prueba con G mayor y Gm, D mayor y Dm.'
-    },
-    {
-        id: 'funciones',
-        icon: '🎯',
-        title: 'Funciones armónicas',
-        subtitle: 'Tónica, subdominante y dominante: los 3 pilares',
-        content: `
-            <p>En cualquier tonalidad, los acordes se agrupan en 3 <strong>funciones armónicas</strong>:</p>
-            <ul>
-                <li><strong>Tónica (I):</strong> reposo, estabilidad. Es el "hogar". En C: Cmaj7 o C.</li>
-                <li><strong>Subdominante (IV):</strong> prepara el movimiento. Aleja del hogar. En C: F o Fmaj7.</li>
-                <li><strong>Dominante (V):</strong> tensión máxima. Quiere resolver a la tónica. En C: G7.</li>
-            </ul>
-            <p>El flujo natural es: <strong>Tónica → Subdominante → Dominante → Tónica</strong>.</p>
-            <p>Ejemplo: en C mayor → <strong>C → F → G7 → C</strong>. Esta es la cadencia más importante de la música occidental.</p>
-            <p>Los otros grados (ii, iii, vi, vii°) también tienen funciones: el ii y vi actúan como subdominantes, el vii° como dominante.</p>
-        `,
-        exampleNotes: ['C', 'E', 'G', 'F', 'A', 'C', 'G', 'B', 'D', 'C', 'E', 'G'],
-        exampleTitle: 'Cadencia I - IV - V - I en C (C - F - G - C)',
-        exercise: 'Toca la progresión C - F - G7 - C despacio. Siente cómo el G7 crea tensión y el C resuelve. Repite en otras tonalidades (G - C - D7 - G).'
-    },
-    {
-        id: 'circulo',
-        icon: '🎨',
-        title: 'El círculo de quintas',
-        subtitle: 'El mapa maestro de la armonía tonal',
-        content: `
-            <p>El <strong>círculo de quintas</strong> es un diagrama que ordena las 12 notas según intervalos de 5ª justa. Es la herramienta más útil para entender relaciones entre tonalidades.</p>
-            <p>Algunas cosas que puedes leer en él:</p>
-            <ul>
-                <li><strong>Vecinos cercanos:</strong> dos tonalidades que están a 1 paso comparten 6 de 7 notas. Por eso modular entre ellas es fácil.</li>
-                <li><strong>Relativa menor:</strong> cada tonalidad mayor tiene una relativa menor que comparte la misma armadura (ej: C mayor / A menor).</li>
-                <li><strong>Dominante:</strong> el vecino a la derecha es el V grado de la tonalidad actual.</li>
-                <li><strong>Subdominante:</strong> el vecino a la izquierda es el IV grado.</li>
-            </ul>
-            <p><strong>Truco:</strong> para encontrar el V grado de cualquier tonalidad, mira el vecino a la derecha en el círculo.</p>
-        `,
-        exampleNotes: ['C', 'G', 'D', 'A', 'E', 'B', 'F#'],
-        exampleTitle: 'Quintas consecutivas ascendentes (C → G → D → A → E → B → F#)',
-        exercise: 'En el círculo de quintas de la app, selecciona varias tonalidades y observa cómo cambian sus grados. Compara C mayor (sin alteraciones) con G mayor (1 sostenido) y F mayor (1 bemol).'
-    },
-    {
-        id: 'cadencias',
-        icon: '🎼',
-        title: 'Cadencias',
-        subtitle: 'Los "puntos y comas" de la música',
-        content: `
-            <p>Una <strong>cadencia</strong> es una progresión de acordes que marca el final de una frase musical. Es como un signo de puntuación.</p>
-            <ul>
-                <li><strong>Cadencia Auténtica (V - I):</strong> la más fuerte. Cierra definitivamente. En C: G7 → C.</li>
-                <li><strong>Cadencia Plagal (IV - I):</strong> cierre suave, "Amén". En C: F → C.</li>
-                <li><strong>Cadencia Rota (V - vi):</strong> sorpresa. Esperas I pero llega vi. En C: G7 → Am.</li>
-                <li><strong>Semicadencia (I - V):</strong> punto y coma, no cierra del todo. En C: C → G7.</li>
-                <li><strong>Cadencia ii - V - I:</strong> la más importante del jazz. Preparación perfecta.</li>
-            </ul>
-            <p><strong>Por qué funcionan:</strong> el V tiene una nota (la 7ª) que "quiere" resolver medio tono arriba a la tónica del I.</p>
-        `,
-        exampleNotes: ['G', 'B', 'D', 'F', 'C', 'E', 'G'],
-        exampleTitle: 'Cadencia auténtica: G7 → C',
-        exercise: 'Toca estas cadencias en C: V-I (G-C), IV-I (F-C), V-vi (G-Am). Escucha las diferencias emocionales: cierre fuerte, suave, sorpresa.'
-    },
-    {
-        id: 'modos',
-        icon: '🎓',
-        title: 'Modos griegos',
-        subtitle: 'Las 7 personalidades de la escala mayor',
-        content: `
-            <p>Los <strong>modos griegos</strong> son 7 escalas que surgen de tocar la escala mayor empezando desde cada una de sus 7 notas. Cada modo tiene un "carácter" emocional distinto.</p>
-            <ul>
-                <li><strong>Jónico (I):</strong> mayor natural. Alegre, pop.</li>
-                <li><strong>Dórico (II):</strong> menor con 6ª mayor. Suave, funky. (Ej: Scarborough Fair)</li>
-                <li><strong>Frigio (III):</strong> menor con b2. Español, flamenco.</li>
-                <li><strong>Lidio (IV):</strong> mayor con #4. Etéreo, cinematográfico.</li>
-                <li><strong>Mixolidio (V):</strong> mayor con b7. Rock, blues. (Ej: Sweet Home Alabama)</li>
-                <li><strong>Eólico (VI):</strong> menor natural. Triste, baladas.</li>
-                <li><strong>Locrio (VII):</strong> menor con b5. Tenso, inestable.</li>
-            </ul>
-            <p><strong>Tip:</strong> los modos no son escalas nuevas, son <strong>la misma escala mayor vista desde otra nota</strong>. C jónico y D dórico tienen las mismas notas (Do Re Mi Fa Sol La Si).</p>
-        `,
-        exampleNotes: ['C', 'D', 'E', 'F', 'G', 'A', 'B'],
-        exampleTitle: 'Escala mayor de C (que también es D dórico, E frigio, etc.)',
-        exercise: 'En el selector de Modos, prueba cada modo con tónica C. Escucha cómo cambia el carácter. Empieza con Jónico (familiar) y compara con Lidio (extraño) y Locrio (tenso).'
-    },
-    {
-        id: 'pentatonica',
-        icon: '⚡',
-        title: 'Escala pentatónica',
-        subtitle: 'La escala más usada en rock, blues y pop',
-        content: `
-            <p>La <strong>pentatónica</strong> es una escala de 5 notas. Es la más popular del rock y blues porque es fácil de tocar y suena bien casi siempre.</p>
-            <p><strong>Pentatónica menor:</strong> 1 - b3 - 4 - 5 - b7. En A: A - C - D - E - G.</p>
-            <p><strong>Pentatónica mayor:</strong> 1 - 2 - 3 - 5 - 6. En C: C - D - E - G - A.</p>
-            <p>La <strong>escala de blues</strong> es la pentatónica menor + una "blue note" (b5). En A: A - C - D - Eb - E - G.</p>
-            <p><strong>Por qué suena tan bien:</strong> no tiene semitonos (excepto el blues), por lo que cualquier nota encaja. Es perfecta para improvisar.</p>
-            <p><strong>Estilos:</strong> rock, blues, hard rock, heavy metal, country, funk. Prácticamente todo.</p>
-        `,
-        exampleNotes: ['A', 'C', 'D', 'E', 'G', 'A'],
-        exampleTitle: 'Pentatónica menor de A (A - C - D - E - G)',
-        exercise: 'Aprende la posición 1 de la pentatónica menor de A (traste 5). Improvisa 1 minuto sobre un backing track en A menor. Solo tienes 5 notas: ¡úsalas todas!'
-    },
-    {
-        id: 'septimas',
-        icon: '🎷',
-        title: 'Acordes de séptima',
-        subtitle: 'Añadiendo color y sofisticación al acorde',
-        content: `
-            <p>Un acorde de <strong>séptima</strong> es una tríada + una 7ª. Añadir la 7ª da color, tensión y sofisticación.</p>
-            <p>Los 4 tipos básicos:</p>
-            <ul>
-                <li><strong>maj7 (1-3-5-7):</strong> sonido suave, jazzy. Ej: Cmaj7 = C-E-G-B</li>
-                <li><strong>7 dominante (1-3-5-b7):</strong> tensión fuerte, resuelve. Ej: G7 = G-B-D-F</li>
-                <li><strong>m7 (1-b3-5-b7):</strong> menor con color. Ej: Am7 = A-C-E-G</li>
-                <li><strong>m7b5 (1-b3-b5-b7):</strong> semidisminuido, tenso. Ej: Bm7b5 = B-D-F-A</li>
-            </ul>
-            <p><strong>Diferencia clave:</strong></p>
-            <ul>
-                <li>maj7: la 7ª está <strong>medio tono</strong> debajo de la octava (Si en Do mayor)</li>
-                <li>7 dominante: la 7ª está <strong>un tono entero</strong> debajo (Sib en Do mayor)</li>
-            </ul>
-            <p><strong>Estilos:</strong> jazz (todos), blues (7 dominante), soul (m7), bossa nova (maj7).</p>
-        `,
-        exampleNotes: ['C', 'E', 'G', 'B', 'G', 'B', 'D', 'F', 'A', 'C', 'E', 'G'],
-        exampleTitle: 'Cmaj7 → G7 → Am7 (progresión clásica de jazz)',
-        exercise: 'Toca Cmaj7, luego C7. Solo cambia la 7ª (Si → Sib). Escucha cómo C7 quiere ir a F. Ese es el poder del dominante.'
-    },
-    {
-        id: 'sustituciones',
-        icon: '🔄',
-        title: 'Sustituciones',
-        subtitle: 'Cómo reemplazar acordes para dar color',
-        content: `
-            <p>Las <strong>sustituciones</strong> son cambios que puedes hacer en una progresión para darle un sonido diferente sin romper la armonía.</p>
-            <p><strong>1. Sustitución de tritono:</strong> reemplaza un dominante (V7) por otro dominante a 6 semitonos (tritono).</p>
-            <ul>
-                <li>G7 → Db7 (ambos resuelven a C)</li>
-                <li>Suenan diferente pero cumplen la misma función</li>
-                <li>Muy usada en jazz</li>
-            </ul>
-            <p><strong>2. Sustitución diatónica:</strong> reemplaza un acorde por otro que comparta 2 o más notas.</p>
-            <ul>
-                <li>C mayor → Am (comparten C-E)</li>
-                <li>F mayor → Dm (comparten F-A)</li>
-            </ul>
-            <p><strong>3. Relativa menor/mayor:</strong> reemplaza por su relativa.</p>
-            <ul>
-                <li>C mayor → Am (relativa menor)</li>
-                <li>Am → C mayor (relativa mayor)</li>
-            </ul>
-            <p><strong>4. Acorde de paso:</strong> añade un acorde entre dos para suavizar la transición.</p>
-        `,
-        exampleNotes: ['G', 'B', 'D', 'F', 'Db', 'F', 'Ab', 'Cb', 'C', 'E', 'G'],
-        exampleTitle: 'Sustitución de tritono: G7 → Db7 → C',
-        exercise: 'Toca G7 → C. Luego toca Db7 → C. Suenan diferentes pero cumplen la misma función. Ahora alterna: G7 → Db7 → C. ¡Eso es jazz!'
-    },
-    {
-        id: 'modulacion',
-        icon: '🧭',
-        title: 'Modulación',
-        subtitle: 'Cómo cambiar de tonalidad de forma elegante',
-        content: `
-            <p>La <strong>modulación</strong> es cambiar de tonalidad dentro de una pieza musical. Es lo que da variedad y emoción a las canciones.</p>
-            <p>Métodos principales:</p>
-            <ul>
-                <li><strong>Modulación por dominante:</strong> usa el V7 de la nueva tonalidad. Ej: para ir de C a G, toca D7 → G.</li>
-                <li><strong>Modulación por relativa:</strong> C mayor → Am (comparten armadura, muy natural).</li>
-                <li><strong>Modulación por quinta:</strong> C → G → D → A. Cada vez subes una 5ª.</li>
-                <li><strong>Modulación cromática:</strong> C → C# directo. Suena sorpresivo.</li>
-                <li><strong>Modulación por pivote:</strong> usa un acorde común a ambas tonalidades como puente.</li>
-            </ul>
-            <p><strong>Tip:</strong> cuanto más cerca estén dos tonalidades en el círculo de quintas, más suave es la modulación.</p>
-            <p><strong>Ejemplo clásico:</strong> en una canción en C, tocar G7 → Cmaj7 → Bm7b5 → E7 → Am (modulación a A menor).</p>
-        `,
-        exampleNotes: ['C', 'E', 'G', 'D', 'F#', 'A', 'G', 'B', 'D'],
-        exampleTitle: 'Modulación C → G (usando D7 como dominante)',
-        exercise: 'En la sección Modulación, calcula la ruta de C a G. Toca C, luego D7, luego G. Ya modulaste. Ahora prueba C → F (usando C7 como puente).'
-    }
+    { id: 'intervalos', icon: '🎵', title: 'Los intervalos', subtitle: 'Las distancias entre notas', content: '<p>Un <strong>intervalo</strong> es la distancia entre dos notas. Se mide en semitonos (1 traste = 1 semitono).</p><ul><li><strong>3ª mayor:</strong> Do → Mi. Alegre.</li><li><strong>3ª menor:</strong> Do → Mib. Melancólico.</li><li><strong>5ª justa:</strong> Do → Sol. Muy consonante.</li><li><strong>Octava:</strong> Do → Do agudo. Misma nota.</li></ul><p><strong>Clave:</strong> la 3ª define si un acorde es mayor o menor.</p>', exampleNotes: ['C', 'E', 'G', 'B'], exampleTitle: 'Intervalos de C mayor', exercise: 'Toca cada intervalo en el mástil: la 3ª mayor está 4 trastes arriba.' },
+    { id: 'acordes', icon: '🎸', title: 'Formación de acordes', subtitle: 'Cómo se construyen las tríadas', content: '<p>Un <strong>acorde</strong> tiene 3+ notas. La base es la <strong>tríada</strong>: raíz + 3ª + 5ª.</p><p>Mayor: <strong>1 - 3 - 5</strong>. Menor: <strong>1 - b3 - 5</strong>.</p><p>Ej: <strong>C</strong> = C-E-G. <strong>Cm</strong> = C-Eb-G.</p>', exampleNotes: ['C', 'E', 'G', 'C', 'Eb', 'G'], exampleTitle: 'C mayor vs C menor', exercise: 'Toca C y Cm. Solo cambia un traste.' },
+    { id: 'funciones', icon: '🎯', title: 'Funciones armónicas', subtitle: 'Tónica, subdominante, dominante', content: '<p>3 funciones en cualquier tonalidad:</p><ul><li><strong>Tónica (I):</strong> reposo. Ej: C</li><li><strong>Subdominante (IV):</strong> movimiento. Ej: F</li><li><strong>Dominante (V):</strong> tensión. Ej: G7</li></ul><p>Flujo: <strong>I → IV → V → I</strong>.</p>', exampleNotes: ['C', 'E', 'G', 'F', 'A', 'C', 'G', 'B', 'D', 'C', 'E', 'G'], exampleTitle: 'Cadencia I - IV - V - I', exercise: 'Toca C - F - G7 - C despacio.' },
+    { id: 'circulo', icon: '🎨', title: 'El círculo de quintas', subtitle: 'El mapa maestro', content: '<p>Ordena las 12 notas por 5ª justa.</p><ul><li><strong>Vecinos:</strong> 1 paso = 6 notas compartidas</li><li><strong>Relativa:</strong> misma armadura</li><li><strong>Dominante:</strong> vecino derecho</li><li><strong>Subdominante:</strong> vecino izquierdo</li></ul>', exampleNotes: ['C', 'G', 'D', 'A', 'E', 'B', 'F#'], exampleTitle: 'Quintas ascendentes', exercise: 'Selecciona tonalidades en el círculo y compara.' },
+    { id: 'cadencias', icon: '🎼', title: 'Cadencias', subtitle: 'Los "puntos y comas"', content: '<ul><li><strong>Auténtica (V-I):</strong> cierre fuerte</li><li><strong>Plagal (IV-I):</strong> cierre suave</li><li><strong>Rota (V-vi):</strong> sorpresa</li><li><strong>ii-V-I:</strong> la del jazz</li></ul>', exampleNotes: ['G', 'B', 'D', 'F', 'C', 'E', 'G'], exampleTitle: 'Cadencia auténtica G7 → C', exercise: 'Toca V-I, IV-I y V-vi en C.' },
+    { id: 'modos', icon: '🎓', title: 'Modos griegos', subtitle: 'Las 7 personalidades', content: '<p>7 escalas de la mayor empezando desde cada nota:</p><ul><li>Jónico (I): mayor</li><li>Dórico (II): menor funky</li><li>Frigio (III): español</li><li>Lidio (IV): etéreo</li><li>Mixolidio (V): rock</li><li>Eólico (VI): menor</li><li>Locrio (VII): tenso</li></ul>', exampleNotes: ['C', 'D', 'E', 'F', 'G', 'A', 'B'], exampleTitle: 'Escala mayor de C', exercise: 'Prueba cada modo en el selector.' },
+    { id: 'pentatonica', icon: '⚡', title: 'Escala pentatónica', subtitle: 'La más usada en rock', content: '<p>5 notas, fácil y versátil.</p><p><strong>Menor:</strong> 1 - b3 - 4 - 5 - b7</p><p><strong>Mayor:</strong> 1 - 2 - 3 - 5 - 6</p><p><strong>Blues:</strong> menor + b5</p>', exampleNotes: ['A', 'C', 'D', 'E', 'G', 'A'], exampleTitle: 'Pentatónica menor de A', exercise: 'Aprende la posición 1 (traste 5).' },
+    { id: 'septimas', icon: '🎷', title: 'Acordes de séptima', subtitle: 'Añadiendo color', content: '<ul><li><strong>maj7 (1-3-5-7):</strong> suave, jazz</li><li><strong>7 (1-3-5-b7):</strong> tensión</li><li><strong>m7 (1-b3-5-b7):</strong> menor con color</li><li><strong>m7b5:</strong> semidisminuido</li></ul>', exampleNotes: ['C', 'E', 'G', 'B', 'G', 'B', 'D', 'F', 'A', 'C', 'E', 'G'], exampleTitle: 'Cmaj7 → G7 → Am7', exercise: 'Compara Cmaj7 con C7.' },
+    { id: 'sustituciones', icon: '🔄', title: 'Sustituciones', subtitle: 'Cómo reemplazar acordes', content: '<ul><li><strong>Tritono:</strong> G7 → Db7</li><li><strong>Diatónica:</strong> C → Am</li><li><strong>Relativa:</strong> C → Am</li><li><strong>Paso:</strong> añade acorde entre dos</li></ul>', exampleNotes: ['G', 'B', 'D', 'F', 'Db', 'F', 'Ab', 'Cb', 'C', 'E', 'G'], exampleTitle: 'Sustitución de tritono', exercise: 'Toca G7→C, luego Db7→C.' },
+    { id: 'modulacion', icon: '🧭', title: 'Modulación', subtitle: 'Cambiar de tonalidad', content: '<ul><li><strong>Por dominante:</strong> usa V7 de la nueva</li><li><strong>Por relativa:</strong> C → Am</li><li><strong>Por quinta:</strong> C → G → D</li><li><strong>Por pivote:</strong> acorde común</li></ul>', exampleNotes: ['C', 'E', 'G', 'D', 'F#', 'A', 'G', 'B', 'D'], exampleTitle: 'Modulación C → G', exercise: 'Toca C, D7, G. Modulaste.' }
 ];
 
 // =====================================================
@@ -361,6 +152,11 @@ let progressionChords = [];
 let cagedActive = false;
 let openLessonId = null;
 
+// Práctica
+let currentExercise = null;
+let exerciseState = null;
+let practiceStats = null;
+
 // =====================================================
 // INICIALIZACIÓN
 // =====================================================
@@ -371,6 +167,7 @@ window.onload = function () {
     initScaleMap();
     drawLegendExampleFretboard();
     renderLessons();
+    initPractice();
     resetFretboard();
     updateModeInfo();
     initMenuEvents();
@@ -404,159 +201,6 @@ function closeMenu() {
 
 function initMenuEvents() {
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
-}
-
-// =====================================================
-// LECCIONES INTERACTIVAS (FASE 4)
-// =====================================================
-function renderLessons() {
-    const container = document.getElementById('lessons-content');
-    if (!container) return;
-
-    container.innerHTML = '';
-
-    LESSONS_DB.forEach(lesson => {
-        const item = document.createElement('div');
-        item.className = 'lesson-item';
-        item.id = `lesson-${lesson.id}`;
-
-        item.innerHTML = `
-            <div class="lesson-header" onclick="toggleLesson('${lesson.id}')">
-                <div class="lesson-icon">${lesson.icon}</div>
-                <div class="lesson-title-group">
-                    <div class="lesson-title">${lesson.title}</div>
-                    <div class="lesson-subtitle">${lesson.subtitle}</div>
-                </div>
-                <div class="lesson-toggle-icon">▼</div>
-            </div>
-            <div class="lesson-body">
-                <div class="lesson-content">
-                    ${lesson.content}
-                    
-                    <div class="lesson-example">
-                        <div class="lesson-example-title">🎧 ${lesson.exampleTitle}</div>
-                        <div id="lesson-fret-${lesson.id}"></div>
-                        <div class="lesson-example-actions">
-                            <button class="btn-primary" onclick="playLessonExample('${lesson.id}')">
-                                <i class="fas fa-play"></i> Escuchar ejemplo
-                            </button>
-                            <button class="btn-show" onclick="loadLessonChordInMain('${lesson.id}')">
-                                <i class="fas fa-guitar"></i> Ver en mástil principal
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="lesson-exercise">
-                        <div class="lesson-exercise-title">✏️ Ejercicio práctico</div>
-                        <p>${lesson.exercise}</p>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        container.appendChild(item);
-    });
-}
-
-function toggleLesson(lessonId) {
-    const item = document.getElementById(`lesson-${lessonId}`);
-    if (!item) return;
-
-    const isOpen = item.classList.contains('open');
-
-    // Cerrar todas las demás (comportamiento acordeón clásico)
-    document.querySelectorAll('.lesson-item').forEach(el => {
-        el.classList.remove('open');
-    });
-
-    if (!isOpen) {
-        item.classList.add('open');
-        openLessonId = lessonId;
-
-        // Dibujar el mástil del ejemplo (solo la primera vez o cada vez que se abre)
-        const lesson = LESSONS_DB.find(l => l.id === lessonId);
-        if (lesson) {
-            setTimeout(() => {
-                drawLessonFretboard(`lesson-fret-${lessonId}`, lesson.exampleNotes);
-                item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }, 100);
-        }
-    } else {
-        openLessonId = null;
-    }
-}
-
-function drawLessonFretboard(containerId, notes) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-
-    const width = 700, height = 160;
-    const marginLeft = 50, marginTop = 25, marginRight = 15, marginBottom = 10;
-    const drawWidth = width - marginLeft - marginRight;
-    const drawHeight = height - marginTop - marginBottom;
-    const stringSpacing = drawHeight / 5;
-    const fretSpacing = drawWidth / 13;
-
-    const notesSet = new Set(notes);
-    const rootNote = notes[0];
-    const rootIndex = NOTES.indexOf(rootNote);
-
-    let svg = `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet" style="background:#2a1f1a; border-radius:8px; width:100%; height:auto; display:block;">`;
-
-    for (let i = 0; i <= 13; i++) {
-        svg += `<line x1="${marginLeft + (i * fretSpacing)}" y1="${marginTop}" x2="${marginLeft + (i * fretSpacing)}" y2="${height - marginBottom}" stroke="#777" stroke-width="${i === 0 ? 5 : 1.5}" />`;
-    }
-    for (let i = 0; i < 6; i++) {
-        const y = marginTop + (i * stringSpacing);
-        svg += `<line x1="${marginLeft}" y1="${y}" x2="${width - marginRight}" y2="${y}" stroke="#ccc" stroke-width="${4 - (i * 0.5)}" />`;
-        svg += `<text x="${marginLeft - 8}" y="${y}" fill="#ff6b00" font-size="10" font-weight="bold" text-anchor="end" dominant-baseline="middle">${STRINGS[i]}</text>`;
-    }
-    for (let i = 1; i <= 12; i++) {
-        svg += `<text x="${marginLeft + ((i - 0.5) * fretSpacing)}" y="${marginTop - 8}" fill="#888" font-size="9" text-anchor="middle">${i}</text>`;
-    }
-
-    // Dibujar las notas del ejemplo
-    for (let stringIndex = 0; stringIndex < 6; stringIndex++) {
-        const y = marginTop + (stringIndex * stringSpacing);
-        const openIndex = NOTES.indexOf(OPEN_NOTES[stringIndex]);
-        for (let fret = 0; fret <= 12; fret++) {
-            const noteIndex = (openIndex + fret) % 12;
-            const noteName = NOTES[noteIndex];
-            if (notesSet.has(noteName)) {
-                const x = (fret === 0) ? marginLeft - 12 : marginLeft + ((fret - 0.5) * fretSpacing);
-                const isRoot = noteName === rootNote;
-                const fillColor = isRoot ? '#ff6b00' : '#4a9eff';
-                svg += `<circle cx="${x}" cy="${y}" r="9" fill="${fillColor}" stroke="#000" stroke-width="1" />`;
-                svg += `<text x="${x}" y="${y}" fill="#000" font-size="9" font-weight="bold" text-anchor="middle" dominant-baseline="middle">${noteName}</text>`;
-            }
-        }
-    }
-    svg += `</svg>`;
-    container.innerHTML = svg;
-}
-
-function playLessonExample(lessonId) {
-    const lesson = LESSONS_DB.find(l => l.id === lessonId);
-    if (!lesson) return;
-
-    // Reproducir las notas con un pequeño delay entre ellas
-    for (let i = 0; i < lesson.exampleNotes.length; i++) {
-        setTimeout(() => playNote(lesson.exampleNotes[i]), i * 400);
-    }
-}
-
-function loadLessonChordInMain(lessonId) {
-    const lesson = LESSONS_DB.find(l => l.id === lessonId);
-    if (!lesson) return;
-
-    // Tomar las primeras 3 notas como acorde
-    const notes = lesson.exampleNotes.slice(0, 3);
-    // Buscar un acorde que contenga esas notas
-    // Simplificación: buscar por la primera nota
-    const root = notes[0];
-    if (CHORD_DB[root]) {
-        loadChordFromDB(root);
-    }
 }
 
 // =====================================================
@@ -642,64 +286,7 @@ function getNoteName(stringIndex, fret) {
 }
 
 // =====================================================
-// LEYENDA DE COLORES
-// =====================================================
-function drawLegendExampleFretboard() {
-    const container = document.getElementById('legend-example-fretboard');
-    if (!container) return;
-
-    const tonic = 'C';
-    const scale = SCALES_DB['jónico'];
-    const rootIndex = NOTES.indexOf(tonic);
-    const scaleNotesSet = new Set(scale.intervals.map(i => (rootIndex + i) % 12));
-
-    const width = 700, height = 200;
-    const marginLeft = 55, marginTop = 30, marginRight = 15, marginBottom = 15;
-    const drawWidth = width - marginLeft - marginRight;
-    const drawHeight = height - marginTop - marginBottom;
-    const stringSpacing = drawHeight / 5;
-    const fretSpacing = drawWidth / 13;
-
-    let svg = `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet" style="background:#2a1f1a; border-radius:8px; width:100%; height:auto; display:block;">`;
-
-    for (let i = 0; i <= 12; i++) {
-        svg += `<line x1="${marginLeft + (i * fretSpacing)}" y1="${marginTop}" x2="${marginLeft + (i * fretSpacing)}" y2="${height - marginBottom}" stroke="#777" stroke-width="${i === 0 ? 5 : 2}" />`;
-    }
-    for (let i = 0; i < 6; i++) {
-        const y = marginTop + (i * stringSpacing);
-        svg += `<line x1="${marginLeft}" y1="${y}" x2="${width - marginRight}" y2="${y}" stroke="#ccc" stroke-width="${4 - (i * 0.5)}" />`;
-        svg += `<text x="${marginLeft - 10}" y="${y}" fill="#ff6b00" font-size="12" font-weight="bold" text-anchor="end" dominant-baseline="middle">${STRINGS[i]}</text>`;
-    }
-    for (let i = 1; i <= 12; i++) {
-        svg += `<text x="${marginLeft + ((i - 0.5) * fretSpacing)}" y="${marginTop - 10}" fill="#888" font-size="10" text-anchor="middle">${i}</text>`;
-    }
-
-    for (let stringIndex = 0; stringIndex < 6; stringIndex++) {
-        const y = marginTop + (stringIndex * stringSpacing);
-        const openIndex = NOTES.indexOf(OPEN_NOTES[stringIndex]);
-        for (let fret = 0; fret <= 12; fret++) {
-            const noteIndex = (openIndex + fret) % 12;
-            if (scaleNotesSet.has(noteIndex)) {
-                const x = (fret === 0) ? marginLeft - 15 : marginLeft + ((fret - 0.5) * fretSpacing);
-                const intervalFromRoot = (noteIndex - rootIndex + 12) % 12;
-
-                let fillColor = 'var(--tension-color)';
-                if (intervalFromRoot === 0) fillColor = 'var(--root-color)';
-                else if (intervalFromRoot === 3 || intervalFromRoot === 4) fillColor = 'var(--third-color)';
-                else if (intervalFromRoot === 6 || intervalFromRoot === 7 || intervalFromRoot === 8) fillColor = 'var(--fifth-color)';
-                else if (intervalFromRoot === 10 || intervalFromRoot === 11) fillColor = 'var(--seventh-color)';
-
-                svg += `<circle cx="${x}" cy="${y}" r="11" fill="${fillColor}" stroke="#000" stroke-width="1.5" />`;
-                svg += `<text x="${x}" y="${y}" fill="#000" font-size="10" font-weight="bold" text-anchor="middle" dominant-baseline="middle">${NOTES[noteIndex]}</text>`;
-            }
-        }
-    }
-    svg += `</svg>`;
-    container.innerHTML = svg;
-}
-
-// =====================================================
-// DETECCIÓN DE ACORDES
+// DETECCIÓN
 // =====================================================
 function detectChord() {
     const notes = [];
@@ -909,11 +496,11 @@ function renderHarmonicAnalysis(chordData, notes) {
 function getHarmonicFunction(chordData) {
     const suffix = chordData.suffix;
     if (suffix === '' || suffix === 'maj7' || suffix === 'm' || suffix === 'mMaj7') return { name: 'Tónica', category: 'tonic', description: 'Centro tonal. Reposo y estabilidad.' };
-    if (suffix.includes('7') && !suffix.includes('maj') && !suffix.includes('m')) return { name: 'Dominante', category: 'dominant', description: 'Tensión fuerte. Resuelve a la tónica (5ª abajo).' };
+    if (suffix.includes('7') && !suffix.includes('maj') && !suffix.includes('m')) return { name: 'Dominante', category: 'dominant', description: 'Tensión fuerte. Resuelve a la tónica.' };
     if (suffix === 'm7' || suffix === 'm9' || suffix === 'm11' || suffix === '6' || suffix === 'm6') return { name: 'Subdominante', category: 'subdominant', description: 'Prepara al dominante.' };
-    if (suffix.includes('dim')) return { name: 'Tensión / Disminuido', category: 'dominant', description: 'Inestable. Resuelve por semitono.' };
-    if (suffix.includes('aug')) return { name: 'Tensión / Aumentado', category: 'dominant', description: 'Simétrico, flotante.' };
-    if (suffix.includes('sus')) return { name: 'Suspendido', category: 'subdominant', description: 'Sustituye la 3ª. Ambiguo.' };
+    if (suffix.includes('dim')) return { name: 'Tensión / Disminuido', category: 'dominant', description: 'Inestable.' };
+    if (suffix.includes('aug')) return { name: 'Tensión / Aumentado', category: 'dominant', description: 'Flotante.' };
+    if (suffix.includes('sus')) return { name: 'Suspendido', category: 'subdominant', description: 'Ambiguo.' };
     return { name: 'Función variable', category: 'subdominant', description: 'Depende del contexto.' };
 }
 
@@ -949,21 +536,21 @@ function getAvailableTensions(chordData) {
     const tensions = [];
 
     if (isMajor7) {
-        tensions.push({ name: '9', description: 'Color brillante sin romper estabilidad.' });
+        tensions.push({ name: '9', description: 'Color brillante.' });
         tensions.push({ name: '#11', description: 'Sonido lidio.' });
-        tensions.push({ name: '13', description: 'Sonido cálido y sofisticado.' });
+        tensions.push({ name: '13', description: 'Cálido y sofisticado.' });
     } else if (isMinor) {
-        tensions.push({ name: '9', description: 'Color moderno, neo-soul.' });
-        tensions.push({ name: '11', description: 'Disponible en m7 y m9.' });
+        tensions.push({ name: '9', description: 'Color moderno.' });
+        tensions.push({ name: '11', description: 'Disponible en m7/m9.' });
     } else if (isDominant) {
         tensions.push({ name: 'b9', description: 'Resuelve a menor.' });
         tensions.push({ name: '#9', description: 'Sonido Hendrix.' });
-        tensions.push({ name: 'b13', description: 'Tensión hacia menor.' });
+        tensions.push({ name: 'b13', description: 'Hacia menor.' });
         tensions.push({ name: '#11', description: 'Lidio dominante.' });
-        tensions.push({ name: '13', description: 'Blues y jazz.' });
+        tensions.push({ name: '13', description: 'Blues, jazz.' });
     } else {
-        tensions.push({ name: '9', description: 'Color sin alterar función.' });
-        tensions.push({ name: '6/13', description: 'Sonido jazzy estable.' });
+        tensions.push({ name: '9', description: 'Color.' });
+        tensions.push({ name: '6/13', description: 'Jazzy estable.' });
     }
     return tensions;
 }
@@ -978,7 +565,7 @@ function getNaturalResolutions(chordData) {
     if (isDominant) {
         resolutions.push({ from: chordData.primaryName, to: NOTES[(rootIndex + 5) % 12], reason: 'Dominante → tónica' });
         resolutions.push({ from: chordData.primaryName, to: NOTES[(rootIndex + 5) % 12] + 'm', reason: 'A tónica menor' });
-        resolutions.push({ from: chordData.primaryName, to: NOTES[(rootIndex + 8) % 12] + 'm', reason: 'Resolución deceptiva' });
+        resolutions.push({ from: chordData.primaryName, to: NOTES[(rootIndex + 8) % 12] + 'm', reason: 'Deceptiva' });
     } else if (isMinor) {
         resolutions.push({ from: chordData.primaryName, to: NOTES[(rootIndex + 5) % 12] + 'm', reason: 'Movimiento por 4ª' });
         resolutions.push({ from: chordData.primaryName, to: NOTES[(rootIndex + 3) % 12], reason: 'A relativa mayor' });
@@ -1017,12 +604,12 @@ function updateScaleForChord(chordData) {
         <p><strong>Notas:</strong> ${scaleNotes.join(' - ')}</p>
         <p><strong>Fórmula:</strong> ${formula}</p>
         <p><strong>Acorde base:</strong> ${chordData.primaryName} (${chordData.quality.name})</p>
-        <p style="margin-top:10px; font-size:0.9em; color:#888;">La nota naranja es la raíz (${root}).</p>
     `;
 
     drawScaleFretboard('scale-fretboard', scaleNotes, scaleRootIndex);
 }
 
+// Dibuja mástil con colores por función
 function drawScaleFretboard(containerId, scaleNotes, rootIndex) {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -1033,6 +620,8 @@ function drawScaleFretboard(containerId, scaleNotes, rootIndex) {
     const drawHeight = height - marginTop - marginBottom;
     const stringSpacing = drawHeight / 5;
     const fretSpacing = drawWidth / 13;
+
+    const scaleNotesSet = new Set(scaleNotes);
 
     let svg = `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet" style="background:#2a1f1a; border-radius:10px; width:100%; height:auto; display:block;">`;
 
@@ -1054,10 +643,16 @@ function drawScaleFretboard(containerId, scaleNotes, rootIndex) {
         for (let fret = 0; fret <= 12; fret++) {
             const noteIndex = (openIndex + fret) % 12;
             const noteName = NOTES[noteIndex];
-            if (scaleNotes.includes(noteName)) {
+            if (scaleNotesSet.has(noteName)) {
                 const x = (fret === 0) ? marginLeft - 15 : marginLeft + ((fret - 0.5) * fretSpacing);
-                const isRoot = noteIndex === rootIndex;
-                const fillColor = isRoot ? '#ff6b00' : '#4a9eff';
+                const intervalFromRoot = (noteIndex - rootIndex + 12) % 12;
+
+                let fillColor = 'var(--tension-color)';
+                if (intervalFromRoot === 0) fillColor = 'var(--root-color)';
+                else if (intervalFromRoot === 3 || intervalFromRoot === 4) fillColor = 'var(--third-color)';
+                else if (intervalFromRoot === 6 || intervalFromRoot === 7 || intervalFromRoot === 8) fillColor = 'var(--fifth-color)';
+                else if (intervalFromRoot === 10 || intervalFromRoot === 11) fillColor = 'var(--seventh-color)';
+
                 svg += `<circle cx="${x}" cy="${y}" r="11" fill="${fillColor}" stroke="#000" stroke-width="1.5" />`;
                 svg += `<text x="${x}" y="${y}" fill="#000" font-size="10" font-weight="bold" text-anchor="middle" dominant-baseline="middle">${noteName}</text>`;
             }
@@ -1103,7 +698,7 @@ function updateProgressionsForChord(chordData) {
 }
 
 // =====================================================
-// MODOS
+// MODOS CON COLORES
 // =====================================================
 function updateModeForChord(chordData) {
     if (!chordData || !chordData.quality) return;
@@ -1126,6 +721,19 @@ function updateModeInfo() {
         <p><strong>Escala de ${root}:</strong> ${scaleNotes.join(' - ')}</p>
         <p><strong>Uso:</strong> ${data.uso}</p>
     `;
+
+    // Leyenda específica para modos
+    const legendBox = document.getElementById('mode-legend');
+    if (legendBox) {
+        legendBox.innerHTML = `
+            <div class="mode-legend-item"><span class="mode-legend-color" style="background: var(--root-color);"></span> Raíz (1)</div>
+            <div class="mode-legend-item"><span class="mode-legend-color" style="background: var(--third-color);"></span> 3ª (b3/3)</div>
+            <div class="mode-legend-item"><span class="mode-legend-color" style="background: var(--fifth-color);"></span> 5ª (b5/5/#5)</div>
+            <div class="mode-legend-item"><span class="mode-legend-color" style="background: var(--seventh-color);"></span> 7ª (b7/7)</div>
+            <div class="mode-legend-item"><span class="mode-legend-color" style="background: var(--tension-color);"></span> Otras (2, 4, 6)</div>
+        `;
+    }
+
     drawScaleFretboard('mode-fretboard', scaleNotes, NOTES.indexOf(root));
 }
 
@@ -1283,12 +891,12 @@ function playScaleMap() {
 }
 
 // =====================================================
-// ¿QUÉ TOCO SOBRE ESTE ACORDE?
+// ¿QUÉ TOCO?
 // =====================================================
 function renderWhatToPlay(chordData) {
     const container = document.getElementById('what-to-play-content');
     if (!container || !chordData || !chordData.quality) {
-        if (container) container.innerHTML = '<p class="empty-state">Toca un acorde primero para ver las sugerencias.</p>';
+        if (container) container.innerHTML = '<p class="empty-state">Toca un acorde primero.</p>';
         return;
     }
 
@@ -1303,26 +911,26 @@ function renderWhatToPlay(chordData) {
     const scalesList = [];
 
     if (isMajor7) {
-        scalesList.push({ name: `${root} Jónica`, key: 'jónico', desc: 'Escala mayor natural. Consonante.' });
-        scalesList.push({ name: `${root} Lidia`, key: 'lidio', desc: 'Mayor con #4. Color moderno.' });
-        scalesList.push({ name: `${root} Pentatónica Mayor`, key: 'pent_mayor', desc: 'Simple y directa.' });
+        scalesList.push({ name: `${root} Jónica`, key: 'jónico', desc: 'Mayor natural.' });
+        scalesList.push({ name: `${root} Lidia`, key: 'lidio', desc: 'Mayor con #4.' });
+        scalesList.push({ name: `${root} Pentatónica Mayor`, key: 'pent_mayor', desc: 'Simple.' });
     } else if (isMinor) {
-        scalesList.push({ name: `${root} Eólica`, key: 'eólico', desc: 'Menor natural. Base.' });
+        scalesList.push({ name: `${root} Eólica`, key: 'eólico', desc: 'Menor natural.' });
         scalesList.push({ name: `${root} Dórica`, key: 'dórico', desc: 'Menor con 6ª mayor.' });
         scalesList.push({ name: `${root} Pentatónica Menor`, key: 'pent_menor', desc: 'Rock y blues.' });
         scalesList.push({ name: `${root} Blues`, key: 'blues', desc: 'Pentatónica + blue note.' });
     } else if (isDominant) {
-        scalesList.push({ name: `${root} Mixolidia`, key: 'mixolidio', desc: 'La escala del dominante.' });
+        scalesList.push({ name: `${root} Mixolidia`, key: 'mixolidio', desc: 'La del dominante.' });
         scalesList.push({ name: `${root} Blues`, key: 'blues', desc: 'Con blue note.' });
         scalesList.push({ name: `${root} Frigia Dominante`, key: null, customIntervals: [0, 1, 4, 5, 7, 8, 10], desc: 'V7 con b9 y b13.' });
     } else if (isDim) {
-        scalesList.push({ name: `${root} Locria`, key: 'locrio', desc: 'Escala base del disminuido.' });
+        scalesList.push({ name: `${root} Locria`, key: 'locrio', desc: 'Base del disminuido.' });
     } else if (isAug) {
         scalesList.push({ name: `${root} Aumentada`, key: null, customIntervals: [0, 2, 4, 6, 8, 10], desc: 'Tonos enteros.' });
     } else {
-        scalesList.push({ name: `${root} Jónica`, key: 'jónico', desc: 'Escala mayor natural.' });
+        scalesList.push({ name: `${root} Jónica`, key: 'jónico', desc: 'Mayor natural.' });
         scalesList.push({ name: `${root} Lidia`, key: 'lidio', desc: 'Mayor con #4.' });
-        scalesList.push({ name: `${root} Pentatónica Mayor`, key: 'pent_mayor', desc: 'Simple y directa.' });
+        scalesList.push({ name: `${root} Pentatónica Mayor`, key: 'pent_mayor', desc: 'Simple.' });
     }
 
     const arpeggio = chordData.quality.intervals.map(i => NOTES[(NOTES.indexOf(root) + i) % 12]);
@@ -1348,13 +956,11 @@ function renderWhatToPlay(chordData) {
 
     html += `<div class="wtp-section"><h4>🎼 Escalas para improvisar</h4><div class="wtp-suggestions">`;
     scalesList.forEach((s, i) => {
-        html += `
-            <div class="wtp-card" onclick="showWtpDetail('scale', ${i}, '${root}')">
-                <div class="wtp-card-title">${s.name}</div>
-                <div class="wtp-card-desc">${s.desc}</div>
-                <span class="wtp-card-tag">Ver en mástil</span>
-            </div>
-        `;
+        html += `<div class="wtp-card" onclick="showWtpDetail('scale', ${i}, '${root}')">
+            <div class="wtp-card-title">${s.name}</div>
+            <div class="wtp-card-desc">${s.desc}</div>
+            <span class="wtp-card-tag">Ver en mástil</span>
+        </div>`;
     });
     html += `</div></div>`;
 
@@ -1372,7 +978,7 @@ function renderWhatToPlay(chordData) {
 
     html += `<div class="wtp-section"><h4>➡️ Acordes que suelen seguir</h4><div class="wtp-suggestions">`;
     nextChords.forEach(chord => {
-        html += `<div class="wtp-card" onclick="loadChordFromDB('${chord}')"><div class="wtp-card-title">${chord}</div><div class="wtp-card-desc">Clic para cargar en el mástil</div></div>`;
+        html += `<div class="wtp-card" onclick="loadChordFromDB('${chord}')"><div class="wtp-card-title">${chord}</div><div class="wtp-card-desc">Clic para cargar</div></div>`;
     });
     html += `</div></div>`;
 
@@ -1475,7 +1081,7 @@ function playNotes(notes) {
 }
 
 // =====================================================
-// HIGHLIGHT AUTOMÁTICO DEL CÍRCULO
+// HIGHLIGHT CÍRCULO
 // =====================================================
 function highlightCircleForKey(key) {
     document.querySelectorAll('.circle-segment').forEach(el => el.classList.remove('auto-highlight', 'active'));
@@ -1659,180 +1265,423 @@ function selectKey(key) {
             <div class="axis-card dominant"><strong>Dominante (V7)</strong>${dominant}</div>
         </div>
         ${scaleHTML}
-        <p style="margin-top:12px; font-size:0.9em; color:#888;">
-            <strong>Explicación:</strong> Los grados I, IV y V son los pilares. El ii y vi añaden color. El vii° es la tensión que resuelve al I.
-        </p>
     `;
 }
 
 // =====================================================
-// ANALIZADOR
+// LECCIONES
 // =====================================================
-function buildChordPicker() {
-    const grid = document.getElementById('chord-picker-grid');
-    if (!grid) return;
-    grid.innerHTML = '';
-    Object.keys(CHORD_DB).forEach(chord => {
-        const item = document.createElement('div');
-        item.className = 'chord-picker-item';
-        item.textContent = chord;
-        item.onclick = () => addChordToProgression(chord);
-        grid.appendChild(item);
-    });
-}
-
-function showChordPicker() { document.getElementById('chord-picker').style.display = 'block'; }
-function hideChordPicker() { document.getElementById('chord-picker').style.display = 'none'; }
-
-function addChordToProgression(chord) {
-    if (progressionChords.length >= 8) { alert('Máximo 8 acordes'); return; }
-    progressionChords.push(chord);
-    renderProgressionChips();
-    hideChordPicker();
-}
-
-function removeChordFromProgression(index) {
-    progressionChords.splice(index, 1);
-    renderProgressionChips();
-}
-
-function clearProgression() {
-    progressionChords = [];
-    renderProgressionChips();
-    document.getElementById('progression-input').value = '';
-    document.getElementById('progression-result').innerHTML = '<p class="empty-state">Añade acordes para ver el análisis de la progresión.</p>';
-}
-
-function renderProgressionChips() {
-    const container = document.getElementById('progression-chips');
+function renderLessons() {
+    const container = document.getElementById('lessons-content');
     if (!container) return;
+
     container.innerHTML = '';
 
-    if (progressionChords.length === 0) {
-        container.innerHTML = '<span class="empty-state" style="font-size:0.85em;">Sin acordes aún.</span>';
-        return;
+    LESSONS_DB.forEach(lesson => {
+        const item = document.createElement('div');
+        item.className = 'lesson-item';
+        item.id = `lesson-${lesson.id}`;
+
+        item.innerHTML = `
+            <div class="lesson-header" onclick="toggleLesson('${lesson.id}')">
+                <div class="lesson-icon">${lesson.icon}</div>
+                <div class="lesson-title-group">
+                    <div class="lesson-title">${lesson.title}</div>
+                    <div class="lesson-subtitle">${lesson.subtitle}</div>
+                </div>
+                <div class="lesson-toggle-icon">▼</div>
+            </div>
+            <div class="lesson-body">
+                <div class="lesson-content">
+                    ${lesson.content}
+                    <div class="lesson-example">
+                        <div class="lesson-example-title">🎧 ${lesson.exampleTitle}</div>
+                        <div id="lesson-fret-${lesson.id}"></div>
+                        <div class="lesson-example-actions">
+                            <button class="btn-primary" onclick="playLessonExample('${lesson.id}')">
+                                <i class="fas fa-play"></i> Escuchar ejemplo
+                            </button>
+                        </div>
+                    </div>
+                    <div class="lesson-exercise">
+                        <div class="lesson-exercise-title">✏️ Ejercicio práctico</div>
+                        <p>${lesson.exercise}</p>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        container.appendChild(item);
+    });
+}
+
+function toggleLesson(lessonId) {
+    const item = document.getElementById(`lesson-${lessonId}`);
+    if (!item) return;
+
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.lesson-item').forEach(el => el.classList.remove('open'));
+
+    if (!isOpen) {
+        item.classList.add('open');
+        openLessonId = lessonId;
+
+        const lesson = LESSONS_DB.find(l => l.id === lessonId);
+        if (lesson) {
+            setTimeout(() => {
+                drawMiniFretboard(`lesson-fret-${lessonId}`, lesson.exampleNotes, lesson.exampleNotes[0]);
+                item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        }
+    } else {
+        openLessonId = null;
     }
-
-    progressionChords.forEach((chord, i) => {
-        const chip = document.createElement('span');
-        chip.className = 'progression-chip';
-        chip.innerHTML = `${chord}<button class="chip-remove" onclick="removeChordFromProgression(${i})">×</button>`;
-        container.appendChild(chip);
-    });
 }
 
-function analyzeProgression() {
-    const input = document.getElementById('progression-input').value.trim();
-    let chords = [...progressionChords];
-    if (input) {
-        chords = input.split(/[\s,\-]+/).filter(c => c.length > 0).slice(0, 8);
+function playLessonExample(lessonId) {
+    const lesson = LESSONS_DB.find(l => l.id === lessonId);
+    if (!lesson) return;
+    for (let i = 0; i < lesson.exampleNotes.length; i++) {
+        setTimeout(() => playNote(lesson.exampleNotes[i]), i * 400);
     }
-    if (chords.length === 0) { alert('Añade al menos un acorde'); return; }
-    const result = analyzeProgressionData(chords);
-    renderProgressionAnalysis(chords, result);
 }
 
-function analyzeProgressionData(chords) {
-    const keyCandidates = {};
-    NOTES.forEach((key, keyIdx) => {
-        const majorScale = MODE_INTERVALS['jónico'].map(i => NOTES[(keyIdx + i) % 12]);
-        const minorScale = MODE_INTERVALS['eólico'].map(i => NOTES[(keyIdx + i) % 12]);
-        let scoreMajor = 0, scoreMinor = 0;
-        chords.forEach(chord => {
-            const root = extractRoot(chord);
-            if (majorScale.includes(root)) scoreMajor++;
-            if (minorScale.includes(root)) scoreMinor++;
-        });
-        keyCandidates[key + ' mayor'] = scoreMajor;
-        keyCandidates[key + ' menor'] = scoreMinor;
-    });
+// =====================================================
+// PRÁCTICA GUIADA (FASE 5)
+// =====================================================
+const EXERCISE_TYPES = [
+    { id: 'intervalos', title: '🎵 Identifica el intervalo', desc: 'Te damos dos notas, elige el intervalo correcto' },
+    { id: 'terceras', title: '🎸 Mayor o menor', desc: 'Te damos un intervalo de 3ª, di si es mayor o menor' },
+    { id: 'notas_acorde', title: '🎼 Encuentra las notas', desc: 'Te damos un acorde, elige sus notas correctas' },
+    { id: 'funciones', title: '🎯 Función armónica', desc: 'Te damos un acorde, elige su función en la tonalidad' },
+    { id: 'raiz', title: '🔍 Encuentra la raíz', desc: 'Te damos varias notas, elige cuál es la raíz' }
+];
 
-    let bestKey = 'C mayor', bestScore = 0;
-    Object.entries(keyCandidates).forEach(([k, score]) => {
-        if (score > bestScore) { bestScore = score; bestKey = k; }
-    });
+const ALL_INTERVALS = [
+    { semitones: 0, name: 'Unísono' },
+    { semitones: 1, name: '2ª menor' },
+    { semitones: 2, name: '2ª mayor' },
+    { semitones: 3, name: '3ª menor' },
+    { semitones: 4, name: '3ª mayor' },
+    { semitones: 5, name: '4ª justa' },
+    { semitones: 6, name: 'Tritono' },
+    { semitones: 7, name: '5ª justa' },
+    { semitones: 8, name: '6ª menor' },
+    { semitones: 9, name: '6ª mayor' },
+    { semitones: 10, name: '7ª menor' },
+    { semitones: 11, name: '7ª mayor' }
+];
 
-    const isMinor = bestKey.includes('menor');
-    const keyRoot = bestKey.split(' ')[0];
-    const keyIndex = NOTES.indexOf(keyRoot);
-
-    const scale = isMinor
-        ? MODE_INTERVALS['eólico'].map(i => NOTES[(keyIndex + i) % 12])
-        : MODE_INTERVALS['jónico'].map(i => NOTES[(keyIndex + i) % 12]);
-
-    const degreesMajor = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
-    const degreesMinor = ['i', 'ii°', 'III', 'iv', 'v', 'VI', 'VII'];
-    const degreeNames = isMinor ? degreesMinor : degreesMajor;
-
-    const chordDegrees = chords.map(chord => {
-        const root = extractRoot(chord);
-        const degreeIndex = scale.indexOf(root);
-        if (degreeIndex === -1) return { chord, degree: '?', function: 'Fuera de la tonalidad', root };
-        const degree = degreeNames[degreeIndex];
-        let func = 'Color';
-        if (degreeIndex === 0) func = 'Tónica';
-        else if (degreeIndex === 3 || degreeIndex === 1) func = 'Subdominante';
-        else if (degreeIndex === 4) func = 'Dominante';
-        return { chord, degree, function: func, root };
-    });
-
-    const cadence = detectCadence(chordDegrees);
-    const recommendedScale = isMinor ? 'eólico' : 'jónico';
-    const scaleNotes = MODE_INTERVALS[recommendedScale].map(i => NOTES[(keyIndex + i) % 12]);
-
-    const substitutions = chordDegrees.map(cd => {
-        const idx = scale.indexOf(cd.root);
-        if (idx === -1) return null;
-        const tritoneRoot = NOTES[(NOTES.indexOf(cd.root) + 6) % 12];
-        return { original: cd.chord, tritone: tritoneRoot + (cd.chord.includes('7') ? '7' : '') };
-    }).filter(s => s);
-
-    return { key: bestKey, keyRoot, isMinor, chordDegrees, cadence, scale: scaleNotes, substitutions };
+function initPractice() {
+    loadPracticeStats();
+    renderPracticeStats();
+    renderPracticeMenu();
 }
 
-function extractRoot(chord) {
-    if (chord.length >= 2 && (chord[1] === '#' || chord[1] === 'b')) {
-        if (chord[1] === '#' && NOTES.includes(chord.substring(0, 2))) return chord.substring(0, 2);
+function loadPracticeStats() {
+    try {
+        const saved = localStorage.getItem('tavo_practice_stats');
+        if (saved) {
+            practiceStats = JSON.parse(saved);
+        } else {
+            practiceStats = { correct: 0, wrong: 0, streak: 0, best: 0, byExercise: {} };
+        }
+    } catch (e) {
+        practiceStats = { correct: 0, wrong: 0, streak: 0, best: 0, byExercise: {} };
     }
-    return chord[0];
 }
 
-function detectCadence(chordDegrees) {
-    if (chordDegrees.length < 2) return null;
-    const degrees = chordDegrees.map(cd => cd.degree);
-    const last = degrees.slice(-2);
-    if (last[0] === 'V' && last[1] === 'I') return 'Cadencia Auténtica (V - I)';
-    if (last[0] === 'IV' && last[1] === 'I') return 'Cadencia Plagal (IV - I)';
-    if (last[0] === 'V' && last[1] === 'vi') return 'Cadencia Rota (V - vi)';
-    return null;
+function savePracticeStats() {
+    try {
+        localStorage.setItem('tavo_practice_stats', JSON.stringify(practiceStats));
+    } catch (e) { /* ignore */ }
 }
 
-function renderProgressionAnalysis(chords, result) {
-    const container = document.getElementById('progression-result');
+function renderPracticeStats() {
+    const container = document.getElementById('practice-stats');
     if (!container) return;
 
-    let html = `<div class="progression-analysis-block"><h4>🎼 Tonalidad detectada</h4><p><strong>${result.key}</strong></p></div>`;
-    html += `<div class="progression-analysis-block"><h4>📊 Grados y funciones</h4><div class="degree-grid">`;
-    result.chordDegrees.forEach(cd => {
-        html += `<div class="degree-card"><span class="degree-roman">${cd.degree}</span><div class="degree-chord">${cd.chord}</div><div class="degree-function">${cd.function}</div></div>`;
+    const total = practiceStats.correct + practiceStats.wrong;
+    const rate = total > 0 ? Math.round((practiceStats.correct / total) * 100) : 0;
+
+    container.innerHTML = `
+        <div class="stat-card">
+            <span class="stat-value">${practiceStats.correct}</span>
+            <span class="stat-label">Aciertos</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value">${practiceStats.wrong}</span>
+            <span class="stat-label">Fallos</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value">${rate}%</span>
+            <span class="stat-label">Precisión</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value">${practiceStats.streak}</span>
+            <span class="stat-label">Racha</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value">${practiceStats.best}</span>
+            <span class="stat-label">Mejor racha</span>
+        </div>
+    `;
+}
+
+function renderPracticeMenu() {
+    const container = document.getElementById('practice-menu');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    EXERCISE_TYPES.forEach(ex => {
+        const btn = document.createElement('button');
+        btn.className = 'practice-menu-btn';
+        btn.innerHTML = `
+            <span class="btn-title">${ex.title}</span>
+            <span class="btn-desc">${ex.desc}</span>
+        `;
+        btn.onclick = () => startExercise(ex.id);
+        container.appendChild(btn);
     });
-    html += `</div></div>`;
 
-    if (result.cadence) html += `<div class="progression-analysis-block"><h4>🎯 Cadencia</h4><p><strong>${result.cadence}</strong></p></div>`;
+    // Botón de reiniciar stats
+    const resetBtn = document.createElement('button');
+    resetBtn.className = 'reset-stats-btn';
+    resetBtn.textContent = '🗑️ Reiniciar estadísticas';
+    resetBtn.onclick = () => {
+        if (confirm('¿Seguro que quieres reiniciar las estadísticas?')) {
+            practiceStats = { correct: 0, wrong: 0, streak: 0, best: 0, byExercise: {} };
+            savePracticeStats();
+            renderPracticeStats();
+        }
+    };
+    container.appendChild(resetBtn);
+}
 
-    html += `<div class="progression-analysis-block"><h4>🎼 Escala recomendada</h4><p><strong>${result.keyRoot} ${result.isMinor ? 'menor' : 'mayor'}</strong></p><p><strong>Notas:</strong> ${result.scale.join(' - ')}</p></div>`;
+function startExercise(typeId) {
+    currentExercise = typeId;
 
-    if (result.substitutions.length > 0) {
-        html += `<div class="progression-analysis-block"><h4>✨ Sustituciones (tritono)</h4><ul>`;
-        result.substitutions.forEach(s => { html += `<li><strong>${s.original}</strong> → <strong>${s.tritone}</strong></li>`; });
-        html += `</ul></div>`;
+    // Marcar botón activo
+    document.querySelectorAll('.practice-menu-btn').forEach(btn => btn.classList.remove('active'));
+    const btns = document.querySelectorAll('.practice-menu-btn');
+    EXERCISE_TYPES.forEach((ex, i) => {
+        if (ex.id === typeId && btns[i]) btns[i].classList.add('active');
+    });
+
+    generateExercise();
+}
+
+function generateExercise() {
+    const container = document.getElementById('practice-exercise');
+    if (!container || !currentExercise) return;
+
+    // Generar pregunta aleatoria según el tipo
+    let question, options, correctIndex, explanation;
+
+    if (currentExercise === 'intervalos') {
+        const rootIndex = Math.floor(Math.random() * 12);
+        const intervalSemitones = [2, 3, 4, 5, 7, 9, 10, 11][Math.floor(Math.random() * 8)];
+        const secondIndex = (rootIndex + intervalSemitones) % 12;
+        const rootNote = NOTES[rootIndex];
+        const secondNote = NOTES[secondIndex];
+        const correctInterval = ALL_INTERVALS.find(i => i.semitones === intervalSemitones);
+
+        question = `¿Qué intervalo hay entre <strong>${rootNote}</strong> y <strong>${secondNote}</strong>?`;
+
+        const wrongOptions = ALL_INTERVALS
+            .filter(i => i.semitones !== intervalSemitones)
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 3);
+
+        options = [correctInterval, ...wrongOptions].sort(() => 0.5 - Math.random());
+        correctIndex = options.indexOf(correctInterval);
+        explanation = `${rootNote} → ${secondNote} = ${intervalSemitones} semitonos = ${correctInterval.name}`;
+
+    } else if (currentExercise === 'terceras') {
+        const rootIndex = Math.floor(Math.random() * 12);
+        const isMajor = Math.random() < 0.5;
+        const semitones = isMajor ? 4 : 3;
+        const secondIndex = (rootIndex + semitones) % 12;
+        const rootNote = NOTES[rootIndex];
+        const secondNote = NOTES[secondIndex];
+
+        question = `La 3ª entre <strong>${rootNote}</strong> y <strong>${secondNote}</strong> es...`;
+        options = ['Mayor', 'Menor'];
+        correctIndex = isMajor ? 0 : 1;
+        explanation = isMajor
+            ? `${rootNote} → ${secondNote} = 4 semitonos = 3ª mayor (alegre)`
+            : `${rootNote} → ${secondNote} = 3 semitonos = 3ª menor (melancólico)`;
+
+    } else if (currentExercise === 'notas_acorde') {
+        const chordNames = ['C', 'G', 'D', 'A', 'E', 'F', 'Am', 'Em', 'Dm', 'Cmaj7', 'G7', 'Am7'];
+        const chord = chordNames[Math.floor(Math.random() * chordNames.length)];
+        const rootNote = extractRoot(chord);
+        const isMinor = chord.includes('m') && !chord.includes('maj');
+        const isMaj7 = chord.includes('maj7');
+        const is7 = chord.includes('7') && !isMaj7 && !isMinor;
+        const isM7 = chord.includes('m7') && !chord.includes('maj');
+
+        let intervals;
+        if (isMaj7) intervals = [0, 4, 7, 11];
+        else if (isM7) intervals = [0, 3, 7, 10];
+        else if (is7) intervals = [0, 4, 7, 10];
+        else if (isMinor) intervals = [0, 3, 7];
+        else intervals = [0, 4, 7];
+
+        const rootIndex = NOTES.indexOf(rootNote);
+        const notes = intervals.map(i => NOTES[(rootIndex + i) % 12]);
+
+        question = `¿Qué notas forman <strong>${chord}</strong>?`;
+
+        const correctAnswer = notes.join(' - ');
+        const wrong1 = notes.map((n, i) => i === 1 ? NOTES[(NOTES.indexOf(n) + 1) % 12] : n).join(' - ');
+        const wrong2 = notes.map((n, i) => i === notes.length - 1 ? NOTES[(NOTES.indexOf(n) + 1) % 12] : n).join(' - ');
+        const wrong3 = notes.map((n, i) => i === 0 ? NOTES[(NOTES.indexOf(n) + 2) % 12] : n).join(' - ');
+
+        options = [correctAnswer, wrong1, wrong2, wrong3].sort(() => 0.5 - Math.random());
+        correctIndex = options.indexOf(correctAnswer);
+        explanation = `${chord}: raíz + ${isMinor ? '3ª menor' : '3ª mayor'} + 5ª justa${(is7 || isMaj7 || isM7) ? ' + 7ª' : ''}`;
+
+    } else if (currentExercise === 'funciones') {
+        const keyRoot = 'C';
+        const tones = ['C', 'Dm', 'Em', 'F', 'G7', 'Am'];
+        const functions = ['Tónica (I)', 'Subdominante (ii)', 'Mediante (iii)', 'Subdominante (IV)', 'Dominante (V7)', 'Submediante (vi)'];
+        const idx = Math.floor(Math.random() * tones.length);
+        const chord = tones[idx];
+        const correctFunction = functions[idx];
+
+        question = `En la tonalidad de <strong>C mayor</strong>, ¿qué función tiene <strong>${chord}</strong>?`;
+
+        const wrongOptions = functions.filter((f, i) => i !== idx).sort(() => 0.5 - Math.random()).slice(0, 3);
+        options = [correctFunction, ...wrongOptions].sort(() => 0.5 - Math.random());
+        correctIndex = options.indexOf(correctFunction);
+        explanation = `${chord} es el ${correctFunction} en C mayor`;
+
+    } else if (currentExercise === 'raiz') {
+        const chordNames = ['C', 'G', 'D', 'A', 'E', 'F', 'Am', 'Em', 'Dm', 'G7', 'Cmaj7'];
+        const chord = chordNames[Math.floor(Math.random() * chordNames.length)];
+        const rootNote = extractRoot(chord);
+        const isMinor = chord.includes('m') && !chord.includes('maj');
+        const isMaj7 = chord.includes('maj7');
+        const is7 = chord.includes('7') && !isMaj7;
+
+        let intervals;
+        if (isMaj7) intervals = [0, 4, 7, 11];
+        else if (is7) intervals = [0, 4, 7, 10];
+        else if (isMinor) intervals = [0, 3, 7];
+        else intervals = [0, 4, 7];
+
+        const rootIndex = NOTES.indexOf(rootNote);
+        const notes = intervals.map(i => NOTES[(rootIndex + i) % 12]);
+
+        question = `¿Cuál es la <strong>raíz</strong> del acorde formado por las notas <strong>${notes.join(' - ')}</strong>?`;
+
+        const wrongRoots = NOTES.filter(n => n !== rootNote).sort(() => 0.5 - Math.random()).slice(0, 3);
+        options = [rootNote, ...wrongRoots].sort(() => 0.5 - Math.random());
+        correctIndex = options.indexOf(rootNote);
+        explanation = `La raíz es ${rootNote} porque el acorde se llama ${chord}`;
+    }
+
+    // Guardar estado del ejercicio
+    exerciseState = {
+        type: currentExercise,
+        question: question,
+        options: options,
+        correctIndex: correctIndex,
+        explanation: explanation,
+        answered: false
+    };
+
+    renderExercise();
+}
+
+function renderExercise() {
+    const container = document.getElementById('practice-exercise');
+    if (!container || !exerciseState) return;
+
+    const total = practiceStats.correct + practiceStats.wrong;
+
+    let html = `
+        <div class="exercise-header">
+            <h3 class="exercise-title">${EXERCISE_TYPES.find(e => e.id === exerciseState.type).title}</h3>
+            <div class="exercise-progress">
+                Aciertos: <strong>${practiceStats.correct}</strong> ·
+                Racha: <strong>${practiceStats.streak}</strong> ·
+                Total: <strong>${total}</strong>
+            </div>
+        </div>
+        <div class="exercise-question">${exerciseState.question}</div>
+        <div class="exercise-options">
+    `;
+
+    exerciseState.options.forEach((opt, i) => {
+        html += `<button class="exercise-option" onclick="checkAnswer(${i})" ${exerciseState.answered ? 'disabled' : ''}>${opt}</button>`;
+    });
+
+    html += `</div>`;
+
+    if (exerciseState.answered) {
+        html += `<div class="exercise-feedback ${exerciseState.isCorrect ? 'correct' : 'wrong'}">
+            ${exerciseState.isCorrect ? '✅ ¡Correcto!' : '❌ Incorrecto'}<br>
+            <strong>Explicación:</strong> ${exerciseState.explanation}
+        </div>`;
+        html += `<div class="exercise-actions">
+            <button class="btn-primary" onclick="nextExercise()">
+                <i class="fas fa-arrow-right"></i> Siguiente ejercicio
+            </button>
+        </div>`;
     }
 
     container.innerHTML = html;
+
+    // Si ya está respondido, marcar visualmente las opciones
+    if (exerciseState.answered) {
+        const options = container.querySelectorAll('.exercise-option');
+        options.forEach((opt, i) => {
+            if (i === exerciseState.correctIndex) opt.classList.add('correct');
+            if (i === exerciseState.selectedIndex && !exerciseState.isCorrect) opt.classList.add('wrong');
+        });
+    }
+}
+
+function checkAnswer(index) {
+    if (!exerciseState || exerciseState.answered) return;
+
+    exerciseState.answered = true;
+    exerciseState.selectedIndex = index;
+    exerciseState.isCorrect = (index === exerciseState.correctIndex);
+
+    if (exerciseState.isCorrect) {
+        practiceStats.correct++;
+        practiceStats.streak++;
+        if (practiceStats.streak > practiceStats.best) practiceStats.best = practiceStats.streak;
+    } else {
+        practiceStats.wrong++;
+        practiceStats.streak = 0;
+    }
+
+    // Stats por tipo de ejercicio
+    if (!practiceStats.byExercise[exerciseState.type]) {
+        practiceStats.byExercise[exerciseState.type] = { correct: 0, wrong: 0 };
+    }
+    if (exerciseState.isCorrect) {
+        practiceStats.byExercise[exerciseState.type].correct++;
+    } else {
+        practiceStats.byExercise[exerciseState.type].wrong++;
+    }
+
+    savePracticeStats();
+    renderPracticeStats();
+    renderExercise();
+}
+
+function nextExercise() {
+    generateExercise();
 }
 
 // =====================================================
-// NAVEGADOR
+// NAVEGADOR DE TONALIDADES
 // =====================================================
 function initKeyNavigator() {
     const selector = document.getElementById('key-nav-selector');
@@ -2102,4 +1951,227 @@ function resetFretboard() {
     document.getElementById('analysis-content').innerHTML = '<p class="empty-state">Toca un acorde para ver su análisis armónico.</p>';
     document.getElementById('what-to-play-content').innerHTML = '<p class="empty-state">Aún no hay un acorde detectado.</p>';
     clearCircleHighlight();
+}
+
+// =====================================================
+// LEYENDA EJEMPLO (C MAYOR)
+// =====================================================
+function drawLegendExampleFretboard() {
+    const container = document.getElementById('legend-example-fretboard');
+    if (!container) return;
+
+    const tonic = 'C';
+    const scale = SCALES_DB['jónico'];
+    const rootIndex = NOTES.indexOf(tonic);
+    const scaleNotesSet = new Set(scale.intervals.map(i => (rootIndex + i) % 12));
+
+    const width = 700, height = 200;
+    const marginLeft = 55, marginTop = 30, marginRight = 15, marginBottom = 15;
+    const drawWidth = width - marginLeft - marginRight;
+    const drawHeight = height - marginTop - marginBottom;
+    const stringSpacing = drawHeight / 5;
+    const fretSpacing = drawWidth / 13;
+
+    let svg = `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet" style="background:#2a1f1a; border-radius:8px; width:100%; height:auto; display:block;">`;
+
+    for (let i = 0; i <= 12; i++) {
+        svg += `<line x1="${marginLeft + (i * fretSpacing)}" y1="${marginTop}" x2="${marginLeft + (i * fretSpacing)}" y2="${height - marginBottom}" stroke="#777" stroke-width="${i === 0 ? 5 : 2}" />`;
+    }
+    for (let i = 0; i < 6; i++) {
+        const y = marginTop + (i * stringSpacing);
+        svg += `<line x1="${marginLeft}" y1="${y}" x2="${width - marginRight}" y2="${y}" stroke="#ccc" stroke-width="${4 - (i * 0.5)}" />`;
+        svg += `<text x="${marginLeft - 10}" y="${y}" fill="#ff6b00" font-size="12" font-weight="bold" text-anchor="end" dominant-baseline="middle">${STRINGS[i]}</text>`;
+    }
+    for (let i = 1; i <= 12; i++) {
+        svg += `<text x="${marginLeft + ((i - 0.5) * fretSpacing)}" y="${marginTop - 10}" fill="#888" font-size="10" text-anchor="middle">${i}</text>`;
+    }
+
+    for (let stringIndex = 0; stringIndex < 6; stringIndex++) {
+        const y = marginTop + (stringIndex * stringSpacing);
+        const openIndex = NOTES.indexOf(OPEN_NOTES[stringIndex]);
+        for (let fret = 0; fret <= 12; fret++) {
+            const noteIndex = (openIndex + fret) % 12;
+            if (scaleNotesSet.has(noteIndex)) {
+                const x = (fret === 0) ? marginLeft - 15 : marginLeft + ((fret - 0.5) * fretSpacing);
+                const intervalFromRoot = (noteIndex - rootIndex + 12) % 12;
+
+                let fillColor = 'var(--tension-color)';
+                if (intervalFromRoot === 0) fillColor = 'var(--root-color)';
+                else if (intervalFromRoot === 3 || intervalFromRoot === 4) fillColor = 'var(--third-color)';
+                else if (intervalFromRoot === 6 || intervalFromRoot === 7 || intervalFromRoot === 8) fillColor = 'var(--fifth-color)';
+                else if (intervalFromRoot === 10 || intervalFromRoot === 11) fillColor = 'var(--seventh-color)';
+
+                svg += `<circle cx="${x}" cy="${y}" r="11" fill="${fillColor}" stroke="#000" stroke-width="1.5" />`;
+                svg += `<text x="${x}" y="${y}" fill="#000" font-size="10" font-weight="bold" text-anchor="middle" dominant-baseline="middle">${NOTES[noteIndex]}</text>`;
+            }
+        }
+    }
+    svg += `</svg>`;
+    container.innerHTML = svg;
+}
+
+// =====================================================
+// ANALIZADOR
+// =====================================================
+function buildChordPicker() {
+    const grid = document.getElementById('chord-picker-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    Object.keys(CHORD_DB).forEach(chord => {
+        const item = document.createElement('div');
+        item.className = 'chord-picker-item';
+        item.textContent = chord;
+        item.onclick = () => addChordToProgression(chord);
+        grid.appendChild(item);
+    });
+}
+
+function showChordPicker() { document.getElementById('chord-picker').style.display = 'block'; }
+function hideChordPicker() { document.getElementById('chord-picker').style.display = 'none'; }
+
+function addChordToProgression(chord) {
+    if (progressionChords.length >= 8) { alert('Máximo 8 acordes'); return; }
+    progressionChords.push(chord);
+    renderProgressionChips();
+    hideChordPicker();
+}
+
+function removeChordFromProgression(index) {
+    progressionChords.splice(index, 1);
+    renderProgressionChips();
+}
+
+function clearProgression() {
+    progressionChords = [];
+    renderProgressionChips();
+    document.getElementById('progression-input').value = '';
+    document.getElementById('progression-result').innerHTML = '<p class="empty-state">Añade acordes para ver el análisis de la progresión.</p>';
+}
+
+function renderProgressionChips() {
+    const container = document.getElementById('progression-chips');
+    if (!container) return;
+    container.innerHTML = '';
+
+    if (progressionChords.length === 0) {
+        container.innerHTML = '<span class="empty-state" style="font-size:0.85em;">Sin acordes aún.</span>';
+        return;
+    }
+
+    progressionChords.forEach((chord, i) => {
+        const chip = document.createElement('span');
+        chip.className = 'progression-chip';
+        chip.innerHTML = `${chord}<button class="chip-remove" onclick="removeChordFromProgression(${i})">×</button>`;
+        container.appendChild(chip);
+    });
+}
+
+function analyzeProgression() {
+    const input = document.getElementById('progression-input').value.trim();
+    let chords = [...progressionChords];
+    if (input) {
+        chords = input.split(/[\s,\-]+/).filter(c => c.length > 0).slice(0, 8);
+    }
+    if (chords.length === 0) { alert('Añade al menos un acorde'); return; }
+    const result = analyzeProgressionData(chords);
+    renderProgressionAnalysis(chords, result);
+}
+
+function analyzeProgressionData(chords) {
+    const keyCandidates = {};
+    NOTES.forEach((key, keyIdx) => {
+        const majorScale = MODE_INTERVALS['jónico'].map(i => NOTES[(keyIdx + i) % 12]);
+        const minorScale = MODE_INTERVALS['eólico'].map(i => NOTES[(keyIdx + i) % 12]);
+        let scoreMajor = 0, scoreMinor = 0;
+        chords.forEach(chord => {
+            const root = extractRoot(chord);
+            if (majorScale.includes(root)) scoreMajor++;
+            if (minorScale.includes(root)) scoreMinor++;
+        });
+        keyCandidates[key + ' mayor'] = scoreMajor;
+        keyCandidates[key + ' menor'] = scoreMinor;
+    });
+
+    let bestKey = 'C mayor', bestScore = 0;
+    Object.entries(keyCandidates).forEach(([k, score]) => {
+        if (score > bestScore) { bestScore = score; bestKey = k; }
+    });
+
+    const isMinor = bestKey.includes('menor');
+    const keyRoot = bestKey.split(' ')[0];
+    const keyIndex = NOTES.indexOf(keyRoot);
+
+    const scale = isMinor
+        ? MODE_INTERVALS['eólico'].map(i => NOTES[(keyIndex + i) % 12])
+        : MODE_INTERVALS['jónico'].map(i => NOTES[(keyIndex + i) % 12]);
+
+    const degreesMajor = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
+    const degreesMinor = ['i', 'ii°', 'III', 'iv', 'v', 'VI', 'VII'];
+    const degreeNames = isMinor ? degreesMinor : degreesMajor;
+
+    const chordDegrees = chords.map(chord => {
+        const root = extractRoot(chord);
+        const degreeIndex = scale.indexOf(root);
+        if (degreeIndex === -1) return { chord, degree: '?', function: 'Fuera de la tonalidad', root };
+        const degree = degreeNames[degreeIndex];
+        let func = 'Color';
+        if (degreeIndex === 0) func = 'Tónica';
+        else if (degreeIndex === 3 || degreeIndex === 1) func = 'Subdominante';
+        else if (degreeIndex === 4) func = 'Dominante';
+        return { chord, degree, function: func, root };
+    });
+
+    const cadence = detectCadence(chordDegrees);
+    const recommendedScale = isMinor ? 'eólico' : 'jónico';
+    const scaleNotes = MODE_INTERVALS[recommendedScale].map(i => NOTES[(keyIndex + i) % 12]);
+
+    const substitutions = chordDegrees.map(cd => {
+        const idx = scale.indexOf(cd.root);
+        if (idx === -1) return null;
+        const tritoneRoot = NOTES[(NOTES.indexOf(cd.root) + 6) % 12];
+        return { original: cd.chord, tritone: tritoneRoot + (cd.chord.includes('7') ? '7' : '') };
+    }).filter(s => s);
+
+    return { key: bestKey, keyRoot, isMinor, chordDegrees, cadence, scale: scaleNotes, substitutions };
+}
+
+function extractRoot(chord) {
+    if (chord.length >= 2 && (chord[1] === '#' || chord[1] === 'b')) {
+        if (chord[1] === '#' && NOTES.includes(chord.substring(0, 2))) return chord.substring(0, 2);
+    }
+    return chord[0];
+}
+
+function detectCadence(chordDegrees) {
+    if (chordDegrees.length < 2) return null;
+    const degrees = chordDegrees.map(cd => cd.degree);
+    const last = degrees.slice(-2);
+    if (last[0] === 'V' && last[1] === 'I') return 'Cadencia Auténtica (V - I)';
+    if (last[0] === 'IV' && last[1] === 'I') return 'Cadencia Plagal (IV - I)';
+    if (last[0] === 'V' && last[1] === 'vi') return 'Cadencia Rota (V - vi)';
+    return null;
+}
+
+function renderProgressionAnalysis(chords, result) {
+    const container = document.getElementById('progression-result');
+    if (!container) return;
+
+    let html = `<div class="progression-analysis-block"><h4>🎼 Tonalidad detectada</h4><p><strong>${result.key}</strong></p></div>`;
+    html += `<div class="progression-analysis-block"><h4>📊 Grados y funciones</h4><div class="degree-grid">`;
+    result.chordDegrees.forEach(cd => {
+        html += `<div class="degree-card"><span class="degree-roman">${cd.degree}</span><div class="degree-chord">${cd.chord}</div><div class="degree-function">${cd.function}</div></div>`;
+    });
+    html += `</div></div>`;
+
+    if (result.cadence) html += `<div class="progression-analysis-block"><h4>🎯 Cadencia</h4><p><strong>${result.cadence}</strong></p></div>`;
+
+    html += `<div class="progression-analysis-block"><h4>🎼 Escala recomendada</h4><p><strong>${result.keyRoot} ${result.isMinor ? 'menor' : 'mayor'}</strong></p><p><strong>Notas:</strong> ${result.scale.join(' - ')}</p></div>`;
+
+    if (result.substitutions.length > 0) {
+        html += `<div class="progression-analysis-block"><h4>✨ Sustituciones (tritono)</h4><ul>`;
+        result.substitutions.forEach(s => { html += `<li><strong>${s.original}</strong> → <strong>${s.tritone}</strong></li>`; });
+        html += `</ul></div>`;
+    }
+
+    container.innerHTML = html;
 }
