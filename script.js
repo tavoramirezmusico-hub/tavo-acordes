@@ -1,5 +1,5 @@
 // =====================================================
-// TAVO ACORDES - SCRIPT PRINCIPAL v11
+// TAVO ACORDES - SCRIPT PRINCIPAL v12 (Fase 4 - Lecciones)
 // =====================================================
 
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -19,7 +19,7 @@ const CHORD_QUALITIES = {
     '5': { intervals: [0, 7], formula: '1 5', name: 'Quinta (Power)', scale: 'jónico', explanation: 'Solo raíz y quinta, sin 3ª.' },
     '6': { intervals: [0, 4, 7, 9], formula: '1 3 5 6', name: 'Sexta', scale: 'jónico', explanation: 'Tríada mayor + 6ª mayor.' },
     'm6': { intervals: [0, 3, 7, 9], formula: '1 b3 5 6', name: 'Menor Sexta', scale: 'dórico', explanation: 'Tríada menor + 6ª mayor.' },
-    '7': { intervals: [0, 4, 7, 10], formula: '1 3 5 b7', name: 'Dominante (7)', scale: 'mixolidio', explanation: 'Tríada mayor + 7ª menor. El dominante por excelencia.' },
+    '7': { intervals: [0, 4, 7, 10], formula: '1 3 5 b7', name: 'Dominante (7)', scale: 'mixolidio', explanation: 'Tríada mayor + 7ª menor.' },
     'maj7': { intervals: [0, 4, 7, 11], formula: '1 3 5 7', name: 'Mayor 7', scale: 'jónico', explanation: 'Tríada mayor + 7ª mayor.' },
     'm7': { intervals: [0, 3, 7, 10], formula: '1 b3 5 b7', name: 'Menor 7', scale: 'dórico', explanation: 'Tríada menor + 7ª menor.' },
     'm7b5': { intervals: [0, 3, 6, 10], formula: '1 b3 b5 b7', name: 'Semidisminuido', scale: 'locrio', explanation: 'Tríada disminuida + 7ª menor.' },
@@ -32,7 +32,7 @@ const CHORD_QUALITIES = {
     'maj9': { intervals: [0, 2, 4, 7, 11], formula: '1 2 3 5 7', name: 'Mayor 9', scale: 'jónico', explanation: 'maj7 + 9ª.' },
     'm9': { intervals: [0, 2, 3, 7, 10], formula: '1 2 b3 5 b7', name: 'Menor 9', scale: 'dórico', explanation: 'm7 + 9ª.' },
     '7b9': { intervals: [0, 1, 4, 7, 10], formula: '1 b2 3 5 b7', name: 'Dominante 7 b9', scale: 'frigio', explanation: 'Dominante con 9ª menor.' },
-    '7#9': { intervals: [0, 3, 4, 7, 10], formula: '1 #2 3 5 b7', name: 'Dominante 7 #9', scale: 'frigio', explanation: 'Dominante con 9ª aumentada (Hendrix).' },
+    '7#9': { intervals: [0, 3, 4, 7, 10], formula: '1 #2 3 5 b7', name: 'Dominante 7 #9', scale: 'frigio', explanation: 'Dominante con 9ª aumentada.' },
     '13': { intervals: [0, 2, 4, 7, 9, 10], formula: '1 2 3 5 6 b7', name: 'Dominante 13', scale: 'mixolidio', explanation: 'Dominante + 13ª.' },
     '7b5': { intervals: [0, 4, 6, 10], formula: '1 3 b5 b7', name: 'Dominante 7 b5', scale: 'locrio', explanation: 'Dominante con 5ª disminuida.' },
     '7#5': { intervals: [0, 4, 8, 10], formula: '1 3 #5 b7', name: 'Dominante 7 #5', scale: 'jónico', explanation: 'Dominante con 5ª aumentada.' },
@@ -81,6 +81,231 @@ const MODE_INFO = {
     'eólico': { formula: '1 2 b3 4 5 b6 b7', uso: 'Menor natural.' },
     'locrio': { formula: '1 b2 b3 4 b5 b6 b7', uso: 'Disminuido.' }
 };
+
+// =====================================================
+// LECCIONES INTERACTIVAS (FASE 4)
+// =====================================================
+const LESSONS_DB = [
+    {
+        id: 'intervalos',
+        icon: '🎵',
+        title: 'Los intervalos',
+        subtitle: 'Las distancias entre notas: el alfabeto de la música',
+        content: `
+            <p>Un <strong>intervalo</strong> es la distancia entre dos notas. Es la unidad más básica de la música: todo (acordes, escalas, melodías) se construye a partir de intervalos.</p>
+            <p>Los intervalos se miden en <strong>semitonos</strong> (la distancia más pequeña en la guitarra = 1 traste).</p>
+            <ul>
+                <li><strong>2ª mayor (2 semitonos):</strong> Do → Re</li>
+                <li><strong>3ª mayor (4 semitonos):</strong> Do → Mi. Suena alegre, brillante.</li>
+                <li><strong>3ª menor (3 semitonos):</strong> Do → Mib. Suena melancólico, triste.</li>
+                <li><strong>4ª justa (5 semitonos):</strong> Do → Fa. Sonido suspendido.</li>
+                <li><strong>5ª justa (7 semitonos):</strong> Do → Sol. Muy consonante, estable.</li>
+                <li><strong>7ª mayor (11 semitonos):</strong> Do → Si. Tensión que resuelve.</li>
+                <li><strong>Octava (12 semitonos):</strong> Do → Do agudo. Misma nota, diferente altura.</li>
+            </ul>
+            <p><strong>Clave:</strong> la 3ª define si un acorde es mayor o menor. La 5ª da estabilidad. La 7ª añade color.</p>
+        `,
+        exampleNotes: ['C', 'E', 'G', 'B'],
+        exampleTitle: 'Escucha los intervalos de C mayor (Do - Mi - Sol - Si)',
+        exercise: 'Toca cada intervalo en el mástil: encuentra la 3ª mayor de cualquier nota (siempre está 4 trastes arriba en la misma cuerda).'
+    },
+    {
+        id: 'acordes',
+        icon: '🎸',
+        title: 'Formación de acordes',
+        subtitle: 'Cómo se construyen las tríadas mayores y menores',
+        content: `
+            <p>Un <strong>acorde</strong> es un conjunto de 3 o más notas que suenan juntas. La base es la <strong>tríada</strong>, que tiene 3 notas:</p>
+            <ul>
+                <li><strong>Raíz (1):</strong> la nota que da nombre al acorde</li>
+                <li><strong>3ª (3 o b3):</strong> define si es mayor o menor</li>
+                <li><strong>5ª (5):</strong> da estabilidad</li>
+            </ul>
+            <p>Una tríada mayor tiene la fórmula <strong>1 - 3 - 5</strong> (raíz + 3ª mayor + 5ª justa).</p>
+            <p>Una tríada menor tiene la fórmula <strong>1 - b3 - 5</strong> (raíz + 3ª menor + 5ª justa).</p>
+            <p>Ejemplo: <strong>C mayor</strong> = C - E - G. <strong>C menor</strong> = C - Eb - G. Solo cambia la 3ª.</p>
+            <p><strong>Tip:</strong> para hacer un acorde menor, baja la 3ª un semitono (1 traste). ¡Así de simple!</p>
+        `,
+        exampleNotes: ['C', 'E', 'G', 'C', 'Eb', 'G'],
+        exampleTitle: 'Compara C mayor (Do-Mi-Sol) con C menor (Do-Mib-Sol)',
+        exercise: 'Toca C, luego Cm. Solo cambia un traste. Después prueba con G mayor y Gm, D mayor y Dm.'
+    },
+    {
+        id: 'funciones',
+        icon: '🎯',
+        title: 'Funciones armónicas',
+        subtitle: 'Tónica, subdominante y dominante: los 3 pilares',
+        content: `
+            <p>En cualquier tonalidad, los acordes se agrupan en 3 <strong>funciones armónicas</strong>:</p>
+            <ul>
+                <li><strong>Tónica (I):</strong> reposo, estabilidad. Es el "hogar". En C: Cmaj7 o C.</li>
+                <li><strong>Subdominante (IV):</strong> prepara el movimiento. Aleja del hogar. En C: F o Fmaj7.</li>
+                <li><strong>Dominante (V):</strong> tensión máxima. Quiere resolver a la tónica. En C: G7.</li>
+            </ul>
+            <p>El flujo natural es: <strong>Tónica → Subdominante → Dominante → Tónica</strong>.</p>
+            <p>Ejemplo: en C mayor → <strong>C → F → G7 → C</strong>. Esta es la cadencia más importante de la música occidental.</p>
+            <p>Los otros grados (ii, iii, vi, vii°) también tienen funciones: el ii y vi actúan como subdominantes, el vii° como dominante.</p>
+        `,
+        exampleNotes: ['C', 'E', 'G', 'F', 'A', 'C', 'G', 'B', 'D', 'C', 'E', 'G'],
+        exampleTitle: 'Cadencia I - IV - V - I en C (C - F - G - C)',
+        exercise: 'Toca la progresión C - F - G7 - C despacio. Siente cómo el G7 crea tensión y el C resuelve. Repite en otras tonalidades (G - C - D7 - G).'
+    },
+    {
+        id: 'circulo',
+        icon: '🎨',
+        title: 'El círculo de quintas',
+        subtitle: 'El mapa maestro de la armonía tonal',
+        content: `
+            <p>El <strong>círculo de quintas</strong> es un diagrama que ordena las 12 notas según intervalos de 5ª justa. Es la herramienta más útil para entender relaciones entre tonalidades.</p>
+            <p>Algunas cosas que puedes leer en él:</p>
+            <ul>
+                <li><strong>Vecinos cercanos:</strong> dos tonalidades que están a 1 paso comparten 6 de 7 notas. Por eso modular entre ellas es fácil.</li>
+                <li><strong>Relativa menor:</strong> cada tonalidad mayor tiene una relativa menor que comparte la misma armadura (ej: C mayor / A menor).</li>
+                <li><strong>Dominante:</strong> el vecino a la derecha es el V grado de la tonalidad actual.</li>
+                <li><strong>Subdominante:</strong> el vecino a la izquierda es el IV grado.</li>
+            </ul>
+            <p><strong>Truco:</strong> para encontrar el V grado de cualquier tonalidad, mira el vecino a la derecha en el círculo.</p>
+        `,
+        exampleNotes: ['C', 'G', 'D', 'A', 'E', 'B', 'F#'],
+        exampleTitle: 'Quintas consecutivas ascendentes (C → G → D → A → E → B → F#)',
+        exercise: 'En el círculo de quintas de la app, selecciona varias tonalidades y observa cómo cambian sus grados. Compara C mayor (sin alteraciones) con G mayor (1 sostenido) y F mayor (1 bemol).'
+    },
+    {
+        id: 'cadencias',
+        icon: '🎼',
+        title: 'Cadencias',
+        subtitle: 'Los "puntos y comas" de la música',
+        content: `
+            <p>Una <strong>cadencia</strong> es una progresión de acordes que marca el final de una frase musical. Es como un signo de puntuación.</p>
+            <ul>
+                <li><strong>Cadencia Auténtica (V - I):</strong> la más fuerte. Cierra definitivamente. En C: G7 → C.</li>
+                <li><strong>Cadencia Plagal (IV - I):</strong> cierre suave, "Amén". En C: F → C.</li>
+                <li><strong>Cadencia Rota (V - vi):</strong> sorpresa. Esperas I pero llega vi. En C: G7 → Am.</li>
+                <li><strong>Semicadencia (I - V):</strong> punto y coma, no cierra del todo. En C: C → G7.</li>
+                <li><strong>Cadencia ii - V - I:</strong> la más importante del jazz. Preparación perfecta.</li>
+            </ul>
+            <p><strong>Por qué funcionan:</strong> el V tiene una nota (la 7ª) que "quiere" resolver medio tono arriba a la tónica del I.</p>
+        `,
+        exampleNotes: ['G', 'B', 'D', 'F', 'C', 'E', 'G'],
+        exampleTitle: 'Cadencia auténtica: G7 → C',
+        exercise: 'Toca estas cadencias en C: V-I (G-C), IV-I (F-C), V-vi (G-Am). Escucha las diferencias emocionales: cierre fuerte, suave, sorpresa.'
+    },
+    {
+        id: 'modos',
+        icon: '🎓',
+        title: 'Modos griegos',
+        subtitle: 'Las 7 personalidades de la escala mayor',
+        content: `
+            <p>Los <strong>modos griegos</strong> son 7 escalas que surgen de tocar la escala mayor empezando desde cada una de sus 7 notas. Cada modo tiene un "carácter" emocional distinto.</p>
+            <ul>
+                <li><strong>Jónico (I):</strong> mayor natural. Alegre, pop.</li>
+                <li><strong>Dórico (II):</strong> menor con 6ª mayor. Suave, funky. (Ej: Scarborough Fair)</li>
+                <li><strong>Frigio (III):</strong> menor con b2. Español, flamenco.</li>
+                <li><strong>Lidio (IV):</strong> mayor con #4. Etéreo, cinematográfico.</li>
+                <li><strong>Mixolidio (V):</strong> mayor con b7. Rock, blues. (Ej: Sweet Home Alabama)</li>
+                <li><strong>Eólico (VI):</strong> menor natural. Triste, baladas.</li>
+                <li><strong>Locrio (VII):</strong> menor con b5. Tenso, inestable.</li>
+            </ul>
+            <p><strong>Tip:</strong> los modos no son escalas nuevas, son <strong>la misma escala mayor vista desde otra nota</strong>. C jónico y D dórico tienen las mismas notas (Do Re Mi Fa Sol La Si).</p>
+        `,
+        exampleNotes: ['C', 'D', 'E', 'F', 'G', 'A', 'B'],
+        exampleTitle: 'Escala mayor de C (que también es D dórico, E frigio, etc.)',
+        exercise: 'En el selector de Modos, prueba cada modo con tónica C. Escucha cómo cambia el carácter. Empieza con Jónico (familiar) y compara con Lidio (extraño) y Locrio (tenso).'
+    },
+    {
+        id: 'pentatonica',
+        icon: '⚡',
+        title: 'Escala pentatónica',
+        subtitle: 'La escala más usada en rock, blues y pop',
+        content: `
+            <p>La <strong>pentatónica</strong> es una escala de 5 notas. Es la más popular del rock y blues porque es fácil de tocar y suena bien casi siempre.</p>
+            <p><strong>Pentatónica menor:</strong> 1 - b3 - 4 - 5 - b7. En A: A - C - D - E - G.</p>
+            <p><strong>Pentatónica mayor:</strong> 1 - 2 - 3 - 5 - 6. En C: C - D - E - G - A.</p>
+            <p>La <strong>escala de blues</strong> es la pentatónica menor + una "blue note" (b5). En A: A - C - D - Eb - E - G.</p>
+            <p><strong>Por qué suena tan bien:</strong> no tiene semitonos (excepto el blues), por lo que cualquier nota encaja. Es perfecta para improvisar.</p>
+            <p><strong>Estilos:</strong> rock, blues, hard rock, heavy metal, country, funk. Prácticamente todo.</p>
+        `,
+        exampleNotes: ['A', 'C', 'D', 'E', 'G', 'A'],
+        exampleTitle: 'Pentatónica menor de A (A - C - D - E - G)',
+        exercise: 'Aprende la posición 1 de la pentatónica menor de A (traste 5). Improvisa 1 minuto sobre un backing track en A menor. Solo tienes 5 notas: ¡úsalas todas!'
+    },
+    {
+        id: 'septimas',
+        icon: '🎷',
+        title: 'Acordes de séptima',
+        subtitle: 'Añadiendo color y sofisticación al acorde',
+        content: `
+            <p>Un acorde de <strong>séptima</strong> es una tríada + una 7ª. Añadir la 7ª da color, tensión y sofisticación.</p>
+            <p>Los 4 tipos básicos:</p>
+            <ul>
+                <li><strong>maj7 (1-3-5-7):</strong> sonido suave, jazzy. Ej: Cmaj7 = C-E-G-B</li>
+                <li><strong>7 dominante (1-3-5-b7):</strong> tensión fuerte, resuelve. Ej: G7 = G-B-D-F</li>
+                <li><strong>m7 (1-b3-5-b7):</strong> menor con color. Ej: Am7 = A-C-E-G</li>
+                <li><strong>m7b5 (1-b3-b5-b7):</strong> semidisminuido, tenso. Ej: Bm7b5 = B-D-F-A</li>
+            </ul>
+            <p><strong>Diferencia clave:</strong></p>
+            <ul>
+                <li>maj7: la 7ª está <strong>medio tono</strong> debajo de la octava (Si en Do mayor)</li>
+                <li>7 dominante: la 7ª está <strong>un tono entero</strong> debajo (Sib en Do mayor)</li>
+            </ul>
+            <p><strong>Estilos:</strong> jazz (todos), blues (7 dominante), soul (m7), bossa nova (maj7).</p>
+        `,
+        exampleNotes: ['C', 'E', 'G', 'B', 'G', 'B', 'D', 'F', 'A', 'C', 'E', 'G'],
+        exampleTitle: 'Cmaj7 → G7 → Am7 (progresión clásica de jazz)',
+        exercise: 'Toca Cmaj7, luego C7. Solo cambia la 7ª (Si → Sib). Escucha cómo C7 quiere ir a F. Ese es el poder del dominante.'
+    },
+    {
+        id: 'sustituciones',
+        icon: '🔄',
+        title: 'Sustituciones',
+        subtitle: 'Cómo reemplazar acordes para dar color',
+        content: `
+            <p>Las <strong>sustituciones</strong> son cambios que puedes hacer en una progresión para darle un sonido diferente sin romper la armonía.</p>
+            <p><strong>1. Sustitución de tritono:</strong> reemplaza un dominante (V7) por otro dominante a 6 semitonos (tritono).</p>
+            <ul>
+                <li>G7 → Db7 (ambos resuelven a C)</li>
+                <li>Suenan diferente pero cumplen la misma función</li>
+                <li>Muy usada en jazz</li>
+            </ul>
+            <p><strong>2. Sustitución diatónica:</strong> reemplaza un acorde por otro que comparta 2 o más notas.</p>
+            <ul>
+                <li>C mayor → Am (comparten C-E)</li>
+                <li>F mayor → Dm (comparten F-A)</li>
+            </ul>
+            <p><strong>3. Relativa menor/mayor:</strong> reemplaza por su relativa.</p>
+            <ul>
+                <li>C mayor → Am (relativa menor)</li>
+                <li>Am → C mayor (relativa mayor)</li>
+            </ul>
+            <p><strong>4. Acorde de paso:</strong> añade un acorde entre dos para suavizar la transición.</p>
+        `,
+        exampleNotes: ['G', 'B', 'D', 'F', 'Db', 'F', 'Ab', 'Cb', 'C', 'E', 'G'],
+        exampleTitle: 'Sustitución de tritono: G7 → Db7 → C',
+        exercise: 'Toca G7 → C. Luego toca Db7 → C. Suenan diferentes pero cumplen la misma función. Ahora alterna: G7 → Db7 → C. ¡Eso es jazz!'
+    },
+    {
+        id: 'modulacion',
+        icon: '🧭',
+        title: 'Modulación',
+        subtitle: 'Cómo cambiar de tonalidad de forma elegante',
+        content: `
+            <p>La <strong>modulación</strong> es cambiar de tonalidad dentro de una pieza musical. Es lo que da variedad y emoción a las canciones.</p>
+            <p>Métodos principales:</p>
+            <ul>
+                <li><strong>Modulación por dominante:</strong> usa el V7 de la nueva tonalidad. Ej: para ir de C a G, toca D7 → G.</li>
+                <li><strong>Modulación por relativa:</strong> C mayor → Am (comparten armadura, muy natural).</li>
+                <li><strong>Modulación por quinta:</strong> C → G → D → A. Cada vez subes una 5ª.</li>
+                <li><strong>Modulación cromática:</strong> C → C# directo. Suena sorpresivo.</li>
+                <li><strong>Modulación por pivote:</strong> usa un acorde común a ambas tonalidades como puente.</li>
+            </ul>
+            <p><strong>Tip:</strong> cuanto más cerca estén dos tonalidades en el círculo de quintas, más suave es la modulación.</p>
+            <p><strong>Ejemplo clásico:</strong> en una canción en C, tocar G7 → Cmaj7 → Bm7b5 → E7 → Am (modulación a A menor).</p>
+        `,
+        exampleNotes: ['C', 'E', 'G', 'D', 'F#', 'A', 'G', 'B', 'D'],
+        exampleTitle: 'Modulación C → G (usando D7 como dominante)',
+        exercise: 'En la sección Modulación, calcula la ruta de C a G. Toca C, luego D7, luego G. Ya modulaste. Ahora prueba C → F (usando C7 como puente).'
+    }
+];
 
 // =====================================================
 // BASE DE DATOS DE ACORDES
@@ -134,6 +359,7 @@ let audioCtx = null;
 let currentChordData = null;
 let progressionChords = [];
 let cagedActive = false;
+let openLessonId = null;
 
 // =====================================================
 // INICIALIZACIÓN
@@ -143,7 +369,8 @@ window.onload = function () {
     initCircleOfFifths();
     initSelectors();
     initScaleMap();
-    drawLegendExampleFretboard(); // NUEVO
+    drawLegendExampleFretboard();
+    renderLessons();
     resetFretboard();
     updateModeInfo();
     initMenuEvents();
@@ -177,6 +404,159 @@ function closeMenu() {
 
 function initMenuEvents() {
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+}
+
+// =====================================================
+// LECCIONES INTERACTIVAS (FASE 4)
+// =====================================================
+function renderLessons() {
+    const container = document.getElementById('lessons-content');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    LESSONS_DB.forEach(lesson => {
+        const item = document.createElement('div');
+        item.className = 'lesson-item';
+        item.id = `lesson-${lesson.id}`;
+
+        item.innerHTML = `
+            <div class="lesson-header" onclick="toggleLesson('${lesson.id}')">
+                <div class="lesson-icon">${lesson.icon}</div>
+                <div class="lesson-title-group">
+                    <div class="lesson-title">${lesson.title}</div>
+                    <div class="lesson-subtitle">${lesson.subtitle}</div>
+                </div>
+                <div class="lesson-toggle-icon">▼</div>
+            </div>
+            <div class="lesson-body">
+                <div class="lesson-content">
+                    ${lesson.content}
+                    
+                    <div class="lesson-example">
+                        <div class="lesson-example-title">🎧 ${lesson.exampleTitle}</div>
+                        <div id="lesson-fret-${lesson.id}"></div>
+                        <div class="lesson-example-actions">
+                            <button class="btn-primary" onclick="playLessonExample('${lesson.id}')">
+                                <i class="fas fa-play"></i> Escuchar ejemplo
+                            </button>
+                            <button class="btn-show" onclick="loadLessonChordInMain('${lesson.id}')">
+                                <i class="fas fa-guitar"></i> Ver en mástil principal
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="lesson-exercise">
+                        <div class="lesson-exercise-title">✏️ Ejercicio práctico</div>
+                        <p>${lesson.exercise}</p>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        container.appendChild(item);
+    });
+}
+
+function toggleLesson(lessonId) {
+    const item = document.getElementById(`lesson-${lessonId}`);
+    if (!item) return;
+
+    const isOpen = item.classList.contains('open');
+
+    // Cerrar todas las demás (comportamiento acordeón clásico)
+    document.querySelectorAll('.lesson-item').forEach(el => {
+        el.classList.remove('open');
+    });
+
+    if (!isOpen) {
+        item.classList.add('open');
+        openLessonId = lessonId;
+
+        // Dibujar el mástil del ejemplo (solo la primera vez o cada vez que se abre)
+        const lesson = LESSONS_DB.find(l => l.id === lessonId);
+        if (lesson) {
+            setTimeout(() => {
+                drawLessonFretboard(`lesson-fret-${lessonId}`, lesson.exampleNotes);
+                item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        }
+    } else {
+        openLessonId = null;
+    }
+}
+
+function drawLessonFretboard(containerId, notes) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const width = 700, height = 160;
+    const marginLeft = 50, marginTop = 25, marginRight = 15, marginBottom = 10;
+    const drawWidth = width - marginLeft - marginRight;
+    const drawHeight = height - marginTop - marginBottom;
+    const stringSpacing = drawHeight / 5;
+    const fretSpacing = drawWidth / 13;
+
+    const notesSet = new Set(notes);
+    const rootNote = notes[0];
+    const rootIndex = NOTES.indexOf(rootNote);
+
+    let svg = `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet" style="background:#2a1f1a; border-radius:8px; width:100%; height:auto; display:block;">`;
+
+    for (let i = 0; i <= 13; i++) {
+        svg += `<line x1="${marginLeft + (i * fretSpacing)}" y1="${marginTop}" x2="${marginLeft + (i * fretSpacing)}" y2="${height - marginBottom}" stroke="#777" stroke-width="${i === 0 ? 5 : 1.5}" />`;
+    }
+    for (let i = 0; i < 6; i++) {
+        const y = marginTop + (i * stringSpacing);
+        svg += `<line x1="${marginLeft}" y1="${y}" x2="${width - marginRight}" y2="${y}" stroke="#ccc" stroke-width="${4 - (i * 0.5)}" />`;
+        svg += `<text x="${marginLeft - 8}" y="${y}" fill="#ff6b00" font-size="10" font-weight="bold" text-anchor="end" dominant-baseline="middle">${STRINGS[i]}</text>`;
+    }
+    for (let i = 1; i <= 12; i++) {
+        svg += `<text x="${marginLeft + ((i - 0.5) * fretSpacing)}" y="${marginTop - 8}" fill="#888" font-size="9" text-anchor="middle">${i}</text>`;
+    }
+
+    // Dibujar las notas del ejemplo
+    for (let stringIndex = 0; stringIndex < 6; stringIndex++) {
+        const y = marginTop + (stringIndex * stringSpacing);
+        const openIndex = NOTES.indexOf(OPEN_NOTES[stringIndex]);
+        for (let fret = 0; fret <= 12; fret++) {
+            const noteIndex = (openIndex + fret) % 12;
+            const noteName = NOTES[noteIndex];
+            if (notesSet.has(noteName)) {
+                const x = (fret === 0) ? marginLeft - 12 : marginLeft + ((fret - 0.5) * fretSpacing);
+                const isRoot = noteName === rootNote;
+                const fillColor = isRoot ? '#ff6b00' : '#4a9eff';
+                svg += `<circle cx="${x}" cy="${y}" r="9" fill="${fillColor}" stroke="#000" stroke-width="1" />`;
+                svg += `<text x="${x}" y="${y}" fill="#000" font-size="9" font-weight="bold" text-anchor="middle" dominant-baseline="middle">${noteName}</text>`;
+            }
+        }
+    }
+    svg += `</svg>`;
+    container.innerHTML = svg;
+}
+
+function playLessonExample(lessonId) {
+    const lesson = LESSONS_DB.find(l => l.id === lessonId);
+    if (!lesson) return;
+
+    // Reproducir las notas con un pequeño delay entre ellas
+    for (let i = 0; i < lesson.exampleNotes.length; i++) {
+        setTimeout(() => playNote(lesson.exampleNotes[i]), i * 400);
+    }
+}
+
+function loadLessonChordInMain(lessonId) {
+    const lesson = LESSONS_DB.find(l => l.id === lessonId);
+    if (!lesson) return;
+
+    // Tomar las primeras 3 notas como acorde
+    const notes = lesson.exampleNotes.slice(0, 3);
+    // Buscar un acorde que contenga esas notas
+    // Simplificación: buscar por la primera nota
+    const root = notes[0];
+    if (CHORD_DB[root]) {
+        loadChordFromDB(root);
+    }
 }
 
 // =====================================================
@@ -262,16 +642,14 @@ function getNoteName(stringIndex, fret) {
 }
 
 // =====================================================
-// LEYENDA DE COLORES - EJEMPLO VISUAL (NUEVO)
+// LEYENDA DE COLORES
 // =====================================================
 function drawLegendExampleFretboard() {
     const container = document.getElementById('legend-example-fretboard');
     if (!container) return;
 
-    // Escala de C mayor
     const tonic = 'C';
-    const scaleKey = 'jónico';
-    const scale = SCALES_DB[scaleKey];
+    const scale = SCALES_DB['jónico'];
     const rootIndex = NOTES.indexOf(tonic);
     const scaleNotesSet = new Set(scale.intervals.map(i => (rootIndex + i) % 12));
 
@@ -284,28 +662,21 @@ function drawLegendExampleFretboard() {
 
     let svg = `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet" style="background:#2a1f1a; border-radius:8px; width:100%; height:auto; display:block;">`;
 
-    // Trastes
     for (let i = 0; i <= 12; i++) {
         svg += `<line x1="${marginLeft + (i * fretSpacing)}" y1="${marginTop}" x2="${marginLeft + (i * fretSpacing)}" y2="${height - marginBottom}" stroke="#777" stroke-width="${i === 0 ? 5 : 2}" />`;
     }
-
-    // Cuerdas
     for (let i = 0; i < 6; i++) {
         const y = marginTop + (i * stringSpacing);
         svg += `<line x1="${marginLeft}" y1="${y}" x2="${width - marginRight}" y2="${y}" stroke="#ccc" stroke-width="${4 - (i * 0.5)}" />`;
         svg += `<text x="${marginLeft - 10}" y="${y}" fill="#ff6b00" font-size="12" font-weight="bold" text-anchor="end" dominant-baseline="middle">${STRINGS[i]}</text>`;
     }
-
-    // Números de traste
     for (let i = 1; i <= 12; i++) {
         svg += `<text x="${marginLeft + ((i - 0.5) * fretSpacing)}" y="${marginTop - 10}" fill="#888" font-size="10" text-anchor="middle">${i}</text>`;
     }
 
-    // Notas de la escala con colores por función
     for (let stringIndex = 0; stringIndex < 6; stringIndex++) {
         const y = marginTop + (stringIndex * stringSpacing);
         const openIndex = NOTES.indexOf(OPEN_NOTES[stringIndex]);
-
         for (let fret = 0; fret <= 12; fret++) {
             const noteIndex = (openIndex + fret) % 12;
             if (scaleNotesSet.has(noteIndex)) {
@@ -323,7 +694,6 @@ function drawLegendExampleFretboard() {
             }
         }
     }
-
     svg += `</svg>`;
     container.innerHTML = svg;
 }

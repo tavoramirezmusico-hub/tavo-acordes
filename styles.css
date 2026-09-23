@@ -12,7 +12,6 @@
     --fret-color: #777;
     --red-mute: #ff3333;
     --wood-color: #2a1f1a;
-    /* Colores por función */
     --root-color: #ff6b00;
     --third-color: #4a9eff;
     --fifth-color: #4caf50;
@@ -1260,7 +1259,7 @@ button {
     box-shadow: 0 0 10px var(--accent-glow);
 }
 
-/* ===== LEYENDA DE COLORES NUEVA (MEJORADA) ===== */
+/* ===== LEYENDA DE COLORES ===== */
 .scale-legend-new {
     background: linear-gradient(145deg, #0a0a0a, #141414);
     border: 2px solid var(--accent);
@@ -1371,7 +1370,6 @@ button {
     font-style: normal;
 }
 
-/* Ejemplo visual */
 .legend-example {
     background-color: #0a0a0a;
     border: 1px solid var(--border-color);
@@ -1918,6 +1916,191 @@ button {
     }
 }
 
+/* ===== LECCIONES INTERACTIVAS ===== */
+#lessons-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.lesson-item {
+    background-color: #0a0a0a;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.lesson-item:hover {
+    border-color: rgba(255, 107, 0, 0.4);
+    box-shadow: 0 4px 15px rgba(255, 107, 0, 0.15);
+}
+
+.lesson-item.open {
+    border-color: var(--accent);
+    box-shadow: 0 4px 20px rgba(255, 107, 0, 0.3);
+}
+
+.lesson-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 20px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.25s;
+}
+
+.lesson-header:hover {
+    background-color: rgba(255, 107, 0, 0.05);
+}
+
+.lesson-icon {
+    font-size: 1.6em;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(255, 107, 0, 0.15), rgba(255, 107, 0, 0.05));
+    border-radius: 50%;
+    border: 1px solid rgba(255, 107, 0, 0.3);
+    flex-shrink: 0;
+    transition: transform 0.3s;
+}
+
+.lesson-item.open .lesson-icon {
+    transform: rotate(15deg) scale(1.1);
+}
+
+.lesson-title-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.lesson-title {
+    color: var(--accent);
+    font-weight: bold;
+    font-size: 1.05em;
+    margin: 0;
+}
+
+.lesson-subtitle {
+    color: var(--text-muted);
+    font-size: 0.85em;
+    line-height: 1.4;
+}
+
+.lesson-toggle-icon {
+    color: var(--accent);
+    font-size: 1.2em;
+    transition: transform 0.3s;
+    flex-shrink: 0;
+}
+
+.lesson-item.open .lesson-toggle-icon {
+    transform: rotate(180deg);
+}
+
+.lesson-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+    background-color: #0d0d0d;
+}
+
+.lesson-item.open .lesson-body {
+    max-height: 3000px;
+}
+
+.lesson-content {
+    padding: 20px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.lesson-content p {
+    font-size: 0.95em;
+    line-height: 1.7;
+    color: var(--text-main);
+    margin-bottom: 8px;
+}
+
+.lesson-content p strong {
+    color: var(--accent);
+}
+
+.lesson-content ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 8px 0;
+}
+
+.lesson-content li {
+    padding: 5px 0 5px 20px;
+    position: relative;
+    font-size: 0.9em;
+    line-height: 1.6;
+}
+
+.lesson-content li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: bold;
+}
+
+.lesson-example {
+    background-color: #0a0a0a;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 5px;
+}
+
+.lesson-example-title {
+    color: var(--accent);
+    font-weight: bold;
+    font-size: 0.95em;
+    margin-bottom: 12px;
+}
+
+.lesson-example-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+}
+
+.lesson-exercise {
+    background: linear-gradient(145deg, rgba(255, 107, 0, 0.08), rgba(255, 107, 0, 0.02));
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 15px 18px;
+    margin-top: 5px;
+}
+
+.lesson-exercise-title {
+    color: var(--accent);
+    font-weight: bold;
+    font-size: 0.95em;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lesson-exercise p {
+    font-size: 0.9em;
+    color: var(--text-main);
+    margin-bottom: 0;
+}
+
 /* ===== MODULACIÓN Y DOMINANTES ===== */
 .modulation-controls,
 .dominant-controls {
@@ -2076,7 +2259,6 @@ footer::before {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    /* Leyenda responsive */
     .legend-color-big {
         width: 45px;
         height: 45px;
@@ -2092,6 +2274,34 @@ footer::before {
 
     .legend-info {
         text-align: center;
+    }
+
+    /* Lecciones responsive */
+    .lesson-header {
+        padding: 12px 15px;
+        gap: 12px;
+    }
+
+    .lesson-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 1.3em;
+    }
+
+    .lesson-title {
+        font-size: 1em;
+    }
+
+    .lesson-subtitle {
+        font-size: 0.8em;
+    }
+
+    .lesson-content {
+        padding: 15px;
+    }
+
+    .lesson-example-actions {
+        flex-direction: column;
     }
 }
 
