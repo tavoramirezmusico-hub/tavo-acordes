@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navegador de tonalidades · Tavo Acordes</title>
+  <meta name="description" content="Muévete por las tonalidades vecinas.">
+  <link rel="icon" href="../../assets/logo-512.png">
+  <link rel="stylesheet" href="../../css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+  <header class="site-bar">
+    <a href="../../index.html" class="site-bar-logo"><img src="../../assets/logo-512.png" alt="Tavo Acordes"></a>
+    <div class="site-bar-text">
+      <div id="breadcrumb" class="breadcrumb"></div>
+      <h1>🧭 Navegador de tonalidades</h1>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section id="navegador" class="card">
+      <h2>Navegador de Tonalidades</h2>
+      <p style="color:#888; font-size:0.9em; margin-bottom:15px;">
+        Explora las tonalidades vecinas, sus relaciones y modulaciones típicas.
+      </p>
+
+      <div class="key-nav-controls">
+        <label>Tonalidad actual:
+          <select id="key-nav-selector" onchange="updateKeyNavigator()"></select>
+        </label>
+      </div>
+
+      <div class="key-nav-container">
+        <div id="mini-circle" class="mini-circle-container"></div>
+        <div id="key-nav-info" class="key-nav-info">
+          <p class="empty-state">Selecciona una tonalidad para ver su mapa de relaciones.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Tavo Acordes — App de guitarra, armonía y teoría musical.</p>
+  </footer>
+
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/script.js"></script>
+</body>
+</html>

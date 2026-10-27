@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa de armonía · Tavo Acordes</title>
+  <meta name="description" content="Campos armónicos vecinos y acordes puente para modular.">
+  <link rel="icon" href="../../assets/logo-512.png">
+  <link rel="stylesheet" href="../../css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+  <header class="site-bar">
+    <a href="../../index.html" class="site-bar-logo"><img src="../../assets/logo-512.png" alt="Tavo Acordes"></a>
+    <div class="site-bar-text">
+      <div id="breadcrumb" class="breadcrumb"></div>
+      <h1>🗺️ Mapa de armonía</h1>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section id="mapa-armonia" class="card">
+      <h2>Mapa de armonía de acordes</h2>
+      <p class="section-desc">
+        Elige la tonalidad central. Arriba están sus acordes iii y vi; abajo, el campo armónico de cada tonalidad
+        vecina. Toca un acorde para ver en qué otras columnas aparece: ese es tu acorde puente para modular.
+      </p>
+      <div class="ma-keys" id="ma-keys"></div>
+      <div class="ma-legend">
+        <span><i style="border-color:#ff4d7e"></i>Mayor</span>
+        <span><i style="border-color:#4fb3ff"></i>Menor</span>
+        <span><i style="border-color:#b06cff"></i>Disminuido</span>
+      </div>
+      <div id="ma-cap" class="ma-cap"></div>
+      <div class="ma-map"><svg id="ma-svg" viewBox="0 0 400 690"></svg></div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Tavo Acordes — App de guitarra, armonía y teoría musical.</p>
+  </footer>
+
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/mapa-armonia.js"></script>
+</body>
+</html>

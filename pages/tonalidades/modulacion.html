@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulación paso a paso · Tavo Acordes</title>
+  <meta name="description" content="Ruta de acordes para ir de una tonalidad a otra.">
+  <link rel="icon" href="../../assets/logo-512.png">
+  <link rel="stylesheet" href="../../css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+  <header class="site-bar">
+    <a href="../../index.html" class="site-bar-logo"><img src="../../assets/logo-512.png" alt="Tavo Acordes"></a>
+    <div class="site-bar-text">
+      <div id="breadcrumb" class="breadcrumb"></div>
+      <h1>🔄 Modulación paso a paso</h1>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section id="modulacion" class="card">
+      <h2>Modulación Paso a Paso</h2>
+      <div class="modulation-controls">
+        <label>Origen: <select id="mod-origin"></select></label>
+        <label>Destino: <select id="mod-dest"></select></label>
+        <button onclick="calculateModulation()" class="btn-primary">Calcular Ruta</button>
+      </div>
+      <div id="modulation-result" class="modulation-result"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Tavo Acordes — App de guitarra, armonía y teoría musical.</p>
+  </footer>
+
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/script.js"></script>
+</body>
+</html>

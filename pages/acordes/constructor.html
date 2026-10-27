@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Constructor de acordes · Tavo Acordes</title>
+  <meta name="description" content="Marca los trastes, busca un acorde por nombre y escúchalo.">
+  <link rel="icon" href="../../assets/logo-512.png">
+  <link rel="stylesheet" href="../../css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+  <header class="site-bar">
+    <a href="../../index.html" class="site-bar-logo"><img src="../../assets/logo-512.png" alt="Tavo Acordes"></a>
+    <div class="site-bar-text">
+      <div id="breadcrumb" class="breadcrumb"></div>
+      <h1>🔧 Constructor de acordes</h1>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section id="trastes" class="card">
+      <h2>Constructor de Acordes</h2>
+      <p style="color:#888; font-size:0.9em; margin-bottom:15px;">
+        Marca dónde va cada dedo en el mástil, o carga un acorde desde el buscador.
+      </p>
+      <div class="fretboard-controls">
+        <div class="fretboard-visual-container">
+          <div class="fretboard-visual"></div>
+        </div>
+        <div class="string-selectors"></div>
+      </div>
+    </section>
+
+    <section id="buscar" class="card">
+      <h2>Buscar Acorde</h2>
+      <p style="color:#888; font-size:0.9em; margin-bottom:15px;">
+        Escribe un nombre o pulsa "Mostrar Todos". Al hacer clic, el acorde se carga en el mástil de arriba.
+      </p>
+      <div class="search-box">
+        <input type="text" id="search-input" placeholder="Ej: Am, Cmaj7, G7, F#m7b5...">
+        <button onclick="searchChord()" class="btn-primary">Buscar</button>
+        <button onclick="showAllChords()" class="btn-show">Mostrar Todos</button>
+      </div>
+      <div id="search-results" class="search-results">
+        <p class="empty-state">Escribe un acorde o pulsa "Mostrar Todos" para ver la lista completa.</p>
+      </div>
+    </section>
+
+    <section id="resultado" class="card">
+      <h2>Detección y Audio</h2>
+      <div class="result-box">
+        <div id="chord-name" class="chord-display">---</div>
+        <div id="chord-alternatives" class="alternatives"></div>
+        <div id="chord-positions" class="chord-positions"></div>
+        <div id="chord-info" class="chord-info-box"></div>
+        <div class="result-buttons">
+          <button id="play-btn" class="btn-primary" onclick="playCurrentChord()">
+            <i class="fas fa-play"></i> Escuchar
+          </button>
+          <button class="btn-reset" onclick="resetFretboard()">
+            <i class="fas fa-redo"></i> Reiniciar
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Tavo Acordes — App de guitarra, armonía y teoría musical.</p>
+  </footer>
+
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modos, usos y sustituciones · Tavo Acordes</title>
+  <meta name="description" content="De Jónico a Locrio, con usos y sustituciones.">
+  <link rel="icon" href="../../assets/logo-512.png">
+  <link rel="stylesheet" href="../../css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+  <header class="site-bar">
+    <a href="../../index.html" class="site-bar-logo"><img src="../../assets/logo-512.png" alt="Tavo Acordes"></a>
+    <div class="site-bar-text">
+      <div id="breadcrumb" class="breadcrumb"></div>
+      <h1>🎓 Modos, usos y sustituciones</h1>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="chord-banner" class="chord-banner" data-link="../../pages/acordes/constructor.html"></div>
+    <section id="modos" class="card">
+      <h2>Modos, Usos y Sustituciones</h2>
+      <p style="color:#888; font-size:0.9em; margin-bottom:15px;">
+        Los 7 modos griegos. Los colores muestran la función de cada nota dentro de la escala.
+      </p>
+      <div class="modes-container">
+        <select id="mode-selector" onchange="updateModeInfo()">
+          <option value="jónico">Jónico (Mayor)</option>
+          <option value="dórico">Dórico</option>
+          <option value="frigio">Frigio</option>
+          <option value="lidio">Lidio</option>
+          <option value="mixolidio">Mixolidio</option>
+          <option value="eólico">Eólico (Menor)</option>
+          <option value="locrio">Locrio</option>
+        </select>
+        <div id="mode-info" class="mode-info-box"></div>
+        <div id="mode-legend" class="mode-legend"></div>
+        <div id="mode-fretboard" style="margin-top:15px;"></div>
+        <button onclick="playModeScale()" class="btn-primary" style="margin-top:15px;">
+          <i class="fas fa-play"></i> Escuchar Escala
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Tavo Acordes — App de guitarra, armonía y teoría musical.</p>
+  </footer>
+
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/script.js"></script>
+</body>
+</html>

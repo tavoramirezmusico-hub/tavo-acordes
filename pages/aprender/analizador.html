@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analizador de progresiones · Tavo Acordes</title>
+  <meta name="description" content="Escribe una progresión y descubre su función armónica.">
+  <link rel="icon" href="../../assets/logo-512.png">
+  <link rel="stylesheet" href="../../css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+  <header class="site-bar">
+    <a href="../../index.html" class="site-bar-logo"><img src="../../assets/logo-512.png" alt="Tavo Acordes"></a>
+    <div class="site-bar-text">
+      <div id="breadcrumb" class="breadcrumb"></div>
+      <h1>🎼 Analizador de progresiones</h1>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section id="analizador" class="card">
+      <h2>Analizador de Progresiones</h2>
+      <p style="color:#888; font-size:0.9em; margin-bottom:15px;">
+        Escribe una progresión o añade acordes con los botones. Máximo 8 acordes.
+      </p>
+
+      <div class="analyzer-input-row">
+        <input type="text" id="progression-input" placeholder="Ej: C Am F G"
+          onkeydown="if(event.key==='Enter') analyzeProgression()">
+        <button onclick="analyzeProgression()" class="btn-primary">
+          <i class="fas fa-search"></i> Analizar
+        </button>
+      </div>
+
+      <div class="analyzer-chips-container">
+        <div id="progression-chips" class="progression-chips"></div>
+        <div class="analyzer-actions">
+          <button onclick="showChordPicker()" class="btn-show">+ Añadir acorde</button>
+          <button onclick="clearProgression()" class="btn-reset"
+            style="padding:8px 15px; font-size:0.9em;">Limpiar</button>
+        </div>
+      </div>
+
+      <div id="chord-picker" class="chord-picker" style="display:none;">
+        <div class="chord-picker-header">
+          <span>Selecciona un acorde:</span>
+          <button onclick="hideChordPicker()" class="btn-reset" style="padding:5px 10px; font-size:0.8em;">✕</button>
+        </div>
+        <div id="chord-picker-grid" class="chord-picker-grid"></div>
+      </div>
+
+      <div id="progression-result" class="progression-result">
+        <p class="empty-state">Añade acordes para ver el análisis de la progresión.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Tavo Acordes — App de guitarra, armonía y teoría musical.</p>
+  </footer>
+
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/script.js"></script>
+</body>
+</html>

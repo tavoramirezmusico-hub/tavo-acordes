@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa de escalas · Tavo Acordes</title>
+  <meta name="description" content="Escalas por tonalidad, con vista CAGED.">
+  <link rel="icon" href="../../assets/logo-512.png">
+  <link rel="stylesheet" href="../../css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+  <header class="site-bar">
+    <a href="../../index.html" class="site-bar-logo"><img src="../../assets/logo-512.png" alt="Tavo Acordes"></a>
+    <div class="site-bar-text">
+      <div id="breadcrumb" class="breadcrumb"></div>
+      <h1>🗺️ Mapa de escalas</h1>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section id="mapa-escalas" class="card">
+      <h2>Mapa de Escalas Interactivo</h2>
+      <p style="color:#888; font-size:0.9em; margin-bottom:15px;">
+        Explora cualquier escala en todo el mástil. Cambia la tónica, el modo y el sistema de visualización.
+      </p>
+
+      <div class="scale-map-controls">
+        <label>Tónica:
+          <select id="map-tonic" onchange="updateScaleMap()"></select>
+        </label>
+        <label>Escala:
+          <select id="map-scale" onchange="updateScaleMap()"></select>
+        </label>
+        <label>Ver:
+          <select id="map-view" onchange="updateScaleMap()">
+            <option value="notes">Notas</option>
+            <option value="intervals">Intervalos</option>
+          </select>
+        </label>
+        <button id="caged-toggle" class="btn-show" onclick="toggleCaged()">
+          <i class="fas fa-th"></i> CAGED
+        </button>
+        <button class="btn-primary" onclick="playScaleMap()">
+          <i class="fas fa-play"></i> Escuchar
+        </button>
+      </div>
+
+      <!-- LEYENDA DE COLORES -->
+      <div class="scale-legend-new">
+        <div class="legend-header">
+          <h4>🎨 ¿Qué significa cada color?</h4>
+          <p>Cada nota de la escala se colorea según su <strong>función</strong> dentro del acorde.</p>
+        </div>
+
+        <div class="legend-main">
+          <div class="legend-items-new">
+            <div class="legend-item-new">
+              <div class="legend-color-big" style="background: var(--root-color);">
+                <span>1</span>
+              </div>
+              <div class="legend-info">
+                <strong>Raíz (1) · Naranja</strong>
+                <p>La nota que da nombre a la escala. Centro tonal, punto de reposo.</p>
+                <small>Ej: en <strong>C</strong> mayor, la raíz es <strong>C</strong>.</small>
+              </div>
+            </div>
+
+            <div class="legend-item-new">
+              <div class="legend-color-big" style="background: var(--third-color);">
+                <span>3</span>
+              </div>
+              <div class="legend-info">
+                <strong>3ª (b3 o 3) · Azul</strong>
+                <p>Define si es mayor (3) o menor (b3). Da el carácter emocional.</p>
+                <small>Ej: en <strong>C</strong> mayor, la 3ª es <strong>E</strong>. En C menor, sería Eb.</small>
+              </div>
+            </div>
+
+            <div class="legend-item-new">
+              <div class="legend-color-big" style="background: var(--fifth-color);">
+                <span>5</span>
+              </div>
+              <div class="legend-info">
+                <strong>5ª (b5, 5, #5) · Verde</strong>
+                <p>Nota de estabilidad y consonancia. La 5ª justa es la más consonante tras la raíz.</p>
+                <small>Ej: en <strong>C</strong> mayor, la 5ª es <strong>G</strong>.</small>
+              </div>
+            </div>
+
+            <div class="legend-item-new">
+              <div class="legend-color-big" style="background: var(--seventh-color);">
+                <span>7</span>
+              </div>
+              <div class="legend-info">
+                <strong>7ª (b7 o 7) · Morado</strong>
+                <p>Define el tipo de acorde: 7ª mayor (jazz, suave) o 7ª menor (blues, dominante).</p>
+                <small>Ej: en <strong>C</strong> mayor, la 7ª mayor es <strong>B</strong>; la 7ª menor sería Bb.</small>
+              </div>
+            </div>
+
+            <div class="legend-item-new">
+              <div class="legend-color-big" style="background: var(--tension-color);">
+                <span>2</span>
+              </div>
+              <div class="legend-info">
+                <strong>2ª, 4ª, 6ª · Gris</strong>
+                <p>Tensiones. Aportan color sin definir si el acorde es mayor o menor.</p>
+                <small>Ej: en <strong>C</strong> mayor, son <strong>D</strong> (2ª), <strong>F</strong> (4ª) y
+                  <strong>A</strong> (6ª).</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="legend-example">
+            <div class="legend-example-title">📍 Así se ve la <strong>escala de C mayor</strong> con los colores
+              aplicados:</div>
+            <div id="legend-example-fretboard" class="legend-example-fretboard"></div>
+            <div class="legend-example-notes">
+              <span class="note-pill" style="background: var(--root-color);">C · 1 (raíz)</span>
+              <span class="note-pill" style="background: var(--tension-color);">D · 2</span>
+              <span class="note-pill" style="background: var(--third-color);">E · 3</span>
+              <span class="note-pill" style="background: var(--tension-color);">F · 4</span>
+              <span class="note-pill" style="background: var(--fifth-color);">G · 5</span>
+              <span class="note-pill" style="background: var(--tension-color);">A · 6</span>
+              <span class="note-pill" style="background: var(--seventh-color);">B · 7</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXPLICACIÓN CAGED MEJORADA (para principiantes) -->
+      <div id="caged-explanation" class="caged-explanation" style="display:none;">
+        <h3>🎸 ¿Qué es el sistema CAGED? (Explicación para principiantes)</h3>
+
+        <p>Imagina que la guitarra es un mapa. El sistema <strong>CAGED</strong> te ayuda a saber <em>dónde están las
+            cosas</em> en ese mapa.</p>
+
+        <p><strong>El punto de partida:</strong> los 5 acordes abiertos que ya conoces (o deberías conocer):</p>
+        <div class="caged-intro-chords">
+          <div class="caged-intro-chord">
+            <strong>C</strong>
+            <span>Do mayor</span>
+          </div>
+          <div class="caged-intro-chord">
+            <strong>A</strong>
+            <span>La mayor</span>
+          </div>
+          <div class="caged-intro-chord">
+            <strong>G</strong>
+            <span>Sol mayor</span>
+          </div>
+          <div class="caged-intro-chord">
+            <strong>E</strong>
+            <span>Mi mayor</span>
+          </div>
+          <div class="caged-intro-chord">
+            <strong>D</strong>
+            <span>Re mayor</span>
+          </div>
+        </div>
+
+        <p><strong>La idea clave:</strong> cada uno de estos 5 acordes se puede "mover" por el mástil usando una cejilla
+          (barra). Cuando lo mueves, cambias de tonalidad, pero la <em>forma</em> sigue siendo la misma.</p>
+
+        <p><strong>Ejemplo:</strong> si tocas un Fa mayor con cejilla en el traste 1, estás usando la <em>forma de
+            E</em>. Si mueves esa forma al traste 3, se convierte en Sol mayor. Al traste 5, en La mayor. ¡La forma es
+          siempre la misma!</p>
+
+        <p><strong>Los 5 "moldes" y sus zonas del mástil:</strong></p>
+        <div class="caged-diagram">
+          <div class="caged-box">
+            <strong>Caja C</strong>
+            <span>Trastes 0-3</span>
+            <small>Forma del Do abierto</small>
+          </div>
+          <div class="caged-box">
+            <strong>Caja A</strong>
+            <span>Trastes 2-5</span>
+            <small>Forma del La abierto</small>
+          </div>
+          <div class="caged-box">
+            <strong>Caja G</strong>
+            <span>Trastes 4-7</span>
+            <small>Forma del Sol abierto</small>
+          </div>
+          <div class="caged-box">
+            <strong>Caja E</strong>
+            <span>Trastes 7-10</span>
+            <small>Forma del Mi abierto</small>
+          </div>
+          <div class="caged-box">
+            <strong>Caja D</strong>
+            <span>Trastes 9-12</span>
+            <small>Forma del Re abierto</small>
+          </div>
+        </div>
+
+        <p><strong>¿Para qué sirve esto?</strong></p>
+        <ul style="list-style:none; padding-left:0;">
+          <li>🎯 <strong>Para saber dónde están las notas</strong> de cualquier acorde a lo largo de todo el mástil.
+          </li>
+          <li>🎯 <strong>Para tocar escalas</strong>: cada caja tiene su propia forma de escala asociada.</li>
+          <li>🎯 <strong>Para improvisar</strong>: puedes moverte por el mástil usando las 5 posiciones sin perderte.
+          </li>
+        </ul>
+
+        <p><strong>Cómo practicarlo:</strong> aprende una caja a la vez. Empieza por la <strong>Caja E</strong> (la más
+          común) y domínala antes de pasar a la siguiente. Cuando las tengas todas, sabrás tocar cualquier escala en
+          cualquier parte del mástil.</p>
+
+        <p class="caged-tip">
+          💡 <strong>Consejo:</strong> cada caja se solapa con la siguiente. Si tocas la Caja C en Do mayor, la Caja A
+          empieza justo donde termina. Al unirlas, cubres todo el mástil.
+        </p>
+      </div>
+
+      <div id="scale-map-info" class="scale-map-info"></div>
+      <div id="scale-map-fretboard" class="scale-map-fretboard"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Tavo Acordes — App de guitarra, armonía y teoría musical.</p>
+  </footer>
+
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/script.js"></script>
+</body>
+</html>
