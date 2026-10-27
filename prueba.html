@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa interactivo: tríadas mayores, menores y séptimas en guitarra</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background: linear-gradient(145deg, #1a1e2b 0%, #2a2f3f 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .guitar-card {
+            background: #2e3440;
+            border-radius: 2.5rem;
+            padding: 2rem 2rem 2rem 2rem;
+            box-shadow: 0 25px 40px rgba(0, 0, 0, 0.6), inset 0 1px 4px rgba(255, 255, 255, 0.08);
+            border: 1px solid #4c566a;
+            max-width: 1100px;
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: 500;
+            font-size: 2rem;
+            letter-spacing: 2px;
+            margin-top: 0;
+            margin-bottom: 1.2rem;
+            color: #eceff4;
+            text-shadow: 0 4px 8px #00000033;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        h1 span {
+            background: #5e81ac;
+            border-radius: 100px;
+            padding: 0.2rem 1rem;
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: #e5e9f0;
+            letter-spacing: 1px;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn-group {
+            background: #3b4252;
+            border-radius: 60px;
+            padding: 0.35rem;
+            display: flex;
+            flex-wrap: wrap;
+            box-shadow: inset 0 2px 5px #1e222b, 0 6px 12px #0f1116;
+        }
+
+        .btn-group button {
+            background: transparent;
+            border: none;
+            color: #d8dee9;
+            padding: 0.6rem 1.4rem;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            letter-spacing: 0.3px;
+            box-shadow: none;
+            border: 1px solid transparent;
+        }
+
+        .btn-group button.active {
+            background: #5e81ac;
+            color: #fff;
+            box-shadow: 0 6px 12px #1e222b, inset 0 1px 2px #ffffff80;
+            border-color: #88a8d0;
+            font-weight: 600;
+        }
+
+        .btn-group button:hover:not(.active) {
+            background: #4c566a;
+            color: #eceff4;
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            color: #d8dee9;
+            background: #3b4252b0;
+            padding: 0.7rem 1.5rem;
+            border-radius: 60px;
+            backdrop-filter: blur(2px);
+            font-size: 0.9rem;
+            border: 1px solid #4c566a;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .color-dot {
+            width: 1.2rem;
+            height: 1.2rem;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px #00000055;
+        }
+
+        .fretboard-container {
+            overflow-x: auto;
+            padding: 1.2rem 0.2rem 0.2rem 0.2rem;
+            border-radius: 28px;
+            background: #20232c;
+            box-shadow: inset 0 4px 12px #0b0d10, 0 12px 24px #0a0c0f;
+            margin-bottom: 0.8rem;
+            cursor: grab;
+            scrollbar-width: thin;
+            scrollbar-color: #5e81ac #2e3440;
+        }
+
+        .fretboard-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .fretboard-container::-webkit-scrollbar-track {
+            background: #2e3440;
+            border-radius: 20px;
+        }
+
+        .fretboard-container::-webkit-scrollbar-thumb {
+            background: #5e81ac;
+            border-radius: 20px;
+        }
+
+        canvas {
+            display: block;
+            margin: 0 auto;
+            border-radius: 18px;
+            background: #2e3440;
+            box-shadow: 0 0 0 1px #4c566a, 0 8px 18px #00000070;
+            width: auto;
+            height: auto;
+            transition: filter 0.2s;
+        }
+
+        .info-panel {
+            text-align: center;
+            color: #b7c1d4;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            background: #262b36b0;
+            padding: 0.7rem 1.5rem;
+            border-radius: 60px;
+            border: 1px solid #434c5e;
+        }
+
+        .info-panel strong {
+            color: #ebcb8b;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="guitar-card">
+        <h1>🎸 Tríadas & Séptimas <span>mástil interactivo</span></h1>
+
+        <div class="controls">
+            <div class="btn-group" id="chordTypeGroup">
+                <button data-type="major" class="active">Mayor</button>
+                <button data-type="minor">Menor</button>
+                <button data-type="7">Séptima (7)</button>
+            </div>
+            <div class="btn-group" id="rootNoteGroup">
+                <button data-root="C" class="active">C</button>
+                <button data-root="D">D</button>
+                <button data-root="E">E</button>
+                <button data-root="F">F</button>
+                <button data-root="G">G</button>
+                <button data-root="A">A</button>
+                <button data-root="B">B</button>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item"><span class="color-dot" style="background:#e74c3c;"></span> Fundamental (1)</div>
+            <div class="legend-item"><span class="color-dot" style="background:#f1c40f;"></span> Tercera / Séptima</div>
+            <div class="legend-item"><span class="color-dot" style="background:#2ecc71;"></span> Quinta / Séptima</div>
+            <div class="legend-item"><span class="color-dot" style="background:#3498db;"></span> Otras notas</div>
+        </div>
+
+        <div class="fretboard-container">
+            <canvas id="fretboardCanvas" width="1000" height="360"></canvas>
+        </div>
+
+        <div class="info-panel">
+            <div>🔴 Fundamental · 🟡 Tercera (o 7ª) · 🟢 Quinta (o 7ª) · 🔵 Extensión</div>
+            <div><strong id="currentChordLabel">C mayor</strong></div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const canvas = document.getElementById('fretboardCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // Dimensiones del mástil (6 cuerdas, 12 trastes mostrados)
+            const STRING_COUNT = 6;          // 6 cuerdas (índice 0 = cuerda 6 (Mi grave) arriba, 5 = cuerda 1 (Mi agudo) abajo)
+            const FRET_COUNT = 12;           // mostramos 12 trastes (0 = al aire, 1..12)
+            const STRING_SPACING = 48;       // píxeles entre cuerdas
+            const FRET_SPACING = 66;         // píxeles entre trastes
+            const LEFT_MARGIN = 90;          // espacio para números de traste / cejilla
+            const TOP_MARGIN = 55;           // espacio superior para cuerdas al aire
+            const BOTTOM_MARGIN = 40;
+
+            // Calculamos tamaño del canvas
+            const canvasWidth = LEFT_MARGIN + FRET_COUNT * FRET_SPACING + 40;
+            const canvasHeight = TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING + BOTTOM_MARGIN;
+            canvas.width = canvasWidth;
+            canvas.height = canvasHeight;
+
+            // Variables de estado
+            let currentType = 'major';   // 'major' | 'minor' | '7'
+            let currentRoot = 'C';       // C, D, E, F, G, A, B
+
+            // Mapeo de notas (índice cromático)
+            const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+            // Índice de cada nota natural (para raíz)
+            const ROOT_INDEX = {
+                'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11
+            };
+
+            // Afinación estándar: cuerdas al aire (índice 0 = 6ª cuerda = Mi grave = E2 = 4, etc.)
+            // Usamos números MIDI: E2 = 40, A2 = 45, D3 = 50, G3 = 55, B3 = 59, E4 = 64
+            const OPEN_STRING_MIDI = [40, 45, 50, 55, 59, 64]; // cuerdas 6 a 1
+
+            // Convertir midi a clase de altura (0-11)
+            const midiToPitchClass = (midi) => (midi % 12 + 12) % 12;
+
+            // Obtener nombre de nota desde pitch class (sostenidos)
+            const pitchClassToName = (pc) => NOTES[pc];
+
+            // Definir intervalos para cada tipo de acorde (en semitonos desde la raíz)
+            const CHORD_INTERVALS = {
+                major: [0, 4, 7],      // fundamental, 3ª mayor, 5ª justa
+                minor: [0, 3, 7],      // fundamental, 3ª menor, 5ª justa
+                '7': [0, 4, 7, 10]     // fundamental, 3ª mayor, 5ª justa, 7ª menor
+            };
+
+            // Colores por rol
+            const COLORS = {
+                root: '#e74c3c',       // rojo
+                third: '#f1c40f',      // amarillo (tercera o séptima menor cuando corresponde)
+                fifth: '#2ecc71',      // verde (quinta o séptima menor)
+                seventh: '#f1c40f',    // amarillo para séptima también (pero podemos diferenciar)
+                other: '#3498db',      // azul (extensiones no presentes en tríadas, pero por si acaso)
+                default: '#4c566a'
+            };
+
+            // ----- Funciones de dibujo -----
+
+            function drawFretboard() {
+                // Fondo del mástil (madera)
+                const boardX = LEFT_MARGIN;
+                const boardY = TOP_MARGIN - 8;
+                const boardWidth = FRET_COUNT * FRET_SPACING;
+                const boardHeight = (STRING_COUNT - 1) * STRING_SPACING + 16;
+
+                // Fondo general oscuro (ya está en CSS) pero pintamos un fondo sutil
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Dibujar fondo del mástil (madera oscura)
+                ctx.fillStyle = '#2a1f14';
+                ctx.shadowColor = '#00000060';
+                ctx.shadowBlur = 8;
+                ctx.shadowOffsetY = 3;
+                ctx.beginPath();
+                ctx.roundRect(boardX, boardY, boardWidth, boardHeight, 16);
+                ctx.fill();
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+                ctx.shadowOffsetY = 0;
+
+                // Dibujar líneas de trastes (verticales)
+                ctx.strokeStyle = '#b0a28b';
+                ctx.lineWidth = 2.5;
+                for (let f = 0; f <= FRET_COUNT; f++) {
+                    const x = LEFT_MARGIN + f * FRET_SPACING;
+                    // Los trastes 0 (ceja) y 12 son más gruesos
+                    if (f === 0 || f === 12) {
+                        ctx.lineWidth = 5;
+                        ctx.strokeStyle = '#d4c9b8';
+                    } else {
+                        ctx.lineWidth = 2.5;
+                        ctx.strokeStyle = '#b0a28b';
+                    }
+                    ctx.beginPath();
+                    ctx.moveTo(x, TOP_MARGIN - 12);
+                    ctx.lineTo(x, TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING + 12);
+                    ctx.stroke();
+                }
+
+                // Dibujar cuerdas (horizontales) - cuerdas más gruesas abajo (índice 0 = arriba = cuerda 6 grave)
+                for (let s = 0; s < STRING_COUNT; s++) {
+                    const y = TOP_MARGIN + s * STRING_SPACING;
+                    // Grosor según cuerda: cuerda 6 (índice 0) más gruesa, cuerda 1 (índice 5) más fina
+                    const thickness = 5.0 - (s * 0.7); // 5.0, 4.3, 3.6, 2.9, 2.2, 1.5
+                    ctx.beginPath();
+                    ctx.lineWidth = thickness;
+                    ctx.strokeStyle = '#d9d0c0';
+                    ctx.shadowColor = '#00000080';
+                    ctx.shadowBlur = 6;
+                    ctx.shadowOffsetY = 2;
+                    ctx.moveTo(LEFT_MARGIN - 10, y);
+                    ctx.lineTo(LEFT_MARGIN + FRET_COUNT * FRET_SPACING + 10, y);
+                    ctx.stroke();
+                }
+
+                // Reset sombras
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+                ctx.shadowOffsetY = 0;
+
+                // Números de trastes (1..12) en la parte superior
+                ctx.font = 'bold 13px "Segoe UI", Roboto, sans-serif';
+                ctx.fillStyle = '#d8dee9';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom';
+                for (let f = 1; f <= FRET_COUNT; f++) {
+                    const x = LEFT_MARGIN + (f - 0.5) * FRET_SPACING;
+                    // Solo mostramos números en trastes impares o todos? Mejor todos para claridad
+                    ctx.fillStyle = '#b7c1d4';
+                    ctx.fillText(f.toString(), x, TOP_MARGIN - 16);
+                }
+
+                // Marcadores de trastes (puntos en 3,5,7,9,12)
+                const markerFrets = [3, 5, 7, 9, 12];
+                ctx.fillStyle = '#e5e9f0';
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = '#ffffff40';
+                markerFrets.forEach(f => {
+                    const x = LEFT_MARGIN + (f - 0.5) * FRET_SPACING;
+                    if (f === 12) {
+                        // Dos puntos para el traste 12
+                        ctx.beginPath();
+                        ctx.arc(x - 8, TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING / 2, 5, 0, 2 * Math.PI);
+                        ctx.fill();
+                        ctx.beginPath();
+                        ctx.arc(x + 8, TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING / 2, 5, 0, 2 * Math.PI);
+                        ctx.fill();
+                    } else {
+                        ctx.beginPath();
+                        ctx.arc(x, TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING / 2, 5, 0, 2 * Math.PI);
+                        ctx.fill();
+                    }
+                });
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+
+                // Nombres de cuerdas al aire (a la izquierda)
+                ctx.font = 'bold 13px "Segoe UI", Roboto, sans-serif';
+                ctx.fillStyle = '#d8dee9';
+                ctx.textAlign = 'right';
+                ctx.textBaseline = 'middle';
+                const stringNames = ['E', 'A', 'D', 'G', 'B', 'E']; // de 6ª a 1ª
+                for (let s = 0; s < STRING_COUNT; s++) {
+                    const y = TOP_MARGIN + s * STRING_SPACING;
+                    ctx.fillText(stringNames[s], LEFT_MARGIN - 20, y);
+                }
+
+                // Título de "cuerda 6 arriba" (opcional)
+                ctx.font = '10px "Segoe UI", sans-serif';
+                ctx.fillStyle = '#7b8a9e';
+                ctx.textAlign = 'left';
+                ctx.fillText('6ª cuerda (grave) ↑', 10, 20);
+            }
+
+            // Helper para dibujar rectángulo redondeado
+            CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+                if (w < 2 * r) r = w / 2;
+                if (h < 2 * r) r = h / 2;
+                this.moveTo(x + r, y);
+                this.lineTo(x + w - r, y);
+                this.quadraticCurveTo(x + w, y, x + w, y + r);
+                this.lineTo(x + w, y + h - r);
+                this.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+                this.lineTo(x + r, y + h);
+                this.quadraticCurveTo(x, y + h, x, y + h - r);
+                this.lineTo(x, y + r);
+                this.quadraticCurveTo(x, y, x + r, y);
+                return this;
+            };
+
+            // Dibujar todas las notas del acorde seleccionado
+            function drawChordNotes() {
+                const rootPC = ROOT_INDEX[currentRoot];  // 0-11
+                const intervals = CHORD_INTERVALS[currentType];
+
+                // Determinar para cada intervalo su rol y color
+                // Mapeamos cada intervalo a un rol: 'root', 'third', 'fifth', 'seventh'
+                const intervalRoles = [];
+                intervals.forEach((semitones, idx) => {
+                    let role = 'other';
+                    if (semitones === 0) role = 'root';
+                    else if (semitones === 3 || semitones === 4) role = 'third';
+                    else if (semitones === 7) role = 'fifth';
+                    else if (semitones === 10) role = 'seventh';
+                    intervalRoles.push(role);
+                });
+
+                // Para cada cuerda (0 = 6ª cuerda arriba)
+                for (let s = 0; s < STRING_COUNT; s++) {
+                    const openMidi = OPEN_STRING_MIDI[s];
+                    // Para cada traste (0 = al aire, 1..12)
+                    for (let f = 0; f <= FRET_COUNT; f++) {
+                        const midi = openMidi + f;
+                        const pc = midiToPitchClass(midi);
+                        // Diferencia con la raíz (en semitonos, 0-11)
+                        let diff = (pc - rootPC + 12) % 12;
+
+                        // Verificar si diff está en los intervalos del acorde
+                        const intervalIndex = intervals.indexOf(diff);
+                        if (intervalIndex === -1) continue; // no pertenece al acorde
+
+                        // Determinar color según el rol
+                        const role = intervalRoles[intervalIndex];
+                        let color;
+                        if (role === 'root') color = COLORS.root;
+                        else if (role === 'third') color = COLORS.third;
+                        else if (role === 'fifth') color = COLORS.fifth;
+                        else if (role === 'seventh') color = COLORS.seventh;
+                        else color = COLORS.other;
+
+                        // Posición en el canvas
+                        const x = LEFT_MARGIN + (f - 0.5) * FRET_SPACING; // centro del traste (f=0 -> x = LEFT_MARGIN - 0.5*FRET_SPACING? 
+                        // Para f=0 (al aire) queremos dibujar a la izquierda del primer traste (después de la cejuela)
+                        // Ajustamos: para f=0, x = LEFT_MARGIN - 10? Pero preferimos mostrarlo en el espacio antes del traste 1.
+                        let noteX;
+                        if (f === 0) {
+                            noteX = LEFT_MARGIN - 26; // a la izquierda del primer traste
+                        } else {
+                            noteX = LEFT_MARGIN + (f - 0.5) * FRET_SPACING;
+                        }
+                        const y = TOP_MARGIN + s * STRING_SPACING;
+
+                        // Dibujar círculo de nota
+                        ctx.beginPath();
+                        ctx.arc(noteX, y, 15, 0, 2 * Math.PI);
+                        ctx.fillStyle = color;
+                        ctx.shadowColor = color + 'c0';
+                        ctx.shadowBlur = 18;
+                        ctx.fill();
+                        // Borde interior
+                        ctx.shadowBlur = 0;
+                        ctx.strokeStyle = '#ffffffd0';
+                        ctx.lineWidth = 2.5;
+                        ctx.stroke();
+
+                        // Texto de la nota (nombre de la nota)
+                        const noteName = pitchClassToName(pc);
+                        ctx.font = 'bold 12px "Segoe UI", Roboto, sans-serif';
+                        ctx.fillStyle = '#ffffff';
+                        ctx.shadowColor = '#00000080';
+                        ctx.shadowBlur = 6;
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(noteName, noteX, y);
+                        ctx.shadowColor = 'transparent';
+                        ctx.shadowBlur = 0;
+                    }
+                }
+            }
+
+            // Función principal de renderizado
+            function render() {
+                drawFretboard();
+                drawChordNotes();
+
+                // Actualizar etiqueta
+                const typeNames = { major: 'mayor', minor: 'menor', '7': 'séptima' };
+                document.getElementById('currentChordLabel').innerText = `${currentRoot} ${typeNames[currentType]}`;
+            }
+
+            // Manejo de eventos de los botones
+            function initControls() {
+                // Botones de tipo de acorde
+                const typeButtons = document.querySelectorAll('#chordTypeGroup button');
+                typeButtons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        typeButtons.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        currentType = btn.dataset.type;
+                        render();
+                    });
+                });
+
+                // Botones de nota raíz
+                const rootButtons = document.querySelectorAll('#rootNoteGroup button');
+                rootButtons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        rootButtons.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        currentRoot = btn.dataset.root;
+                        render();
+                    });
+                });
+            }
+
+            // Inicializar
+            initControls();
+            render();
+
+            // Pequeño ajuste para redibujar si cambia el tamaño (aunque es canvas fijo)
+            window.addEventListener('resize', () => { }); // no necesario
+        })();
+    </script>
+</body>
+
+</html>
