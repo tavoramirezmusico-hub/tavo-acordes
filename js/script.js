@@ -1,7 +1,7 @@
 // =====================================================
-// TAVO ACORDES - SCRIPT PRINCIPAL v14.1
+// TAVO ACORDES - SCRIPT PRINCIPAL v14.2
 // Base de datos expandida (~180 acordes) + inversiones
-// + Mapa de tríadas y séptimas (página nueva)
+// + Mapa de tríadas y séptimas con cajones CAGED
 // =====================================================
 
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -368,7 +368,7 @@ window.onload = function () {
     initMenuEvents();
     initKeyNavigator();
     buildChordPicker();
-    initTriadMap(); // ← NUEVO: mapa de tríadas y séptimas
+    initTriadMap();
 };
 
 // =====================================================
@@ -536,7 +536,6 @@ function detectChord() {
     highlightCircleForKey(currentChordData.root);
 }
 
-// Helper para setear HTML sin romper si el elemento no existe
 function setHTML(id, html) {
     const el = document.getElementById(id);
     if (el) el.innerHTML = html;
@@ -2386,11 +2385,11 @@ function renderProgressionAnalysis(chords, result) {
 }
 
 // =====================================================
-// MAPA DE TRÍADAS Y SÉPTIMAS (página nueva)
+// MAPA DE TRÍADAS Y SÉPTIMAS CON CAJONES CAGED
 // =====================================================
 function initTriadMap() {
     const canvas = document.getElementById('triadCanvas');
-    if (!canvas) return; // No estamos en la página del mapa de tríadas
+    if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
 
@@ -2408,15 +2407,16 @@ function initTriadMap() {
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
 
-    // Estado local del mapa
+    // Estado local
     let currentType = 'major';
     let currentRoot = 'C';
+    let cagedActiveLocal = false;
+    let highlightedCaged = 'all'; // 'all' | 'C' | 'A' | 'G' | 'E' | 'D'
 
     const ROOT_INDEX = {
         'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11
     };
 
-    // MIDI de las cuerdas al aire (6ª a 1ª): E2, A2, D3, G3, B3, E4
     const OPEN_STRING_MIDI = [40, 45, 50, 55, 59, 64];
 
     const midiToPitchClass = (midi) => (midi % 12 + 12) % 12;
@@ -2428,16 +2428,17 @@ function initTriadMap() {
         '7': [0, 4, 7, 10]
     };
 
-    // Colores que respetan las variables CSS del proyecto
+    // Colores desde CSS
     const COLORS = {
         root: getComputedStyle(document.documentElement).getPropertyValue('--root-color').trim() || '#ff6b00',
         third: getComputedStyle(document.documentElement).getPropertyValue('--third-color').trim() || '#4a9eff',
         fifth: getComputedStyle(document.documentElement).getPropertyValue('--fifth-color').trim() || '#4caf50',
         seventh: getComputedStyle(document.documentElement).getPropertyValue('--seventh-color').trim() || '#9c27b0',
-        other: '#3498db'
+        other: '#3498db',
+        accent: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#ff6b00',
+        border: getComputedStyle(document.documentElement).getPropertyValue('--border-color').trim() || '#333333'
     };
 
-    // Helper de rectángulo redondeado para navegadores sin soporte nativo
     if (!CanvasRenderingContext2D.prototype.roundRect) {
         CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
             if (w < 2 * r) r = w / 2;
@@ -2455,6 +2456,35 @@ function initTriadMap() {
         };
     }
 
+    // Devuelve el rango [inicio, fin] de cada cajón según la fundamental.
+    // La raíz C define el cajón C en trastes 0-3, y los demás se desplazan.
+    function getCagedRanges() {
+        const rootIdx = ROOT_INDEX[currentRoot];
+        // Desplazamiento base: C está en 0, D en 2, E en 4, etc.
+        const offset = rootIdx;
+        // Cada cajón tiene un ancho de 3-4 trastes y se solapa con el siguiente
+        const baseRanges = [
+            { name: 'C', start: 0, end: 3 },
+            { name: 'A', start: 2, end: 5 },
+            { name: 'G', start: 4, end: 7 },
+            { name: 'E', start: 7, end: 10 },
+            { name: 'D', start: 9, end: 12 }
+        ];
+        // Aplicamos el offset modular sobre 12
+        return baseRanges.map(r => {
+            const start = (r.start + offset) % 12;
+            const end = (r.end + offset) % 12;
+            // Si el rango se sale del mástil, lo ajustamos (rango 0-12)
+            let s = start;
+            let e = end;
+            if (e < s) e = 12; // envolver
+            // Ajustamos para no salirnos del mástil (0-12)
+            if (s > 12) s = s % 12;
+            if (e > 12) e = 12;
+            return { name: r.name, start: s, end: e };
+        });
+    }
+
     function drawFretboard() {
         const boardX = LEFT_MARGIN;
         const boardY = TOP_MARGIN - 8;
@@ -2463,7 +2493,7 @@ function initTriadMap() {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Fondo del mástil (madera)
+        // Fondo del mástil
         ctx.fillStyle = '#2a1f1a';
         ctx.shadowColor = '#00000060';
         ctx.shadowBlur = 8;
@@ -2519,7 +2549,7 @@ function initTriadMap() {
             ctx.fillText(f.toString(), x, TOP_MARGIN - 16);
         }
 
-        // Marcadores (3, 5, 7, 9, 12)
+        // Marcadores
         const markerFrets = [3, 5, 7, 9, 12];
         ctx.fillStyle = '#e5e9f0';
         ctx.shadowBlur = 8;
@@ -2553,16 +2583,79 @@ function initTriadMap() {
             ctx.fillText(stringNames[s], LEFT_MARGIN - 20, y);
         }
 
-        // Nota "6ª cuerda (grave) ↑"
         ctx.font = '10px "Segoe UI", sans-serif';
         ctx.fillStyle = '#7b8a9e';
         ctx.textAlign = 'left';
         ctx.fillText('6ª cuerda (grave) ↑', 10, 20);
     }
 
+    function drawCagedBoxes() {
+        const ranges = getCagedRanges();
+        const boardTopY = TOP_MARGIN - 12;
+        const boardBottomY = TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING + 12;
+
+        ranges.forEach(range => {
+            const isHighlighted = highlightedCaged === 'all' || highlightedCaged === range.name;
+            const isDimmed = highlightedCaged !== 'all' && highlightedCaged !== range.name;
+
+            const x1 = LEFT_MARGIN + range.start * FRET_SPACING;
+            const x2 = LEFT_MARGIN + range.end * FRET_SPACING;
+            const width = x2 - x1;
+            const centerX = (x1 + x2) / 2;
+
+            // Zona coloreada
+            ctx.save();
+            ctx.globalAlpha = isDimmed ? 0.08 : 0.18;
+            ctx.fillStyle = COLORS.accent;
+            ctx.fillRect(x1, boardTopY, width, boardBottomY - boardTopY);
+            ctx.restore();
+
+            // Borde punteado
+            ctx.save();
+            ctx.setLineDash([6, 4]);
+            ctx.lineWidth = isDimmed ? 1 : 2;
+            ctx.strokeStyle = isDimmed ? '#555' : COLORS.accent;
+            ctx.strokeRect(x1, boardTopY, width, boardBottomY - boardTopY);
+            ctx.restore();
+
+            // Etiqueta clickeable
+            ctx.save();
+            const labelY = boardTopY - 14;
+            const labelWidth = 64;
+            const labelHeight = 20;
+            ctx.fillStyle = isHighlighted && highlightedCaged !== 'all' ? COLORS.accent : (isDimmed ? '#333' : COLORS.accent);
+            ctx.beginPath();
+            ctx.roundRect(centerX - labelWidth / 2, labelY - labelHeight / 2, labelWidth, labelHeight, 10);
+            ctx.fill();
+
+            ctx.fillStyle = isDimmed ? '#888' : '#000';
+            ctx.font = 'bold 11px "Segoe UI", Roboto, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(`Caja ${range.name}`, centerX, labelY);
+
+            // Guardamos el área de la etiqueta para detectar clics
+            if (!range._labelRect) range._labelRect = {};
+            range._labelRect = {
+                x: centerX - labelWidth / 2,
+                y: labelY - labelHeight / 2,
+                w: labelWidth,
+                h: labelHeight
+            };
+            ctx.restore();
+        });
+
+        // Guardamos las etiquetas para detectar clics después
+        canvas._cagedLabels = ranges.map(r => ({
+            name: r.name,
+            rect: r._labelRect
+        }));
+    }
+
     function drawChordNotes() {
         const rootPC = ROOT_INDEX[currentRoot];
         const intervals = CHORD_INTERVALS[currentType];
+        const ranges = getCagedRanges();
 
         const intervalRoles = [];
         intervals.forEach((semitones) => {
@@ -2592,36 +2685,65 @@ function initTriadMap() {
                 else if (role === 'seventh') color = COLORS.seventh;
                 else color = COLORS.other;
 
+                // ¿Está dentro del cajón resaltado?
+                let inHighlightedCaged = highlightedCaged === 'all';
+                if (!inHighlightedCaged && cagedActiveLocal) {
+                    const targetRange = ranges.find(r => r.name === highlightedCaged);
+                    if (targetRange) {
+                        const fMod = f % 12;
+                        // Comprobar si el traste cae dentro del rango (con wrap)
+                        let inRange = false;
+                        if (targetRange.start <= targetRange.end) {
+                            inRange = fMod >= targetRange.start && fMod <= targetRange.end;
+                        } else {
+                            inRange = fMod >= targetRange.start || fMod <= targetRange.end;
+                        }
+                        // El traste 0 (al aire) siempre se considera parte de la caja C
+                        if (f === 0 && highlightedCaged === 'C') inRange = true;
+                        inHighlightedCaged = inRange;
+                    }
+                }
+
+                const dimmed = cagedActiveLocal && highlightedCaged !== 'all' && !inHighlightedCaged;
+
                 const noteX = (f === 0) ? LEFT_MARGIN - 26 : LEFT_MARGIN + (f - 0.5) * FRET_SPACING;
                 const y = TOP_MARGIN + s * STRING_SPACING;
+
+                ctx.save();
+                ctx.globalAlpha = dimmed ? 0.18 : 1;
 
                 ctx.beginPath();
                 ctx.arc(noteX, y, 15, 0, 2 * Math.PI);
                 ctx.fillStyle = color;
-                ctx.shadowColor = color + 'c0';
-                ctx.shadowBlur = 18;
+                ctx.shadowColor = dimmed ? 'transparent' : color + 'c0';
+                ctx.shadowBlur = dimmed ? 0 : 18;
                 ctx.fill();
                 ctx.shadowBlur = 0;
-                ctx.strokeStyle = '#ffffffd0';
+                ctx.strokeStyle = dimmed ? '#555' : '#ffffffd0';
                 ctx.lineWidth = 2.5;
                 ctx.stroke();
 
                 const noteName = pitchClassToName(pc);
                 ctx.font = 'bold 12px "Segoe UI", Roboto, sans-serif';
-                ctx.fillStyle = '#ffffff';
-                ctx.shadowColor = '#00000080';
-                ctx.shadowBlur = 6;
+                ctx.fillStyle = dimmed ? '#888' : '#ffffff';
+                ctx.shadowColor = dimmed ? 'transparent' : '#00000080';
+                ctx.shadowBlur = dimmed ? 0 : 6;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 ctx.fillText(noteName, noteX, y);
                 ctx.shadowColor = 'transparent';
                 ctx.shadowBlur = 0;
+
+                ctx.restore();
             }
         }
     }
 
     function render() {
         drawFretboard();
+        if (cagedActiveLocal) {
+            drawCagedBoxes();
+        }
         drawChordNotes();
 
         const typeNames = { major: 'mayor', minor: 'menor', '7': 'séptima' };
@@ -2648,6 +2770,88 @@ function initTriadMap() {
                 currentRoot = btn.dataset.root;
                 render();
             });
+        });
+
+        // Botón CAGED
+        const cagedToggle = document.getElementById('triadCagedToggle');
+        const cagedInfo = document.getElementById('triadCagedInfo');
+        const cagedLabels = document.getElementById('triadCagedLabels');
+
+        if (cagedToggle) {
+            cagedToggle.addEventListener('click', () => {
+                cagedActiveLocal = !cagedActiveLocal;
+                cagedToggle.classList.toggle('active', cagedActiveLocal);
+                if (cagedInfo) cagedInfo.classList.toggle('visible', cagedActiveLocal);
+                if (cagedLabels) cagedLabels.style.display = cagedActiveLocal ? 'flex' : 'none';
+                if (!cagedActiveLocal) highlightedCaged = 'all';
+                render();
+            });
+        }
+
+        // Botones de filtro por cajón
+        const cagedFilterButtons = document.querySelectorAll('#triadCagedLabels button');
+        cagedFilterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                cagedFilterButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                highlightedCaged = btn.dataset.caged;
+                render();
+            });
+        });
+
+        // Clic en etiquetas del canvas
+        canvas.addEventListener('click', (e) => {
+            if (!cagedActiveLocal) return;
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            const mx = (e.clientX - rect.left) * scaleX;
+            const my = (e.clientY - rect.top) * scaleY;
+
+            if (canvas._cagedLabels) {
+                for (const lbl of canvas._cagedLabels) {
+                    const r = lbl.rect;
+                    if (mx >= r.x && mx <= r.x + r.w && my >= r.y && my <= r.y + r.h) {
+                        // Alternar: si ya estaba seleccionado, volver a "all"
+                        if (highlightedCaged === lbl.name) {
+                            highlightedCaged = 'all';
+                        } else {
+                            highlightedCaged = lbl.name;
+                        }
+                        // Sincronizar los botones de filtro
+                        cagedFilterButtons.forEach(b => {
+                            b.classList.toggle('active', b.dataset.caged === highlightedCaged);
+                        });
+                        render();
+                        return;
+                    }
+                }
+            }
+        });
+
+        // Cambiar cursor sobre etiquetas
+        canvas.addEventListener('mousemove', (e) => {
+            if (!cagedActiveLocal) {
+                canvas.style.cursor = 'default';
+                return;
+            }
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            const mx = (e.clientX - rect.left) * scaleX;
+            const my = (e.clientY - rect.top) * scaleY;
+
+            let overLabel = false;
+            if (canvas._cagedLabels) {
+                for (const lbl of canvas._cagedLabels) {
+                    const r = lbl.rect;
+                    if (mx >= r.x && mx <= r.x + r.w && my >= r.y && my <= r.y + r.h) {
+                        overLabel = true;
+                        break;
+                    }
+                }
+            }
+            canvas.style.cursor = overLabel ? 'pointer' : 'default';
         });
     }
 

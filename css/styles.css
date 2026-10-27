@@ -3123,3 +3123,114 @@ body.menu-open .menu-toggle {
         font-size: 0.85em;
     }
 }
+
+/* =====================================================
+   MAPA DE TRÍADAS Y SÉPTIMAS — CAJONES CAGED (nuevo)
+   Añadir al final de css/styles.css
+   ===================================================== */
+
+/* Contenedor de la leyenda CAGED debajo del canvas */
+.triad-caged-info {
+    background-color: #0a0a0a;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    padding: 16px;
+    margin-top: 12px;
+    font-size: 0.9em;
+    color: var(--text-muted);
+    line-height: 1.6;
+    display: none;
+    /* oculto por defecto, se muestra con JS */
+}
+
+.triad-caged-info.visible {
+    display: block;
+    animation: chipIn 0.3s ease-out;
+}
+
+.triad-caged-info h4 {
+    color: var(--accent);
+    font-size: 1em;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 8px;
+}
+
+.triad-caged-info strong {
+    color: var(--accent);
+}
+
+.triad-caged-info .caged-mini-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+    justify-content: center;
+}
+
+.triad-caged-info .caged-mini-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    border: 1px solid var(--border-color);
+    font-size: 0.85em;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.triad-caged-info .caged-mini-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    border: 1.5px solid var(--accent);
+    background-color: rgba(255, 107, 0, 0.2);
+}
+
+/* Botón CAGED toggle: reutiliza .btn-show, solo indicamos el estado activo */
+#triadCagedToggle.active {
+    background: linear-gradient(135deg, var(--accent), #ff8533);
+    color: #000;
+    border-color: var(--accent);
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+
+/* Etiquetas clickeables de los cajones (se dibujan en canvas, pero
+   añadimos un contenedor de ayuda si se quiere mostrar debajo) */
+.triad-caged-labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.triad-caged-labels button {
+    background-color: var(--card-bg);
+    border: 2px solid var(--border-color);
+    color: var(--text-main);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.triad-caged-labels button:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.triad-caged-labels button.active {
+    background: linear-gradient(135deg, var(--accent), #ff8533);
+    color: #000;
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px rgba(255, 107, 0, 0.4);
+}

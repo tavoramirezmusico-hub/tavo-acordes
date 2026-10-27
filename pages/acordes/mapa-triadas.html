@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapa de tríadas y séptimas · Tavo Acordes</title>
     <meta name="description"
-        content="Visualiza todas las posiciones de tríadas mayores, menores y acordes de séptima en el mástil de la guitarra.">
+        content="Visualiza todas las posiciones de tríadas mayores, menores y acordes de séptima en el mástil de la guitarra, con cajones CAGED.">
     <link rel="icon" href="../../assets/logo-512.png">
     <link rel="stylesheet" href="../../css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -28,8 +28,8 @@
             <h2>Mapa de Tríadas y Séptimas</h2>
             <p class="section-desc">
                 Explora todas las posiciones de un acorde a lo largo del mástil. La <strong>6ª cuerda (Mi
-                    grave)</strong> está arriba, como en un diagrama tradicional. Cambia el tipo de acorde y la
-                fundamental para ver cada nota coloreada según su función.
+                    grave)</strong> está arriba, como en un diagrama tradicional. Activa los <strong>Cajones
+                    CAGED</strong> para estudiar las 5 zonas del mástil donde vive el mismo acorde.
             </p>
 
             <div class="triad-map-wrap">
@@ -50,9 +50,12 @@
                         <button data-root="A">A</button>
                         <button data-root="B">B</button>
                     </div>
+                    <button id="triadCagedToggle" class="btn-show">
+                        <i class="fas fa-th"></i> Cajones CAGED
+                    </button>
                 </div>
 
-                <!-- Leyenda -->
+                <!-- Leyenda de colores -->
                 <div class="triad-legend">
                     <div class="triad-legend-item">
                         <span class="triad-legend-dot" style="background: var(--root-color);"></span>
@@ -75,6 +78,34 @@
                 <!-- Canvas del mástil -->
                 <div class="triad-canvas-wrap">
                     <canvas id="triadCanvas" width="1080" height="380"></canvas>
+                </div>
+
+                <!-- Botones de filtro por cajón (opcional, aparecen con CAGED activo) -->
+                <div class="triad-caged-labels" id="triadCagedLabels" style="display:none;">
+                    <button data-caged="all" class="active">Todos</button>
+                    <button data-caged="C">Caja C</button>
+                    <button data-caged="A">Caja A</button>
+                    <button data-caged="G">Caja G</button>
+                    <button data-caged="E">Caja E</button>
+                    <button data-caged="D">Caja D</button>
+                </div>
+
+                <!-- Leyenda CAGED (se muestra con el botón) -->
+                <div class="triad-caged-info" id="triadCagedInfo">
+                    <h4>🎸 Cajones CAGED</h4>
+                    <p>
+                        Los <strong>5 cajones</strong> son las 5 zonas del mástil donde puedes tocar el mismo acorde con
+                        formas distintas. Cada cajón se solapa con el siguiente y juntos cubren todo el mástil. Haz clic
+                        en una etiqueta del canvas o en los botones de abajo para <strong>resaltar un cajón</strong> y
+                        atenuar los demás.
+                    </p>
+                    <div class="caged-mini-legend">
+                        <div class="caged-mini-item"><span class="caged-mini-dot"></span> Caja C</div>
+                        <div class="caged-mini-item"><span class="caged-mini-dot"></span> Caja A</div>
+                        <div class="caged-mini-item"><span class="caged-mini-dot"></span> Caja G</div>
+                        <div class="caged-mini-item"><span class="caged-mini-dot"></span> Caja E</div>
+                        <div class="caged-mini-item"><span class="caged-mini-dot"></span> Caja D</div>
+                    </div>
                 </div>
 
                 <!-- Panel inferior con acorde actual -->
