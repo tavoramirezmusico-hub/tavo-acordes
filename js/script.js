@@ -1,6 +1,7 @@
 // =====================================================
-// TAVO ACORDES - SCRIPT PRINCIPAL v14.0
+// TAVO ACORDES - SCRIPT PRINCIPAL v14.1
 // Base de datos expandida (~180 acordes) + inversiones
+// + Mapa de tríadas y séptimas (página nueva)
 // =====================================================
 
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -354,7 +355,6 @@ let practiceStats = null;
 // =====================================================
 // INICIALIZACIÓN
 // =====================================================
-// Cada init se salta sola si la página no tiene sus elementos.
 window.onload = function () {
     initFretboardUI();
     initCircleOfFifths();
@@ -363,50 +363,41 @@ window.onload = function () {
     drawLegendExampleFretboard();
     renderLessons();
     initPractice();
+    resetFretboard();
+    updateModeInfo();
+    initMenuEvents();
     initKeyNavigator();
     buildChordPicker();
-    restoreFretboard();   // recupera el último acorde (compartido entre páginas)
-    updateModeInfo();
+    initTriadMap(); // ← NUEVO: mapa de tríadas y séptimas
 };
 
 // =====================================================
-// ACORDE COMPARTIDO ENTRE PÁGINAS
+// MENÚ
 // =====================================================
-const FRETBOARD_KEY = 'tavo_fretboard';
-
-function setHTML(id, html) { const el = document.getElementById(id); if (el) el.innerHTML = html; }
-function setText(id, text) { const el = document.getElementById(id); if (el) el.textContent = text; }
-
-function saveFretboard() {
-    try { localStorage.setItem(FRETBOARD_KEY, JSON.stringify(currentFretboard)); } catch (e) { /* sin almacenamiento */ }
-}
-
-function restoreFretboard() {
-    let saved = null;
-    try { saved = JSON.parse(localStorage.getItem(FRETBOARD_KEY)); } catch (e) { saved = null; }
-    const valid = Array.isArray(saved) && saved.length === 6 &&
-        saved.some(f => f !== null && f !== 'X');
-    if (valid) {
-        currentFretboard = saved;
-        document.querySelectorAll('.string-row select').forEach((select, i) => {
-            select.value = currentFretboard[i] === null ? 'null' : currentFretboard[i];
-        });
-        drawFretboard();
-        detectChord();
-    } else {
-        resetFretboard();
+function toggleMenu() {
+    const menu = document.getElementById('side-menu');
+    const overlay = document.getElementById('menu-overlay');
+    if (!menu || !overlay) return;
+    if (menu.classList.contains('active')) closeMenu();
+    else {
+        menu.classList.add('active');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
     }
 }
 
-function renderChordBanner() {
-    const el = document.getElementById('chord-banner');
-    if (!el) return;
-    const link = el.dataset.link || '#';
-    el.innerHTML = currentChordData
-        ? `<span>🎸 Acorde actual: <strong>${currentChordData.primaryName}</strong></span><a href="${link}">Cambiar acorde</a>`
-        : `<span>Aún no has elegido un acorde.</span><a href="${link}">Ir al constructor</a>`;
+function closeMenu() {
+    const menu = document.getElementById('side-menu');
+    const overlay = document.getElementById('menu-overlay');
+    if (!menu || !overlay) return;
+    menu.classList.remove('active');
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
 }
 
+function initMenuEvents() {
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+}
 
 // =====================================================
 // MÁSTIL PRINCIPAL
@@ -494,7 +485,6 @@ function getNoteName(stringIndex, fret) {
 // DETECCIÓN
 // =====================================================
 function detectChord() {
-    saveFretboard();
     const notes = [];
     currentFretboard.forEach((fret, i) => {
         if (fret !== null && fret !== 'X') notes.push(getNoteName(i, fret));
@@ -518,7 +508,6 @@ function detectChord() {
         setHTML('what-to-play-content', '<p class="empty-state">Aún no hay un acorde detectado.</p>');
         currentChordData = null;
         clearCircleHighlight();
-        renderChordBanner();
         return;
     }
 
@@ -545,7 +534,12 @@ function detectChord() {
     renderHarmonicAnalysis(currentChordData, uniqueNotes);
     renderWhatToPlay(currentChordData);
     highlightCircleForKey(currentChordData.root);
-    renderChordBanner();
+}
+
+// Helper para setear HTML sin romper si el elemento no existe
+function setHTML(id, html) {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = html;
 }
 
 function analyzeChord(notes, orderedNotes) {
@@ -797,7 +791,7 @@ function updateScaleForChord(chordData) {
 
     if (!chordData || !chordData.quality) {
         infoBox.innerHTML = '<p class="empty-state">Escala no disponible.</p>';
-        fretboardBox.innerHTML = '';
+        if (fretboardBox) fretboardBox.innerHTML = '';
         return;
     }
 
@@ -984,12 +978,14 @@ function updateScaleMap() {
     const formula = scale.intervals.map(i => INTERVAL_NAMES[i]).join(' ');
 
     const infoBox = document.getElementById('scale-map-info');
-    infoBox.innerHTML = `
-        <h4>${scale.name} en ${tonic}</h4>
-        <p><strong>Notas:</strong> ${scaleNotes.join(' - ')}</p>
-        <p><strong>Fórmula:</strong> ${formula}</p>
-        <p><strong>Uso:</strong> ${scale.uso}</p>
-    `;
+    if (infoBox) {
+        infoBox.innerHTML = `
+            <h4>${scale.name} en ${tonic}</h4>
+            <p><strong>Notas:</strong> ${scaleNotes.join(' - ')}</p>
+            <p><strong>Fórmula:</strong> ${formula}</p>
+            <p><strong>Uso:</strong> ${scale.uso}</p>
+        `;
+    }
 
     drawScaleMapFretboard(tonic, scale, viewMode);
 }
@@ -2146,8 +2142,10 @@ function resetFretboard() {
     document.querySelectorAll('.string-row select').forEach(select => select.value = 'null');
     drawFretboard();
     detectChord();
-    setText('chord-name', '---');
-    setText('chord-alternatives', '');
+    const nameEl = document.getElementById('chord-name');
+    if (nameEl) nameEl.textContent = '---';
+    const altEl = document.getElementById('chord-alternatives');
+    if (altEl) altEl.textContent = '';
     const posEl = document.getElementById('chord-positions');
     if (posEl) posEl.innerHTML = '';
     const infoEl = document.getElementById('chord-info');
@@ -2234,8 +2232,8 @@ function buildChordPicker() {
     });
 }
 
-function showChordPicker() { document.getElementById('chord-picker').style.display = 'block'; }
-function hideChordPicker() { document.getElementById('chord-picker').style.display = 'none'; }
+function showChordPicker() { const el = document.getElementById('chord-picker'); if (el) el.style.display = 'block'; }
+function hideChordPicker() { const el = document.getElementById('chord-picker'); if (el) el.style.display = 'none'; }
 
 function addChordToProgression(chord) {
     if (progressionChords.length >= 8) { alert('Máximo 8 acordes'); return; }
@@ -2252,7 +2250,8 @@ function removeChordFromProgression(index) {
 function clearProgression() {
     progressionChords = [];
     renderProgressionChips();
-    document.getElementById('progression-input').value = '';
+    const input = document.getElementById('progression-input');
+    if (input) input.value = '';
     setHTML('progression-result', '<p class="empty-state">Añade acordes para ver el análisis de la progresión.</p>');
 }
 
@@ -2343,10 +2342,8 @@ function analyzeProgressionData(chords) {
     return { key: bestKey, keyRoot, isMinor, chordDegrees, cadence, scale: scaleNotes, substitutions };
 }
 
-// ⭐ ACTUALIZADO: ahora maneja también acordes con bajo tipo C/G
 function extractRoot(chord) {
     if (!chord) return 'C';
-    // Si tiene slash (ej: C/G, D/F#), nos quedamos solo con la parte de la izquierda
     const mainPart = chord.split('/')[0];
     if (mainPart.length >= 2 && (mainPart[1] === '#' || mainPart[1] === 'b')) {
         return mainPart.substring(0, 2);
@@ -2386,4 +2383,274 @@ function renderProgressionAnalysis(chords, result) {
     }
 
     container.innerHTML = html;
+}
+
+// =====================================================
+// MAPA DE TRÍADAS Y SÉPTIMAS (página nueva)
+// =====================================================
+function initTriadMap() {
+    const canvas = document.getElementById('triadCanvas');
+    if (!canvas) return; // No estamos en la página del mapa de tríadas
+
+    const ctx = canvas.getContext('2d');
+
+    // Dimensiones del mástil
+    const STRING_COUNT = 6;
+    const FRET_COUNT = 12;
+    const STRING_SPACING = 48;
+    const FRET_SPACING = 66;
+    const LEFT_MARGIN = 90;
+    const TOP_MARGIN = 55;
+    const BOTTOM_MARGIN = 40;
+
+    const canvasWidth = LEFT_MARGIN + FRET_COUNT * FRET_SPACING + 40;
+    const canvasHeight = TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING + BOTTOM_MARGIN;
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+
+    // Estado local del mapa
+    let currentType = 'major';
+    let currentRoot = 'C';
+
+    const ROOT_INDEX = {
+        'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11
+    };
+
+    // MIDI de las cuerdas al aire (6ª a 1ª): E2, A2, D3, G3, B3, E4
+    const OPEN_STRING_MIDI = [40, 45, 50, 55, 59, 64];
+
+    const midiToPitchClass = (midi) => (midi % 12 + 12) % 12;
+    const pitchClassToName = (pc) => NOTES[pc];
+
+    const CHORD_INTERVALS = {
+        major: [0, 4, 7],
+        minor: [0, 3, 7],
+        '7': [0, 4, 7, 10]
+    };
+
+    // Colores que respetan las variables CSS del proyecto
+    const COLORS = {
+        root: getComputedStyle(document.documentElement).getPropertyValue('--root-color').trim() || '#ff6b00',
+        third: getComputedStyle(document.documentElement).getPropertyValue('--third-color').trim() || '#4a9eff',
+        fifth: getComputedStyle(document.documentElement).getPropertyValue('--fifth-color').trim() || '#4caf50',
+        seventh: getComputedStyle(document.documentElement).getPropertyValue('--seventh-color').trim() || '#9c27b0',
+        other: '#3498db'
+    };
+
+    // Helper de rectángulo redondeado para navegadores sin soporte nativo
+    if (!CanvasRenderingContext2D.prototype.roundRect) {
+        CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+            if (w < 2 * r) r = w / 2;
+            if (h < 2 * r) r = h / 2;
+            this.moveTo(x + r, y);
+            this.lineTo(x + w - r, y);
+            this.quadraticCurveTo(x + w, y, x + w, y + r);
+            this.lineTo(x + w, y + h - r);
+            this.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+            this.lineTo(x + r, y + h);
+            this.quadraticCurveTo(x, y + h, x, y + h - r);
+            this.lineTo(x, y + r);
+            this.quadraticCurveTo(x, y, x + r, y);
+            return this;
+        };
+    }
+
+    function drawFretboard() {
+        const boardX = LEFT_MARGIN;
+        const boardY = TOP_MARGIN - 8;
+        const boardWidth = FRET_COUNT * FRET_SPACING;
+        const boardHeight = (STRING_COUNT - 1) * STRING_SPACING + 16;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Fondo del mástil (madera)
+        ctx.fillStyle = '#2a1f1a';
+        ctx.shadowColor = '#00000060';
+        ctx.shadowBlur = 8;
+        ctx.shadowOffsetY = 3;
+        ctx.beginPath();
+        ctx.roundRect(boardX, boardY, boardWidth, boardHeight, 16);
+        ctx.fill();
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetY = 0;
+
+        // Trastes
+        for (let f = 0; f <= FRET_COUNT; f++) {
+            const x = LEFT_MARGIN + f * FRET_SPACING;
+            if (f === 0 || f === 12) {
+                ctx.lineWidth = 5;
+                ctx.strokeStyle = '#d4c9b8';
+            } else {
+                ctx.lineWidth = 2.5;
+                ctx.strokeStyle = '#b0a28b';
+            }
+            ctx.beginPath();
+            ctx.moveTo(x, TOP_MARGIN - 12);
+            ctx.lineTo(x, TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING + 12);
+            ctx.stroke();
+        }
+
+        // Cuerdas
+        for (let s = 0; s < STRING_COUNT; s++) {
+            const y = TOP_MARGIN + s * STRING_SPACING;
+            const thickness = 5.0 - (s * 0.7);
+            ctx.beginPath();
+            ctx.lineWidth = thickness;
+            ctx.strokeStyle = '#d9d0c0';
+            ctx.shadowColor = '#00000080';
+            ctx.shadowBlur = 6;
+            ctx.shadowOffsetY = 2;
+            ctx.moveTo(LEFT_MARGIN - 10, y);
+            ctx.lineTo(LEFT_MARGIN + FRET_COUNT * FRET_SPACING + 10, y);
+            ctx.stroke();
+        }
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetY = 0;
+
+        // Números de trastes
+        ctx.font = 'bold 13px "Segoe UI", Roboto, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        for (let f = 1; f <= FRET_COUNT; f++) {
+            const x = LEFT_MARGIN + (f - 0.5) * FRET_SPACING;
+            ctx.fillStyle = '#b7c1d4';
+            ctx.fillText(f.toString(), x, TOP_MARGIN - 16);
+        }
+
+        // Marcadores (3, 5, 7, 9, 12)
+        const markerFrets = [3, 5, 7, 9, 12];
+        ctx.fillStyle = '#e5e9f0';
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = '#ffffff40';
+        markerFrets.forEach(f => {
+            const x = LEFT_MARGIN + (f - 0.5) * FRET_SPACING;
+            if (f === 12) {
+                ctx.beginPath();
+                ctx.arc(x - 8, TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING / 2, 5, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(x + 8, TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING / 2, 5, 0, 2 * Math.PI);
+                ctx.fill();
+            } else {
+                ctx.beginPath();
+                ctx.arc(x, TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING / 2, 5, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+        });
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+
+        // Nombres de cuerdas
+        ctx.font = 'bold 13px "Segoe UI", Roboto, sans-serif';
+        ctx.fillStyle = '#d8dee9';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        const stringNames = ['E', 'A', 'D', 'G', 'B', 'E'];
+        for (let s = 0; s < STRING_COUNT; s++) {
+            const y = TOP_MARGIN + s * STRING_SPACING;
+            ctx.fillText(stringNames[s], LEFT_MARGIN - 20, y);
+        }
+
+        // Nota "6ª cuerda (grave) ↑"
+        ctx.font = '10px "Segoe UI", sans-serif';
+        ctx.fillStyle = '#7b8a9e';
+        ctx.textAlign = 'left';
+        ctx.fillText('6ª cuerda (grave) ↑', 10, 20);
+    }
+
+    function drawChordNotes() {
+        const rootPC = ROOT_INDEX[currentRoot];
+        const intervals = CHORD_INTERVALS[currentType];
+
+        const intervalRoles = [];
+        intervals.forEach((semitones) => {
+            let role = 'other';
+            if (semitones === 0) role = 'root';
+            else if (semitones === 3 || semitones === 4) role = 'third';
+            else if (semitones === 7) role = 'fifth';
+            else if (semitones === 10) role = 'seventh';
+            intervalRoles.push(role);
+        });
+
+        for (let s = 0; s < STRING_COUNT; s++) {
+            const openMidi = OPEN_STRING_MIDI[s];
+            for (let f = 0; f <= FRET_COUNT; f++) {
+                const midi = openMidi + f;
+                const pc = midiToPitchClass(midi);
+                const diff = (pc - rootPC + 12) % 12;
+
+                const intervalIndex = intervals.indexOf(diff);
+                if (intervalIndex === -1) continue;
+
+                const role = intervalRoles[intervalIndex];
+                let color;
+                if (role === 'root') color = COLORS.root;
+                else if (role === 'third') color = COLORS.third;
+                else if (role === 'fifth') color = COLORS.fifth;
+                else if (role === 'seventh') color = COLORS.seventh;
+                else color = COLORS.other;
+
+                const noteX = (f === 0) ? LEFT_MARGIN - 26 : LEFT_MARGIN + (f - 0.5) * FRET_SPACING;
+                const y = TOP_MARGIN + s * STRING_SPACING;
+
+                ctx.beginPath();
+                ctx.arc(noteX, y, 15, 0, 2 * Math.PI);
+                ctx.fillStyle = color;
+                ctx.shadowColor = color + 'c0';
+                ctx.shadowBlur = 18;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+                ctx.strokeStyle = '#ffffffd0';
+                ctx.lineWidth = 2.5;
+                ctx.stroke();
+
+                const noteName = pitchClassToName(pc);
+                ctx.font = 'bold 12px "Segoe UI", Roboto, sans-serif';
+                ctx.fillStyle = '#ffffff';
+                ctx.shadowColor = '#00000080';
+                ctx.shadowBlur = 6;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(noteName, noteX, y);
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+            }
+        }
+    }
+
+    function render() {
+        drawFretboard();
+        drawChordNotes();
+
+        const typeNames = { major: 'mayor', minor: 'menor', '7': 'séptima' };
+        const labelEl = document.getElementById('triadChordLabel');
+        if (labelEl) labelEl.textContent = `${currentRoot} ${typeNames[currentType]}`;
+    }
+
+    function initControls() {
+        const typeButtons = document.querySelectorAll('#chordTypeGroup button');
+        typeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                typeButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentType = btn.dataset.type;
+                render();
+            });
+        });
+
+        const rootButtons = document.querySelectorAll('#rootNoteGroup button');
+        rootButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                rootButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentRoot = btn.dataset.root;
+                render();
+            });
+        });
+    }
+
+    initControls();
+    render();
 }

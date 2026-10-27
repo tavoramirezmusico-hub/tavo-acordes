@@ -7,6 +7,7 @@ App web de guitarra y armonía musical. Sin servidor, sin instalación y sin dep
 **🎸 Acordes y mástil**
 - Constructor de acordes: trastes por cuerda (X = silenciada, 0 = al aire, 1–12), detección de nombre(s), diagrama del mástil, búsqueda por nombre y audio con Web Audio API
 - Análisis armónico, escala del acorde, ¿Qué toco?, progresiones sugeridas y dominantes secundarios / sustituto de tritono
+- **Mapa de tríadas y séptimas**: visualiza todas las posiciones de tríadas mayores, menores y acordes de séptima en el mástil, con la 6ª cuerda arriba y notas coloreadas por función (raíz, 3ª, 5ª, 7ª).
 
 **🧭 Tonalidades y modulación**
 - Mapa de armonía (campos armónicos vecinos y acordes puente)
@@ -20,20 +21,21 @@ App web de guitarra y armonía musical. Sin servidor, sin instalación y sin dep
 
 ## Estructura
 
-```
-index.html                  Portada con todas las categorías
-css/styles.css              Estilos de todo el sitio
+ndex.html Portada con todas las categorías
+css/styles.css Estilos de todo el sitio
 js/
-  nav.js                    Menú lateral, migas de pan y portada (una sola fuente de verdad)
-  script.js                 Lógica de acordes, escalas, círculo, lecciones y práctica
-  mapa-armonia.js           Mapa de armonía (independiente)
-assets/                     Logo
+nav.js Menú lateral, migas de pan y portada (una sola fuente de verdad)
+script.js Lógica de acordes, escalas, círculo, lecciones, práctica
+y mapa de tríadas/séptimas
+mapa-armonia.js Mapa de armonía (independiente)
+assets/ Logo
 pages/
-  acordes/                  constructor, analisis, escala-acorde, que-toco, progresiones, dominantes
-  tonalidades/              mapa-armonia, circulo-quintas, navegador, modulacion
-  modos/                    modos, mapa-escalas
-  aprender/                 analizador, lecciones, practica
-```
+acordes/ constructor, analisis, escala-acorde, que-toco,
+progresiones, dominantes, mapa-triadas
+tonalidades/ mapa-armonia, circulo-quintas, navegador, modulacion
+modos/ modos, mapa-escalas
+aprender/ analizador, lecciones, practica
+
 
 ### El acorde se comparte entre páginas
 
@@ -45,22 +47,3 @@ El último acorde que armas en el constructor se guarda en el navegador (`localS
 2. Agrega una entrada en la lista `SITE` al inicio de `js/nav.js`:
    ```js
    { file: "pages/modos/mi-pagina.html", icon: "🎶", title: "Mi página", desc: "Qué hace." }
-   ```
-3. Listo: aparece sola en el menú lateral y en la portada.
-
-## Cómo usar en local
-
-Abre `index.html` en cualquier navegador moderno (Chrome, Firefox, Edge, Safari).
-
-## GitHub Pages
-
-1. Settings → Pages
-2. Source: Deploy from a branch
-3. Branch: `main` / (root)
-4. Save
-
-Quedará en: https://tavoramirezmusico-hub.github.io/Tavo-acordes/
-
----
-
-Creado por **Tavo Ramírez**.

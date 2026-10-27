@@ -2993,3 +2993,133 @@ body.menu-open .menu-toggle {
 .ma-map .nd {
     cursor: pointer;
 }
+
+/* =====================================================
+   MAPA DE TRÍADAS Y SÉPTIMAS (página nueva)
+   ===================================================== */
+.triad-map-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.triad-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    padding: 14px;
+    background-color: #0a0a0a;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+}
+
+.triad-controls .btn-group {
+    background: #141414;
+    border-radius: 60px;
+    padding: 0.3rem;
+    display: flex;
+    flex-wrap: wrap;
+    box-shadow: inset 0 2px 5px #1e222b;
+    border: 1px solid var(--border-color);
+}
+
+.triad-controls .btn-group button {
+    background: transparent;
+    color: var(--text-muted);
+    padding: 0.55rem 1.1rem;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 0.9em;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+}
+
+.triad-controls .btn-group button:hover:not(.active) {
+    background: rgba(255, 107, 0, 0.12);
+    color: var(--accent);
+}
+
+.triad-controls .btn-group button.active {
+    background: linear-gradient(135deg, var(--accent), #ff8533);
+    color: #000;
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px rgba(255, 107, 0, 0.4);
+}
+
+.triad-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    font-size: 0.85em;
+    color: var(--text-muted);
+}
+
+.triad-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    border: 1px solid var(--border-color);
+}
+
+.triad-legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid #000;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
+.triad-canvas-wrap {
+    background-color: #0a0a0a;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    overflow-x: auto;
+}
+
+.triad-canvas-wrap canvas {
+    display: block;
+    margin: 0 auto;
+    border-radius: 8px;
+    background-color: var(--wood-color);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+    max-width: 100%;
+    height: auto;
+}
+
+.triad-info {
+    background-color: #0a0a0a;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    padding: 16px;
+    text-align: center;
+    font-size: 0.95em;
+    color: var(--text-muted);
+}
+
+.triad-info strong {
+    color: var(--accent);
+    font-size: 1.1em;
+}
+
+/* Responsive para triad-controls */
+@media (max-width: 600px) {
+    .triad-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .triad-controls .btn-group {
+        justify-content: center;
+    }
+
+    .triad-controls .btn-group button {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.85em;
+    }
+}

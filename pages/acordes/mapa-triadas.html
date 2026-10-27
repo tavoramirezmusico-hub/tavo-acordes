@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa de tríadas y séptimas · Tavo Acordes</title>
+    <meta name="description"
+        content="Visualiza todas las posiciones de tríadas mayores, menores y acordes de séptima en el mástil de la guitarra.">
+    <link rel="icon" href="../../assets/logo-512.png">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <header class="site-bar">
+        <a href="../../index.html" class="site-bar-logo"><img src="../../assets/logo-512.png" alt="Tavo Acordes"></a>
+        <div class="site-bar-text">
+            <div id="breadcrumb" class="breadcrumb"></div>
+            <h1>🎸 Mapa de tríadas y séptimas</h1>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section id="mapa-triadas" class="card">
+            <h2>Mapa de Tríadas y Séptimas</h2>
+            <p class="section-desc">
+                Explora todas las posiciones de un acorde a lo largo del mástil. La <strong>6ª cuerda (Mi
+                    grave)</strong> está arriba, como en un diagrama tradicional. Cambia el tipo de acorde y la
+                fundamental para ver cada nota coloreada según su función.
+            </p>
+
+            <div class="triad-map-wrap">
+
+                <!-- Controles -->
+                <div class="triad-controls">
+                    <div class="btn-group" id="chordTypeGroup">
+                        <button data-type="major" class="active">Mayor</button>
+                        <button data-type="minor">Menor</button>
+                        <button data-type="7">Séptima (7)</button>
+                    </div>
+                    <div class="btn-group" id="rootNoteGroup">
+                        <button data-root="C" class="active">C</button>
+                        <button data-root="D">D</button>
+                        <button data-root="E">E</button>
+                        <button data-root="F">F</button>
+                        <button data-root="G">G</button>
+                        <button data-root="A">A</button>
+                        <button data-root="B">B</button>
+                    </div>
+                </div>
+
+                <!-- Leyenda -->
+                <div class="triad-legend">
+                    <div class="triad-legend-item">
+                        <span class="triad-legend-dot" style="background: var(--root-color);"></span>
+                        Fundamental (1)
+                    </div>
+                    <div class="triad-legend-item">
+                        <span class="triad-legend-dot" style="background: var(--third-color);"></span>
+                        Tercera (3 / b3)
+                    </div>
+                    <div class="triad-legend-item">
+                        <span class="triad-legend-dot" style="background: var(--fifth-color);"></span>
+                        Quinta (5)
+                    </div>
+                    <div class="triad-legend-item">
+                        <span class="triad-legend-dot" style="background: var(--seventh-color);"></span>
+                        Séptima (b7)
+                    </div>
+                </div>
+
+                <!-- Canvas del mástil -->
+                <div class="triad-canvas-wrap">
+                    <canvas id="triadCanvas" width="1080" height="380"></canvas>
+                </div>
+
+                <!-- Panel inferior con acorde actual -->
+                <div class="triad-info">
+                    <span id="triadChordLabel">C mayor</span>
+                    <br>
+                    <span style="font-size:0.85em; color: var(--text-muted); display:block; margin-top:6px;">
+                        🔴 Fundamental · 🔵 Tercera · 🟢 Quinta · 🟣 Séptima
+                    </span>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Tavo Acordes — App de guitarra, armonía y teoría musical.</p>
+    </footer>
+
+    <script src="../../js/nav.js"></script>
+    <script src="../../js/script.js"></script>
+</body>
+
+</html>
