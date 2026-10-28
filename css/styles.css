@@ -4093,3 +4093,458 @@ body.menu-open .menu-toggle {
         gap: 12px;
     }
 }
+
+/* =====================================================
+   LECTURA MUSICAL (Nuevo)
+   Añadir al final de css/styles.css
+   ===================================================== */
+
+/* Contenedor general */
+.lectura-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Barra de progreso del curso */
+.lectura-progress-bar {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.lectura-progress-step {
+    flex: 1;
+    max-width: 150px;
+    height: 8px;
+    background-color: var(--border-color);
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.lectura-progress-step.active {
+    background-color: var(--accent);
+    box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.lectura-progress-step.completed {
+    background-color: var(--correct-color);
+}
+
+/* Título del nivel */
+.lectura-nivel-header {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.lectura-nivel-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent), #ff8533);
+    color: #000;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 12px rgba(255, 107, 0, 0.4);
+}
+
+.lectura-nivel-title {
+    color: var(--accent);
+    font-size: 1.8em;
+    margin-bottom: 8px;
+    text-shadow: 0 0 15px rgba(255, 107, 0, 0.4);
+}
+
+.lectura-nivel-subtitle {
+    color: var(--text-muted);
+    font-size: 1em;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Bloque de concepto (paso a paso) */
+.lectura-concept {
+    background-color: #0a0a0a;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.lectura-concept h3 {
+    color: var(--accent);
+    font-size: 1.15em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.lectura-concept h3 .paso-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--accent), #ff8533);
+    color: #000;
+    border-radius: 50%;
+    font-weight: 900;
+    font-size: 0.95em;
+    flex-shrink: 0;
+}
+
+.lectura-concept p {
+    color: var(--text-main);
+    font-size: 0.95em;
+    line-height: 1.7;
+}
+
+.lectura-concept strong {
+    color: var(--accent);
+}
+
+/* Visual del pentagrama */
+.lectura-pentagrama-wrap {
+    background-color: #f5f0e6;
+    border-radius: 10px;
+    padding: 20px 10px;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
+    overflow-x: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.lectura-pentagrama-wrap svg {
+    display: block;
+    width: 100%;
+    max-width: 700px;
+    height: auto;
+}
+
+/* Notas del pentagrama (para hacerlas clickeables) */
+.nota-pentagrama {
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.nota-pentagrama:hover circle {
+    fill: var(--accent);
+    filter: drop-shadow(0 0 8px var(--accent));
+}
+
+/* Panel de ejercicios */
+.lectura-ejercicio {
+    background: linear-gradient(145deg, rgba(255, 107, 0, 0.08), rgba(255, 107, 0, 0.02));
+    border: 2px solid var(--accent);
+    border-radius: 12px;
+    padding: 25px;
+    margin-top: 10px;
+}
+
+.lectura-ejercicio-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.lectura-ejercicio-title {
+    color: var(--accent);
+    font-size: 1.1em;
+    font-weight: 700;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lectura-ejercicio-stats {
+    display: flex;
+    gap: 15px;
+    font-size: 0.85em;
+    color: var(--text-muted);
+}
+
+.lectura-ejercicio-stats strong {
+    color: var(--accent);
+    font-size: 1.1em;
+}
+
+.lectura-pregunta {
+    font-size: 1.05em;
+    color: var(--text-main);
+    margin-bottom: 18px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.lectura-pregunta strong {
+    color: var(--accent);
+}
+
+/* Opciones de respuesta (tipo test) */
+.lectura-opciones {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.lectura-opcion {
+    background-color: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 14px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 700;
+    color: var(--text-main);
+    transition: all 0.25s;
+    font-family: inherit;
+}
+
+.lectura-opcion:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 107, 0, 0.25);
+}
+
+.lectura-opcion.correcta {
+    background: linear-gradient(135deg, var(--correct-color), #2e7d32);
+    color: #fff;
+    border-color: var(--correct-color);
+    animation: pulseCorrect 0.5s ease;
+}
+
+.lectura-opcion.incorrecta {
+    background: linear-gradient(135deg, var(--wrong-color), #cc0000);
+    color: #fff;
+    border-color: var(--wrong-color);
+    animation: shakeWrong 0.4s ease;
+}
+
+.lectura-opcion:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Feedback */
+.lectura-feedback {
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 0.95em;
+    line-height: 1.5;
+    animation: chipIn 0.3s ease-out;
+    text-align: center;
+}
+
+.lectura-feedback.correcta {
+    background-color: rgba(76, 175, 80, 0.15);
+    border-left: 4px solid var(--correct-color);
+    color: #c8e6c9;
+}
+
+.lectura-feedback.incorrecta {
+    background-color: rgba(255, 51, 51, 0.15);
+    border-left: 4px solid var(--wrong-color);
+    color: #ffcdd2;
+}
+
+.lectura-feedback strong {
+    color: var(--accent);
+}
+
+/* Botones de acción */
+.lectura-acciones {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+/* Mástil interactivo para el ejercicio del nivel 3 y 4 */
+.lectura-mastil-wrap {
+    background-color: #0a0a0a;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    overflow-x: auto;
+    margin-top: 15px;
+}
+
+.lectura-mastil-wrap svg {
+    display: block;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    height: auto;
+}
+
+.traste-clickeable {
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.traste-clickeable:hover {
+    fill: rgba(255, 107, 0, 0.3);
+}
+
+.traste-clickeable.correcto {
+    fill: rgba(76, 175, 80, 0.5);
+    stroke: #4caf50;
+    stroke-width: 3;
+}
+
+.traste-clickeable.incorrecto {
+    fill: rgba(255, 51, 51, 0.5);
+    stroke: #ff3333;
+    stroke-width: 3;
+}
+
+/* Tarjetas de figuras rítmicas (Nivel 2) */
+.figuras-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 10px 0;
+}
+
+.figura-card {
+    background-color: #0a0a0a;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+    transition: all 0.25s;
+}
+
+.figura-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 107, 0, 0.25);
+}
+
+.figura-card .figura-svg {
+    background-color: #f5f0e6;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80px;
+}
+
+.figura-card .figura-svg svg {
+    display: block;
+    height: 60px;
+    width: auto;
+}
+
+.figura-card .figura-nombre {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 1em;
+    margin-bottom: 4px;
+}
+
+.figura-card .figura-duracion {
+    color: var(--text-muted);
+    font-size: 0.85em;
+}
+
+.figura-card .figura-duracion strong {
+    color: var(--text-main);
+}
+
+/* Navegación entre niveles */
+.lectura-nav-niveles {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    flex-wrap: wrap;
+}
+
+.lectura-nav-niveles a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.9em;
+    transition: all 0.25s;
+}
+
+.lectura-nav-niveles .btn-nivel {
+    background-color: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+}
+
+.lectura-nav-niveles .btn-nivel:hover {
+    background: linear-gradient(135deg, var(--accent), #ff8533);
+    color: #000;
+    transform: translateY(-2px);
+}
+
+.lectura-nav-niveles .btn-nivel-primary {
+    background: linear-gradient(135deg, var(--accent), #ff8533);
+    color: #000;
+    border: 1px solid var(--accent);
+    box-shadow: 0 4px 15px rgba(255, 107, 0, 0.4);
+}
+
+.lectura-nav-niveles .btn-nivel-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 0, 0.6);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .lectura-nivel-title {
+        font-size: 1.4em;
+    }
+
+    .lectura-concept {
+        padding: 15px;
+    }
+
+    .lectura-opciones {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .figuras-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .lectura-nav-niveles {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .lectura-nav-niveles a {
+        justify-content: center;
+    }
+}

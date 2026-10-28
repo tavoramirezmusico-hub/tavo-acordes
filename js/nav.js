@@ -108,6 +108,38 @@
       ]
     },
     {
+      "id": "lectura",
+      "icon": "📖",
+      "title": "Lectura Musical",
+      "desc": "Aprende a leer partitura en guitarra paso a paso, con ejercicios interactivos.",
+      "pages": [
+        {
+          "file": "pages/lectura/nivel-1-pentagrama.html",
+          "icon": "🎼",
+          "title": "Nivel 1: El pentagrama",
+          "desc": "Las 5 líneas, los 4 espacios y la clave de sol."
+        },
+        {
+          "file": "pages/lectura/nivel-2-figuras.html",
+          "icon": "🥁",
+          "title": "Nivel 2: Figuras rítmicas",
+          "desc": "Redonda, blanca, negra y corchea, con sus duraciones."
+        },
+        {
+          "file": "pages/lectura/nivel-3-cuerdas.html",
+          "icon": "🎸",
+          "title": "Nivel 3: Notas en el mástil",
+          "desc": "Relaciona las notas del pentagrama con la guitarra."
+        },
+        {
+          "file": "pages/lectura/nivel-4-lectura.html",
+          "icon": "🎯",
+          "title": "Nivel 4: Lectura práctica",
+          "desc": "Ejercicios interactivos para leer notas y compases."
+        }
+      ]
+    },
+    {
       "id": "tonalidades",
       "icon": "🧭",
       "title": "Tonalidades y modulación",

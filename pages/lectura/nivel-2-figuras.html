@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nivel 2: Figuras Rítmicas · Lectura Musical · Tavo Acordes</title>
+    <meta name="description"
+        content="Aprende las figuras rítmicas (redonda, blanca, negra, corchea) y sus duraciones, con ejercicios interactivos.">
+    <link rel="icon" href="../../assets/logo-512.png">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <header class="site-bar">
+        <a href="../../index.html" class="site-bar-logo"><img src="../../assets/logo-512.png" alt="Tavo Acordes"></a>
+        <div class="site-bar-text">
+            <div id="breadcrumb" class="breadcrumb"></div>
+            <h1>📖 Lectura Musical · Nivel 2</h1>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section class="card">
+            <div class="lectura-wrap">
+
+                <!-- Barra de progreso del curso -->
+                <div class="lectura-progress-bar">
+                    <div class="lectura-progress-step completed"></div>
+                    <div class="lectura-progress-step active"></div>
+                    <div class="lectura-progress-step"></div>
+                    <div class="lectura-progress-step"></div>
+                </div>
+
+                <!-- Encabezado del nivel -->
+                <div class="lectura-nivel-header">
+                    <span class="lectura-nivel-badge">Nivel 2 de 4</span>
+                    <h2 class="lectura-nivel-title">Las Figuras Rítmicas</h2>
+                    <p class="lectura-nivel-subtitle">
+                        Ya sabes <strong>dónde</strong> están las notas. Ahora toca entender <strong>cuánto
+                            duran</strong>. Las figuras rítmicas son los símbolos que nos dicen la duración de cada
+                        sonido.
+                    </p>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- CONCEPTO 1: El pulso y el compás             -->
+                <!-- ============================================ -->
+                <div class="lectura-concept">
+                    <h3><span class="paso-num">1</span> El pulso y el compás</h3>
+                    <p>
+                        Antes de ver las figuras, necesitas dos conceptos básicos:
+                    </p>
+                    <ul
+                        style="list-style:none; padding-left:0; margin: 10px 0; color: var(--text-main); line-height: 1.9;">
+                        <li>🥁 <strong>Pulso:</strong> es el latido constante de la música. Como el tic-tac de un reloj
+                            o el golpe de un metrónomo.</li>
+                        <li>📏 <strong>Compás:</strong> es un grupo de pulsos. En la música popular, lo más común es el
+                            compás de <strong>4 tiempos</strong> (4/4).</li>
+                    </ul>
+                    <p>
+                        Cuando cuentas "1, 2, 3, 4, 1, 2, 3, 4..." estás marcando los pulsos de un compás de 4 tiempos.
+                    </p>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- CONCEPTO 2: Las 4 figuras básicas            -->
+                <!-- ============================================ -->
+                <div class="lectura-concept">
+                    <h3><span class="paso-num">2</span> Las 4 figuras básicas</h3>
+                    <p>
+                        Cada figura tiene un nombre y una duración. Empecemos por las 4 más comunes, de mayor a menor
+                        duración:
+                    </p>
+
+                    <div class="figuras-grid">
+                        <!-- Redonda -->
+                        <div class="figura-card">
+                            <div class="figura-svg">
+                                <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                                    <ellipse cx="30" cy="30" rx="16" ry="12" fill="none" stroke="#000"
+                                        stroke-width="2.5" />
+                                </svg>
+                            </div>
+                            <div class="figura-nombre">Redonda</div>
+                            <div class="figura-duracion">Dura <strong>4 tiempos</strong></div>
+                        </div>
+
+                        <!-- Blanca -->
+                        <div class="figura-card">
+                            <div class="figura-svg">
+                                <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                                    <ellipse cx="25" cy="42" rx="16" ry="12" fill="none" stroke="#000"
+                                        stroke-width="2.5" />
+                                    <line x1="41" y1="42" x2="41" y2="8" stroke="#000" stroke-width="2.5" />
+                                </svg>
+                            </div>
+                            <div class="figura-nombre">Blanca</div>
+                            <div class="figura-duracion">Dura <strong>2 tiempos</strong></div>
+                        </div>
+
+                        <!-- Negra -->
+                        <div class="figura-card">
+                            <div class="figura-svg">
+                                <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                                    <ellipse cx="25" cy="42" rx="16" ry="12" fill="#000" stroke="#000"
+                                        stroke-width="2.5" />
+                                    <line x1="41" y1="42" x2="41" y2="8" stroke="#000" stroke-width="2.5" />
+                                </svg>
+                            </div>
+                            <div class="figura-nombre">Negra</div>
+                            <div class="figura-duracion">Dura <strong>1 tiempo</strong></div>
+                        </div>
+
+                        <!-- Corchea -->
+                        <div class="figura-card">
+                            <div class="figura-svg">
+                                <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                                    <ellipse cx="25" cy="42" rx="16" ry="12" fill="#000" stroke="#000"
+                                        stroke-width="2.5" />
+                                    <line x1="41" y1="42" x2="41" y2="8" stroke="#000" stroke-width="2.5" />
+                                    <!-- Corchete -->
+                                    <path d="M 41 8 Q 55 15, 52 28" fill="none" stroke="#000" stroke-width="2.5" />
+                                </svg>
+                            </div>
+                            <div class="figura-nombre">Corchea</div>
+                            <div class="figura-duracion">Dura <strong>½ tiempo</strong></div>
+                        </div>
+                    </div>
+
+                    <p style="text-align:center; color: var(--text-muted); font-size: 0.9em; font-style: italic;">
+                        💡 Regla de oro: cada figura nueva dura <strong>la mitad</strong> que la anterior.
+                    </p>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- CONCEPTO 3: Árbol de duraciones              -->
+                <!-- ============================================ -->
+                <div class="lectura-concept">
+                    <h3><span class="paso-num">3</span> El árbol de las duraciones</h3>
+                    <p>
+                        Para entenderlo mejor, imagina un compás de 4 tiempos como un pastel:
+                    </p>
+
+                    <div class="lectura-pentagrama-wrap" style="background: #0a0a0a; padding: 20px;">
+                        <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Fondo -->
+                            <rect x="0" y="0" width="700" height="320" fill="#0a0a0a" rx="8" />
+
+                            <!-- Nivel 1: 1 redonda = 4 tiempos -->
+                            <text x="350" y="30" font-family="Arial" font-size="14" font-weight="bold" fill="#ff6b00"
+                                text-anchor="middle">1 REDONDA = 4 TIEMPOS</text>
+                            <rect x="150" y="45" width="400" height="40" fill="#ff6b00" rx="6" opacity="0.3" />
+                            <rect x="150" y="45" width="400" height="40" fill="none" stroke="#ff6b00" stroke-width="2"
+                                rx="6" />
+                            <text x="350" y="70" font-family="Arial" font-size="16" font-weight="bold" fill="#ff6b00"
+                                text-anchor="middle">Redonda (4 tiempos)</text>
+
+                            <!-- Nivel 2: 2 blancas = 4 tiempos -->
+                            <text x="350" y="110" font-family="Arial" font-size="14" font-weight="bold" fill="#4a9eff"
+                                text-anchor="middle">2 BLANCAS = 4 TIEMPOS</text>
+                            <rect x="150" y="125" width="195" height="40" fill="#4a9eff" rx="6" opacity="0.3" />
+                            <rect x="150" y="125" width="195" height="40" fill="none" stroke="#4a9eff" stroke-width="2"
+                                rx="6" />
+                            <text x="247" y="150" font-family="Arial" font-size="14" font-weight="bold" fill="#4a9eff"
+                                text-anchor="middle">Blanca (2)</text>
+
+                            <rect x="355" y="125" width="195" height="40" fill="#4a9eff" rx="6" opacity="0.3" />
+                            <rect x="355" y="125" width="195" height="40" fill="none" stroke="#4a9eff" stroke-width="2"
+                                rx="6" />
+                            <text x="452" y="150" font-family="Arial" font-size="14" font-weight="bold" fill="#4a9eff"
+                                text-anchor="middle">Blanca (2)</text>
+
+                            <!-- Nivel 3: 4 negras = 4 tiempos -->
+                            <text x="350" y="190" font-family="Arial" font-size="14" font-weight="bold" fill="#4caf50"
+                                text-anchor="middle">4 NEGRAS = 4 TIEMPOS</text>
+                            <rect x="150" y="205" width="95" height="40" fill="#4caf50" rx="6" opacity="0.3" />
+                            <rect x="150" y="205" width="95" height="40" fill="none" stroke="#4caf50" stroke-width="2"
+                                rx="6" />
+                            <text x="197" y="230" font-family="Arial" font-size="13" font-weight="bold" fill="#4caf50"
+                                text-anchor="middle">Negra</text>
+
+                            <rect x="252" y="205" width="95" height="40" fill="#4caf50" rx="6" opacity="0.3" />
+                            <rect x="252" y="205" width="95" height="40" fill="none" stroke="#4caf50" stroke-width="2"
+                                rx="6" />
+                            <text x="299" y="230" font-family="Arial" font-size="13" font-weight="bold" fill="#4caf50"
+                                text-anchor="middle">Negra</text>
+
+                            <rect x="354" y="205" width="95" height="40" fill="#4caf50" rx="6" opacity="0.3" />
+                            <rect x="354" y="205" width="95" height="40" fill="none" stroke="#4caf50" stroke-width="2"
+                                rx="6" />
+                            <text x="401" y="230" font-family="Arial" font-size="13" font-weight="bold" fill="#4caf50"
+                                text-anchor="middle">Negra</text>
+
+                            <rect x="456" y="205" width="95" height="40" fill="#4caf50" rx="6" opacity="0.3" />
+                            <rect x="456" y="205" width="95" height="40" fill="none" stroke="#4caf50" stroke-width="2"
+                                rx="6" />
+                            <text x="503" y="230" font-family="Arial" font-size="13" font-weight="bold" fill="#4caf50"
+                                text-anchor="middle">Negra</text>
+
+                            <!-- Nivel 4: 8 corcheas = 4 tiempos -->
+                            <text x="350" y="270" font-family="Arial" font-size="14" font-weight="bold" fill="#9c27b0"
+                                text-anchor="middle">8 CORCHEAS = 4 TIEMPOS</text>
+                            <g>
+                                <rect x="150" y="285" width="45" height="25" fill="#9c27b0" rx="4" opacity="0.3" />
+                                <rect x="150" y="285" width="45" height="25" fill="none" stroke="#9c27b0"
+                                    stroke-width="1.5" rx="4" />
+                                <rect x="200" y="285" width="45" height="25" fill="#9c27b0" rx="4" opacity="0.3" />
+                                <rect x="200" y="285" width="45" height="25" fill="none" stroke="#9c27b0"
+                                    stroke-width="1.5" rx="4" />
+                                <rect x="250" y="285" width="45" height="25" fill="#9c27b0" rx="4" opacity="0.3" />
+                                <rect x="250" y="285" width="45" height="25" fill="none" stroke="#9c27b0"
+                                    stroke-width="1.5" rx="4" />
+                                <rect x="300" y="285" width="45" height="25" fill="#9c27b0" rx="4" opacity="0.3" />
+                                <rect x="300" y="285" width="45" height="25" fill="none" stroke="#9c27b0"
+                                    stroke-width="1.5" rx="4" />
+                                <rect x="350" y="285" width="45" height="25" fill="#9c27b0" rx="4" opacity="0.3" />
+                                <rect x="350" y="285" width="45" height="25" fill="none" stroke="#9c27b0"
+                                    stroke-width="1.5" rx="4" />
+                                <rect x="400" y="285" width="45" height="25" fill="#9c27b0" rx="4" opacity="0.3" />
+                                <rect x="400" y="285" width="45" height="25" fill="none" stroke="#9c27b0"
+                                    stroke-width="1.5" rx="4" />
+                                <rect x="450" y="285" width="45" height="25" fill="#9c27b0" rx="4" opacity="0.3" />
+                                <rect x="450" y="285" width="45" height="25" fill="none" stroke="#9c27b0"
+                                    stroke-width="1.5" rx="4" />
+                                <rect x="500" y="285" width="45" height="25" fill="#9c27b0" rx="4" opacity="0.3" />
+                                <rect x="500" y="285" width="45" height="25" fill="none" stroke="#9c27b0"
+                                    stroke-width="1.5" rx="4" />
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- CONCEPTO 4: El puntillo y la ligadura        -->
+                <!-- ============================================ -->
+                <div class="lectura-concept">
+                    <h3><span class="paso-num">4</span> El puntillo y la ligadura</h3>
+                    <p>
+                        Dos símbolos que modifican la duración de las figuras:
+                    </p>
+                    <ul
+                        style="list-style:none; padding-left:0; margin: 10px 0; color: var(--text-main); line-height: 1.9;">
+                        <li>🔵 <strong>Puntillo (·):</strong> añade <strong>la mitad</strong> del valor de la figura.
+                            Ejemplo: una blanca con puntillo = 2 + 1 = <strong>3 tiempos</strong>.</li>
+                        <li>🔗 <strong>Ligadura (—):</strong> une dos figuras del mismo sonido, sumando sus duraciones.
+                            Ejemplo: negra + negra ligadas = <strong>2 tiempos</strong>.</li>
+                    </ul>
+
+                    <div class="lectura-pentagrama-wrap">
+                        <svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="0" y="0" width="700" height="180" fill="#f5f0e6" rx="8" />
+
+                            <!-- 5 líneas -->
+                            <g stroke="#333" stroke-width="1.2">
+                                <line x1="40" y1="40" x2="660" y2="40" />
+                                <line x1="40" y1="60" x2="660" y2="60" />
+                                <line x1="40" y1="80" x2="660" y2="80" />
+                                <line x1="40" y1="100" x2="660" y2="100" />
+                                <line x1="40" y1="120" x2="660" y2="120" />
+                            </g>
+
+                            <!-- Blanca con puntillo -->
+                            <ellipse cx="150" cy="100" rx="10" ry="8" fill="none" stroke="#000" stroke-width="2" />
+                            <line x1="160" y1="100" x2="160" y2="65" stroke="#000" stroke-width="2" />
+                            <circle cx="175" cy="100" r="2.5" fill="#000" />
+                            <text x="160" y="150" font-family="Arial" font-size="12" fill="#333"
+                                text-anchor="middle">Blanca con puntillo (3)</text>
+
+                            <!-- Negra + Negra ligadas -->
+                            <ellipse cx="400" cy="100" rx="10" ry="8" fill="#000" />
+                            <line x1="410" y1="100" x2="410" y2="65" stroke="#000" stroke-width="2" />
+
+                            <ellipse cx="470" cy="100" rx="10" ry="8" fill="#000" />
+                            <line x1="480" y1="100" x2="480" y2="65" stroke="#000" stroke-width="2" />
+
+                            <!-- Ligadura (arco) -->
+                            <path d="M 405 108 Q 440 130, 475 108" fill="none" stroke="#ff6b00" stroke-width="2" />
+
+                            <text x="440" y="150" font-family="Arial" font-size="12" fill="#333"
+                                text-anchor="middle">Negra + negra ligadas (2)</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- EJERCICIO INTERACTIVO                        -->
+                <!-- ============================================ -->
+                <div class="lectura-ejercicio">
+                    <div class="lectura-ejercicio-header">
+                        <h3 class="lectura-ejercicio-title">🎯 Ejercicio del Nivel 2</h3>
+                        <div class="lectura-ejercicio-stats">
+                            Aciertos: <strong id="n2-aciertos">0</strong> ·
+                            Racha: <strong id="n2-racha">0</strong>
+                        </div>
+                    </div>
+
+                    <div id="n2-ejercicio-content">
+                        <p class="lectura-pregunta" id="n2-pregunta">Cargando ejercicio...</p>
+                        <div class="lectura-opciones" id="n2-opciones"></div>
+                        <div id="n2-feedback"></div>
+                        <div class="lectura-acciones" id="n2-acciones" style="display:none;">
+                            <button class="btn-primary" id="n2-siguiente">
+                                <i class="fas fa-arrow-right"></i> Siguiente pregunta
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- NAVEGACIÓN ENTRE NIVELES                     -->
+                <!-- ============================================ -->
+                <div class="lectura-nav-niveles">
+                    <a href="nivel-1-pentagrama.html" class="btn-nivel">
+                        <i class="fas fa-arrow-left"></i> Anterior: El Pentagrama
+                    </a>
+                    <a href="nivel-3-cuerdas.html" class="btn-nivel-primary">
+                        Siguiente nivel: Notas en el mástil <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Tavo Acordes — App de guitarra, armonía y teoría musical.</p>
+    </footer>
+
+    <script src="../../js/nav.js"></script>
+    <script src="../../js/lectura-musical.js"></script>
+</body>
+
+</html>

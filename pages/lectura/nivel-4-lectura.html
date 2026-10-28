@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nivel 4: Lectura práctica · Lectura Musical · Tavo Acordes</title>
+    <meta name="description"
+        content="Ejercicios prácticos de lectura musical: identifica notas del pentagrama, toca ritmos y lee compases completos.">
+    <link rel="icon" href="../../assets/logo-512.png">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <header class="site-bar">
+        <a href="../../index.html" class="site-bar-logo"><img src="../../assets/logo-512.png" alt="Tavo Acordes"></a>
+        <div class="site-bar-text">
+            <div id="breadcrumb" class="breadcrumb"></div>
+            <h1>📖 Lectura Musical · Nivel 4</h1>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section class="card">
+            <div class="lectura-wrap">
+
+                <!-- Barra de progreso del curso -->
+                <div class="lectura-progress-bar">
+                    <div class="lectura-progress-step completed"></div>
+                    <div class="lectura-progress-step completed"></div>
+                    <div class="lectura-progress-step completed"></div>
+                    <div class="lectura-progress-step active"></div>
+                </div>
+
+                <!-- Encabezado del nivel -->
+                <div class="lectura-nivel-header">
+                    <span class="lectura-nivel-badge">Nivel 4 de 4 · Nivel final</span>
+                    <h2 class="lectura-nivel-title">Lectura práctica</h2>
+                    <p class="lectura-nivel-subtitle">
+                        Has llegado al nivel final. Aquí pondrás a prueba todo lo aprendido: <strong>leer notas del
+                            pentagrama y encontrarlas en el mástil</strong>, reconocer figuras rítmicas y leer compases
+                        completos.
+                    </p>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- CONCEPTO 1: Cómo leer una partitura          -->
+                <!-- ============================================ -->
+                <div class="lectura-concept">
+                    <h3><span class="paso-num">1</span> Cómo leer una partitura paso a paso</h3>
+                    <p>
+                        Para leer una partitura en la guitarra, sigue siempre este orden:
+                    </p>
+                    <ul
+                        style="list-style:none; padding-left:0; margin: 10px 0; color: var(--text-main); line-height: 1.9;">
+                        <li>👁️ <strong>Mira la clave</strong> al inicio (clave de sol en guitarra).</li>
+                        <li>🎼 <strong>Identifica la nota</strong> del pentagrama (por su posición en línea o espacio).
+                        </li>
+                        <li>🎸 <strong>Busca esa nota</strong> en el mástil (empieza por las cuerdas al aire y los
+                            primeros trastes).</li>
+                        <li>⏱️ <strong>Mira la figura</strong> para saber cuánto dura.</li>
+                        <li>🎵 <strong>Toca la nota</strong> y mantén el tiempo.</li>
+                    </ul>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- MODO 1: Toca la nota en el mástil            -->
+                <!-- ============================================ -->
+                <div class="lectura-ejercicio">
+                    <div class="lectura-ejercicio-header">
+                        <h3 class="lectura-ejercicio-title">🎯 Modo 1: Toca la nota en el mástil</h3>
+                        <div class="lectura-ejercicio-stats">
+                            Aciertos: <strong id="n4-aciertos">0</strong> ·
+                            Fallos: <strong id="n4-fallos">0</strong> ·
+                            Racha: <strong id="n4-racha">0</strong>
+                        </div>
+                    </div>
+
+                    <div class="lectura-pregunta" id="n4-pregunta">
+                        Cargando nota del pentagrama...
+                    </div>
+
+                    <!-- Pentagrama con la nota a identificar -->
+                    <div class="lectura-pentagrama-wrap" id="n4-pentagrama-wrap">
+                        <!-- Aquí se renderiza la nota -->
+                    </div>
+
+                    <p style="text-align:center; color: var(--text-muted); font-size: 0.9em; margin-top: 10px;">
+                        👇 Haz clic en el traste correcto del mástil
+                    </p>
+
+                    <!-- Mástil interactivo -->
+                    <div class="lectura-mastil-wrap" id="n4-mastil-wrap">
+                        <!-- Aquí se renderiza el mástil -->
+                    </div>
+
+                    <div id="n4-feedback" style="margin-top:15px;"></div>
+
+                    <div class="lectura-acciones">
+                        <button class="btn-show" id="n4-reiniciar">
+                            <i class="fas fa-redo"></i> Reiniciar
+                        </button>
+                        <button class="btn-primary" id="n4-siguiente" style="display:none;">
+                            <i class="fas fa-arrow-right"></i> Siguiente nota
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- MODO 2: Lectura completa de un compás        -->
+                <!-- ============================================ -->
+                <div class="lectura-ejercicio">
+                    <div class="lectura-ejercicio-header">
+                        <h3 class="lectura-ejercicio-title">🎼 Modo 2: Lee el compás completo</h3>
+                        <div class="lectura-ejercicio-stats">
+                            Compases leídos: <strong id="n4-compases">0</strong>
+                        </div>
+                    </div>
+
+                    <div class="lectura-pregunta" id="n4-compas-pregunta">
+                        Observa el compás y elige la opción correcta
+                    </div>
+
+                    <!-- Pentagrama con 4 notas -->
+                    <div class="lectura-pentagrama-wrap" id="n4-compas-wrap">
+                        <!-- Aquí se renderiza el compás -->
+                    </div>
+
+                    <div class="lectura-opciones" id="n4-compas-opciones"></div>
+
+                    <div id="n4-compas-feedback"></div>
+
+                    <div class="lectura-acciones" id="n4-compas-acciones" style="display:none;">
+                        <button class="btn-primary" id="n4-compas-siguiente">
+                            <i class="fas fa-arrow-right"></i> Siguiente compás
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- RESUMEN FINAL                                -->
+                <!-- ============================================ -->
+                <div class="lectura-concept"
+                    style="background: linear-gradient(145deg, rgba(255, 107, 0, 0.1), rgba(255, 107, 0, 0.02)); border-color: var(--accent);">
+                    <h3 style="color: var(--accent);">🎉 ¡Has completado el curso de Lectura Musical!</h3>
+                    <p>
+                        Ya sabes leer el pentagrama, reconocer figuras rítmicas, encontrar las notas en el mástil y leer
+                        compases completos. Ahora la práctica constante es lo que te hará dominarlo.
+                    </p>
+                    <p style="margin-top: 10px;">
+                        <strong>Recomendaciones para seguir practicando:</strong>
+                    </p>
+                    <ul
+                        style="list-style:none; padding-left:0; margin: 10px 0; color: var(--text-main); line-height: 1.9;">
+                        <li>📅 <strong>5 minutos al día:</strong> mejor poco y constante que mucho y de golpe.</li>
+                        <li>🎵 <strong>Toca melodías simples:</strong> "Estrellita", "Cumpleaños feliz", "Himno a la
+                            alegría"...</li>
+                        <li>📖 <strong>Usa métodos progresivos:</strong> empieza con partituras de una sola línea.</li>
+                        <li>🎧 <strong>Escucha lo que lees:</strong> canta las notas mientras las tocas.</li>
+                    </ul>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- NAVEGACIÓN FINAL                             -->
+                <!-- ============================================ -->
+                <div class="lectura-nav-niveles">
+                    <a href="nivel-3-cuerdas.html" class="btn-nivel">
+                        <i class="fas fa-arrow-left"></i> Anterior: Notas en el mástil
+                    </a>
+                    <a href="../../index.html" class="btn-nivel-primary">
+                        <i class="fas fa-home"></i> Volver al inicio
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Tavo Acordes — App de guitarra, armonía y teoría musical.</p>
+    </footer>
+
+    <script src="../../js/nav.js"></script>
+    <script src="../../js/lectura-musical.js"></script>
+</body>
+
+</html>
