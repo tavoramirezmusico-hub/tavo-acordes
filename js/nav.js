@@ -82,6 +82,32 @@
       ]
     },
     {
+      "id": "ritmo",
+      "icon": "🥁",
+      "title": "Ritmo y rasgueo",
+      "desc": "Patrones de rasgueo, rítmicas latinas y metrónomo interactivo.",
+      "pages": [
+        {
+          "file": "pages/ritmo/patrones-rasgueo.html",
+          "icon": "🎸",
+          "title": "Patrones de rasgueo",
+          "desc": "Pop, rock, balada, funk y reggae, con diagrama de flechas y audio."
+        },
+        {
+          "file": "pages/ritmo/ritmicas-latinas.html",
+          "icon": "🌎",
+          "title": "Rítmicas latinas",
+          "desc": "Bossa nova, salsa, bolero, cumbia y son, con acentos latinos."
+        },
+        {
+          "file": "pages/ritmo/metronomo.html",
+          "icon": "⏱️",
+          "title": "Metrónomo",
+          "desc": "BPM, compás, acento en el primer pulso y acorde de fondo."
+        }
+      ]
+    },
+    {
       "id": "tonalidades",
       "icon": "🧭",
       "title": "Tonalidades y modulación",
