@@ -1,5 +1,6 @@
 // =====================================================
-// TAVO ACORDES - SCRIPT PRINCIPAL v15.0
+// TAVO ACORDES - SCRIPT PRINCIPAL v15.1
+// + Persistencia del acorde entre páginas
 // + Arpegios, Voicings e Inversiones
 // =====================================================
 
@@ -323,16 +324,48 @@ window.onload = function () {
     drawLegendExampleFretboard();
     renderLessons();
     initPractice();
-    resetFretboard();
+    restoreFretboard();
     updateModeInfo();
     initMenuEvents();
     initKeyNavigator();
     buildChordPicker();
     initTriadMap();
-    initArpegios();       // ← NUEVO
-    initVoicings();       // ← NUEVO
-    initInversiones();    // ← NUEVO
+    initArpegios();
+    initVoicings();
+    initInversiones();
 };
+
+// =====================================================
+// PERSISTENCIA DEL ACORDE ACTUAL (localStorage)
+// =====================================================
+const FRETBOARD_KEY = 'tavo_fretboard';
+
+function saveFretboard() {
+    try {
+        localStorage.setItem(FRETBOARD_KEY, JSON.stringify(currentFretboard));
+    } catch (e) { /* sin almacenamiento */ }
+}
+
+function restoreFretboard() {
+    let saved = null;
+    try {
+        saved = JSON.parse(localStorage.getItem(FRETBOARD_KEY));
+    } catch (e) {
+        saved = null;
+    }
+    const valid = Array.isArray(saved) && saved.length === 6 &&
+        saved.some(f => f !== null && f !== 'X');
+    if (valid) {
+        currentFretboard = saved;
+        document.querySelectorAll('.string-row select').forEach((select, i) => {
+            select.value = currentFretboard[i] === null ? 'null' : currentFretboard[i];
+        });
+        drawFretboard();
+        detectChord();
+    } else {
+        resetFretboard();
+    }
+}
 
 // =====================================================
 // MENÚ
@@ -448,6 +481,7 @@ function getNoteName(stringIndex, fret) {
 // DETECCIÓN
 // =====================================================
 function detectChord() {
+    saveFretboard();
     const notes = [];
     currentFretboard.forEach((fret, i) => {
         if (fret !== null && fret !== 'X') notes.push(getNoteName(i, fret));
@@ -2364,10 +2398,8 @@ function initTriadMap() {
     const TOP_MARGIN = 55;
     const BOTTOM_MARGIN = 40;
 
-    const canvasWidth = LEFT_MARGIN + FRET_COUNT * FRET_SPACING + 40;
-    const canvasHeight = TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING + BOTTOM_MARGIN;
-    canvas.width = canvasWidth;
-    canvas.height = canvasHeight;
+    canvas.width = LEFT_MARGIN + FRET_COUNT * FRET_SPACING + 40;
+    canvas.height = TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING + BOTTOM_MARGIN;
 
     let currentType = 'major';
     let currentRoot = 'C';
@@ -2432,7 +2464,6 @@ function initTriadMap() {
         const boardHeight = (STRING_COUNT - 1) * STRING_SPACING + 16;
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-
         ctx.fillStyle = '#2a1f1a';
         ctx.shadowColor = '#00000060';
         ctx.shadowBlur = 8;
@@ -2446,8 +2477,8 @@ function initTriadMap() {
 
         for (let f = 0; f <= FRET_COUNT; f++) {
             const x = LEFT_MARGIN + f * FRET_SPACING;
-            if (f === 0 || f === 12) { ctx.lineWidth = 5; ctx.strokeStyle = '#d4c9b8'; }
-            else { ctx.lineWidth = 2.5; ctx.strokeStyle = '#b0a28b'; }
+            ctx.lineWidth = (f === 0 || f === 12) ? 5 : 2.5;
+            ctx.strokeStyle = (f === 0 || f === 12) ? '#d4c9b8' : '#b0a28b';
             ctx.beginPath();
             ctx.moveTo(x, TOP_MARGIN - 12);
             ctx.lineTo(x, TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING + 12);
@@ -2471,17 +2502,15 @@ function initTriadMap() {
         ctx.shadowOffsetY = 0;
 
         ctx.font = 'bold 13px "Segoe UI", Roboto, sans-serif';
+        ctx.fillStyle = '#b7c1d4';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
         for (let f = 1; f <= FRET_COUNT; f++) {
-            ctx.fillStyle = '#b7c1d4';
             ctx.fillText(f.toString(), LEFT_MARGIN + (f - 0.5) * FRET_SPACING, TOP_MARGIN - 16);
         }
 
         const markerFrets = [3, 5, 7, 9, 12];
         ctx.fillStyle = '#e5e9f0';
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = '#ffffff40';
         markerFrets.forEach(f => {
             const x = LEFT_MARGIN + (f - 0.5) * FRET_SPACING;
             if (f === 12) {
@@ -2491,8 +2520,6 @@ function initTriadMap() {
                 ctx.beginPath(); ctx.arc(x, TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING / 2, 5, 0, 2 * Math.PI); ctx.fill();
             }
         });
-        ctx.shadowColor = 'transparent';
-        ctx.shadowBlur = 0;
 
         ctx.font = 'bold 13px "Segoe UI", Roboto, sans-serif';
         ctx.fillStyle = '#d8dee9';
@@ -2513,9 +2540,7 @@ function initTriadMap() {
         const boardBottomY = TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING + 12;
 
         ranges.forEach(range => {
-            const isHighlighted = highlightedCaged === 'all' || highlightedCaged === range.name;
             const isDimmed = highlightedCaged !== 'all' && highlightedCaged !== range.name;
-
             const x1 = LEFT_MARGIN + range.start * FRET_SPACING;
             const x2 = LEFT_MARGIN + range.end * FRET_SPACING;
             const width = x2 - x1;
@@ -2538,11 +2563,10 @@ function initTriadMap() {
             const labelY = boardTopY - 14;
             const labelWidth = 64;
             const labelHeight = 20;
-            ctx.fillStyle = isHighlighted && highlightedCaged !== 'all' ? COLORS.accent : (isDimmed ? '#333' : COLORS.accent);
+            ctx.fillStyle = isDimmed ? '#333' : COLORS.accent;
             ctx.beginPath();
             ctx.roundRect(centerX - labelWidth / 2, labelY - labelHeight / 2, labelWidth, labelHeight, 10);
             ctx.fill();
-
             ctx.fillStyle = isDimmed ? '#888' : '#000';
             ctx.font = 'bold 11px "Segoe UI", Roboto, sans-serif';
             ctx.textAlign = 'center';
@@ -2563,7 +2587,7 @@ function initTriadMap() {
         const ranges = getCagedRanges();
 
         const intervalRoles = [];
-        intervals.forEach((semitones) => {
+        intervals.forEach(semitones => {
             let role = 'other';
             if (semitones === 0) role = 'root';
             else if (semitones === 3 || semitones === 4) role = 'third';
@@ -2697,13 +2721,11 @@ function initTriadMap() {
             const scaleY = canvas.height / rect.height;
             const mx = (e.clientX - rect.left) * scaleX;
             const my = (e.clientY - rect.top) * scaleY;
-
             if (canvas._cagedLabels) {
                 for (const lbl of canvas._cagedLabels) {
                     const r = lbl.rect;
                     if (mx >= r.x && mx <= r.x + r.w && my >= r.y && my <= r.y + r.h) {
-                        if (highlightedCaged === lbl.name) highlightedCaged = 'all';
-                        else highlightedCaged = lbl.name;
+                        highlightedCaged = highlightedCaged === lbl.name ? 'all' : lbl.name;
                         cagedFilterButtons.forEach(b => {
                             b.classList.toggle('active', b.dataset.caged === highlightedCaged);
                         });
@@ -2721,7 +2743,6 @@ function initTriadMap() {
             const scaleY = canvas.height / rect.height;
             const mx = (e.clientX - rect.left) * scaleX;
             const my = (e.clientY - rect.top) * scaleY;
-
             let overLabel = false;
             if (canvas._cagedLabels) {
                 for (const lbl of canvas._cagedLabels) {
@@ -2766,7 +2787,6 @@ function initArpegios() {
     const OPEN_STRING_MIDI = [40, 45, 50, 55, 59, 64];
 
     const midiToPitchClass = (midi) => (midi % 12 + 12) % 12;
-    const pitchClassToName = (pc) => NOTES[pc];
 
     const CHORD_INTERVALS = { major: [0, 4, 7], minor: [0, 3, 7], '7': [0, 4, 7, 10] };
     const INTERVAL_LABELS = { 0: '1', 3: 'b3', 4: '3', 7: '5', 10: 'b7' };
@@ -2991,20 +3011,18 @@ function initArpegios() {
                 ctx.lineWidth = 2.5;
                 ctx.stroke();
 
-                const noteName = pitchClassToName(pc);
+                const noteName = NOTES[pc];
                 ctx.font = 'bold 12px "Segoe UI", Roboto, sans-serif';
                 ctx.fillStyle = dimmed ? '#888' : '#ffffff';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 ctx.fillText(noteName, noteX, y);
 
-                // Etiqueta del intervalo debajo
                 if (!dimmed) {
                     ctx.font = 'bold 10px "Segoe UI", Roboto, sans-serif';
                     ctx.fillStyle = color;
                     ctx.fillText(INTERVAL_LABELS[diff] || '', noteX, y + 22);
                 }
-
                 ctx.restore();
             }
         }
@@ -3017,12 +3035,8 @@ function initArpegios() {
         const rootPC = ROOT_INDEX[currentRoot];
         const intervals = CHORD_INTERVALS[currentType];
 
-        const roleColors = {
-            root: COLORS.root, third: COLORS.third, fifth: COLORS.fifth, seventh: COLORS.seventh
-        };
-        const roleNames = {
-            root: 'Raíz', third: 'Tercera', fifth: 'Quinta', seventh: 'Séptima'
-        };
+        const roleColors = { root: COLORS.root, third: COLORS.third, fifth: COLORS.fifth, seventh: COLORS.seventh };
+        const roleNames = { root: 'Raíz', third: 'Tercera', fifth: 'Quinta', seventh: 'Séptima' };
 
         let html = '';
         intervals.forEach((semitones, idx) => {
@@ -3169,10 +3183,7 @@ function initVoicings() {
     let currentRoot = 'C';
 
     const ROOT_INDEX = { 'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11 };
-    const CHORD_INTERVALS = { major: [0, 4, 7], minor: [0, 3, 7], '7': [0, 4, 7, 10] };
 
-    // Voicings predefinidos por forma (trastes por cuerda de 6ª a 1ª).
-    // Cada forma es relativa: se transpone según la fundamental.
     const VOICING_SHAPES = {
         major: {
             'Abierto': { baseRoot: 'C', frets: [0, 3, 2, 0, 1, 0], desc: 'Forma abierta en primera posición' },
@@ -3201,7 +3212,7 @@ function initVoicings() {
         return frets.map(f => (f === null ? null : f + offset));
     }
 
-    function drawVoicingSVG(frets, chordName) {
+    function drawVoicingSVG(frets) {
         const width = 220, height = 240;
         const marginLeft = 40, marginTop = 40, marginRight = 20, marginBottom = 20;
         const drawWidth = width - marginLeft - marginRight;
@@ -3209,50 +3220,40 @@ function initVoicings() {
         const stringSpacing = drawWidth / 5;
         const fretSpacing = drawHeight / 5;
 
-        // Detectar el traste más bajo para "mover" el diagrama
         const validFrets = frets.filter(f => f !== null && f > 0);
         const minFret = validFrets.length > 0 ? Math.min(...validFrets) : 0;
         const startFret = minFret > 4 ? minFret - 1 : 0;
         const visibleFrets = 5;
 
         let svg = `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet">`;
-
-        // Fondo
         svg += `<rect x="0" y="0" width="${width}" height="${height}" fill="#2a1f1a" rx="8" />`;
 
-        // Trastes verticales
         for (let f = 0; f <= visibleFrets; f++) {
             const x = marginLeft + f * fretSpacing;
             svg += `<line x1="${x}" y1="${marginTop}" x2="${x}" y2="${height - marginBottom}" stroke="#777" stroke-width="${f === 0 ? 4 : 2}" />`;
         }
 
-        // Cuerdas horizontales (6ª arriba)
         for (let s = 0; s < 6; s++) {
             const y = marginTop + s * stringSpacing;
             svg += `<line x1="${marginLeft}" y1="${y}" x2="${marginLeft + visibleFrets * fretSpacing}" y2="${y}" stroke="#ccc" stroke-width="${4 - (s * 0.5)}" />`;
         }
 
-        // Números de traste a la izquierda
         for (let f = 1; f <= visibleFrets; f++) {
             const y = marginTop + (f - 0.5) * stringSpacing;
             const actualFret = startFret + f;
             svg += `<text x="${marginLeft - 8}" y="${y}" fill="#888" font-size="10" text-anchor="end" dominant-baseline="middle">${actualFret}</text>`;
         }
 
-        // Marcar cejilla si startFret > 0
         if (startFret > 0) {
             svg += `<text x="${marginLeft - 8}" y="${marginTop + 8}" fill="#ff6b00" font-size="10" font-weight="bold" text-anchor="end">${startFret + 1}fr</text>`;
         }
 
-        // Notas
         for (let s = 0; s < 6; s++) {
             const fret = frets[s];
             const y = marginTop + s * stringSpacing;
             if (fret === null) {
-                // X = cuerda silenciada
                 svg += `<text x="${marginLeft - 15}" y="${y}" fill="#ff3333" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle">X</text>`;
             } else if (fret === 0) {
-                // 0 = cuerda al aire
                 svg += `<circle cx="${marginLeft - 15}" cy="${y}" r="7" fill="transparent" stroke="#ff6b00" stroke-width="2" />`;
             } else {
                 const relativeFret = fret - startFret;
@@ -3293,7 +3294,7 @@ function initVoicings() {
 
             const body = document.createElement('div');
             body.className = 'voicing-card-body';
-            body.innerHTML = drawVoicingSVG(transposedFrets, chordName);
+            body.innerHTML = drawVoicingSVG(transposedFrets);
             card.appendChild(body);
 
             const actions = document.createElement('div');
@@ -3534,7 +3535,6 @@ function initInversiones() {
         const quality = currentType === 'major' ? '' : (currentType === 'minor' ? 'm' : '7');
         const baseName = currentRoot + quality;
 
-        // Construir las inversiones: 0 = fundamental, 1 = 1ª, 2 = 2ª, 3 = 3ª
         const inversions = [];
         for (let i = 0; i < intervals.length; i++) {
             const bassSemitones = intervals[i];
@@ -3549,12 +3549,10 @@ function initInversiones() {
             inversions.push({ invName, bassNote, chordName, orderedNotes, index: i });
         }
 
-        // Actualizar resumen
         if (summary) {
             summary.innerHTML = `<strong>${baseName}</strong> · ${inversions.length} inversiones posibles`;
         }
 
-        // Renderizar tabla
         tbody.innerHTML = '';
         inversions.forEach(inv => {
             const tr = document.createElement('tr');
@@ -3568,7 +3566,6 @@ function initInversiones() {
             tbody.appendChild(tr);
         });
 
-        // Asignar listeners de audio
         tbody.querySelectorAll('.inv-play-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const idx = parseInt(btn.dataset.index);
