@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inversiones · Tavo Acordes</title>
+    <meta name="description"
+        content="El mismo acorde con distintas notas en el bajo: fundamental, 1ª, 2ª y 3ª inversión, con audio.">
+    <link rel="icon" href="../../assets/logo-512.png">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <header class="site-bar">
+        <a href="../../index.html" class="site-bar-logo"><img src="../../assets/logo-512.png" alt="Tavo Acordes"></a>
+        <div class="site-bar-text">
+            <div id="breadcrumb" class="breadcrumb"></div>
+            <h1>🔄 Inversiones</h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <div id="chord-banner" class="chord-banner" data-link="../../pages/acordes/constructor.html"></div>
+
+        <section id="inversiones" class="card">
+            <h2>Inversiones del acorde</h2>
+            <p class="section-desc">
+                Una <strong>inversión</strong> es el mismo acorde pero con otra nota en el bajo. Cambia el color y el
+                peso armónico sin cambiar las notas del acorde. Aquí tienes todas las posiciones posibles sobre el
+                mástil.
+            </p>
+
+            <div class="arp-wrap">
+
+                <!-- Controles -->
+                <div class="arp-controls">
+                    <div class="btn-group" id="invTypeGroup">
+                        <button data-type="major" class="active">Mayor</button>
+                        <button data-type="minor">Menor</button>
+                        <button data-type="7">Séptima (7)</button>
+                    </div>
+                    <div class="btn-group" id="invRootGroup">
+                        <button data-root="C" class="active">C</button>
+                        <button data-root="D">D</button>
+                        <button data-root="E">E</button>
+                        <button data-root="F">F</button>
+                        <button data-root="G">G</button>
+                        <button data-root="A">A</button>
+                        <button data-root="B">B</button>
+                    </div>
+                </div>
+
+                <!-- Canvas único con el mástil y las 4 inversiones resaltadas -->
+                <div class="arp-canvas-wrap">
+                    <canvas id="invCanvas" width="1080" height="380"></canvas>
+                </div>
+
+                <!-- Leyenda de colores -->
+                <div class="arp-legend">
+                    <div class="arp-legend-item">
+                        <span class="arp-legend-dot" style="background: var(--root-color);"></span>
+                        Fundamental
+                    </div>
+                    <div class="arp-legend-item">
+                        <span class="arp-legend-dot" style="background: var(--third-color);"></span>
+                        Tercera
+                    </div>
+                    <div class="arp-legend-item">
+                        <span class="arp-legend-dot" style="background: var(--fifth-color);"></span>
+                        Quinta
+                    </div>
+                    <div class="arp-legend-item">
+                        <span class="arp-legend-dot" style="background: var(--seventh-color);"></span>
+                        Séptima
+                    </div>
+                </div>
+
+                <!-- Tabla de inversiones -->
+                <div class="arp-info">
+                    <h4>📋 Inversiones disponibles</h4>
+                    <p id="invSummary" style="margin-bottom:12px;">Cargando...</p>
+                    <table class="inversions-table" id="invTable">
+                        <thead>
+                            <tr>
+                                <th>Inversión</th>
+                                <th>Bajo</th>
+                                <th>Nombre</th>
+                                <th>Notas</th>
+                                <th>Audio</th>
+                            </tr>
+                        </thead>
+                        <tbody id="invTableBody">
+                            <tr>
+                                <td colspan="5" class="empty-state">Cargando...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Tavo Acordes — App de guitarra, armonía y teoría musical.</p>
+    </footer>
+
+    <script src="../../js/nav.js"></script>
+    <script src="../../js/script.js"></script>
+</body>
+
+</html>

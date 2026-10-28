@@ -3234,3 +3234,376 @@ body.menu-open .menu-toggle {
     border-color: var(--accent);
     box-shadow: 0 4px 12px rgba(255, 107, 0, 0.4);
 }
+
+/* =====================================================
+   ARPEGIOS Y VOICINGS (nuevo)
+   Añadir al final de css/styles.css
+   ===================================================== */
+
+/* Contenedor común de las 3 páginas */
+.arp-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* Controles superiores (tipo + fundamental + acciones) */
+.arp-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    padding: 14px;
+    background-color: #0a0a0a;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+}
+
+.arp-controls .btn-group {
+    background: #141414;
+    border-radius: 60px;
+    padding: 0.3rem;
+    display: flex;
+    flex-wrap: wrap;
+    box-shadow: inset 0 2px 5px #1e222b;
+    border: 1px solid var(--border-color);
+}
+
+.arp-controls .btn-group button {
+    background: transparent;
+    color: var(--text-muted);
+    padding: 0.55rem 1.1rem;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 0.9em;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+}
+
+.arp-controls .btn-group button:hover:not(.active) {
+    background: rgba(255, 107, 0, 0.12);
+    color: var(--accent);
+}
+
+.arp-controls .btn-group button.active {
+    background: linear-gradient(135deg, var(--accent), #ff8533);
+    color: #000;
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px rgba(255, 107, 0, 0.4);
+}
+
+.arp-controls .arp-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Canvas del arpegio (uno solo, grande) */
+.arp-canvas-wrap {
+    background-color: #0a0a0a;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    overflow-x: auto;
+}
+
+.arp-canvas-wrap canvas {
+    display: block;
+    margin: 0 auto;
+    border-radius: 8px;
+    background-color: var(--wood-color);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+    max-width: 100%;
+    height: auto;
+}
+
+/* Leyenda de colores del arpegio */
+.arp-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    font-size: 0.85em;
+    color: var(--text-muted);
+}
+
+.arp-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    border: 1px solid var(--border-color);
+}
+
+.arp-legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid #000;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Panel informativo del arpegio (debajo del canvas) */
+.arp-info {
+    background-color: #0a0a0a;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    padding: 16px;
+    font-size: 0.95em;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+.arp-info h4 {
+    color: var(--accent);
+    font-size: 1em;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.arp-info strong {
+    color: var(--accent);
+}
+
+/* Lista ordenada de notas del arpegio */
+.arp-notes-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.arp-note-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.9em;
+    color: #000;
+    border: 2px solid #000;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.arp-note-pill .arp-note-num {
+    background-color: rgba(0, 0, 0, 0.25);
+    color: #fff;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75em;
+    margin-right: 2px;
+}
+
+/* =====================================================
+   VOICINGS (grid de mini-mástiles)
+   ===================================================== */
+.voicings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.voicing-card {
+    background-color: #0a0a0a;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    padding: 14px;
+    transition: border-color 0.25s, transform 0.25s;
+}
+
+.voicing-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 107, 0, 0.15);
+}
+
+.voicing-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.voicing-card-title {
+    color: var(--accent);
+    font-weight: bold;
+    font-size: 1em;
+}
+
+.voicing-card-sub {
+    color: var(--text-muted);
+    font-size: 0.8em;
+    font-style: italic;
+}
+
+.voicing-card-body {
+    background-color: var(--wood-color);
+    border-radius: 8px;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.8);
+    padding: 6px;
+    margin-bottom: 10px;
+}
+
+.voicing-card-body svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.voicing-card-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.voicing-card-actions button {
+    background-color: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.voicing-card-actions button:hover {
+    background: linear-gradient(135deg, var(--accent), #ff8533);
+    color: #000;
+}
+
+/* =====================================================
+   INVERSIONES (tabla + canvas)
+   ===================================================== */
+.inversions-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background-color: #0a0a0a;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.inversions-table thead {
+    background-color: rgba(255, 107, 0, 0.12);
+}
+
+.inversions-table th {
+    color: var(--accent);
+    font-size: 0.85em;
+    text-align: left;
+    padding: 10px 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.inversions-table td {
+    padding: 10px 14px;
+    font-size: 0.9em;
+    color: var(--text-main);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.inversions-table tr:last-child td {
+    border-bottom: none;
+}
+
+.inversions-table tr:hover td {
+    background-color: rgba(255, 107, 0, 0.05);
+}
+
+.inversions-table td strong {
+    color: var(--accent);
+}
+
+.inversions-table .inv-play-btn {
+    background-color: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.inversions-table .inv-play-btn:hover {
+    background: linear-gradient(135deg, var(--accent), #ff8533);
+    color: #000;
+}
+
+/* Banner del acorde actual (si no hay, se muestra uno vacío) */
+.arp-empty-banner {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.95em;
+}
+
+.arp-empty-banner strong {
+    color: var(--accent);
+}
+
+.arp-empty-banner a {
+    color: #000;
+    background: var(--accent);
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 700;
+    display: inline-block;
+    margin-top: 10px;
+    transition: background 0.2s;
+}
+
+.arp-empty-banner a:hover {
+    background: var(--accent-hover);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .arp-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .arp-controls .btn-group {
+        justify-content: center;
+    }
+
+    .arp-controls .btn-group button {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.85em;
+    }
+
+    .voicings-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .inversions-table th,
+    .inversions-table td {
+        padding: 8px 10px;
+        font-size: 0.85em;
+    }
+}
