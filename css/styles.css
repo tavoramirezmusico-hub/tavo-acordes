@@ -3607,3 +3607,500 @@ body.menu-open .menu-toggle {
         font-size: 0.85em;
     }
 }
+
+/* =====================================================
+   RITMO Y RASGUEO (nuevo)
+   Añadir al final de css/styles.css
+   ===================================================== */
+
+/* Contenedor común de las 3 páginas */
+.ritmo-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* Controles superiores (filtros, BPM, etc.) */
+.ritmo-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    padding: 14px;
+    background-color: #0a0a0a;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+}
+
+.ritmo-controls label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted);
+    font-size: 0.9em;
+}
+
+.ritmo-controls select,
+.ritmo-controls input[type="range"] {
+    padding: 6px 10px;
+    background-color: var(--card-bg);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95em;
+}
+
+.ritmo-controls input[type="range"] {
+    padding: 0;
+    width: 160px;
+}
+
+.ritmo-controls select:focus,
+.ritmo-controls input[type="range"]:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.ritmo-controls .bpm-value {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 1.05em;
+    min-width: 55px;
+    text-align: right;
+}
+
+/* Grid de patrones */
+.ritmo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+/* Tarjeta de patrón */
+.ritmo-card {
+    background-color: #0a0a0a;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    padding: 16px;
+    transition: border-color 0.25s, transform 0.25s;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ritmo-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 107, 0, 0.15);
+}
+
+.ritmo-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.ritmo-card-title {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 1.05em;
+    margin: 0;
+}
+
+.ritmo-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 0.75em;
+    color: var(--text-muted);
+}
+
+.ritmo-card-meta span {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.ritmo-card-meta span.level-principiante {
+    color: #4caf50;
+    border-color: #4caf50;
+}
+
+.ritmo-card-meta span.level-intermedio {
+    color: #ffb300;
+    border-color: #ffb300;
+}
+
+.ritmo-card-meta span.level-avanzado {
+    color: #ff6b00;
+    border-color: #ff6b00;
+}
+
+/* Diagrama de flechas del patrón */
+.ritmo-pattern {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 6px;
+    background-color: var(--wood-color);
+    border-radius: 8px;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.8);
+    flex-wrap: wrap;
+}
+
+.ritmo-stroke {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 42px;
+    border-radius: 6px;
+    font-size: 1.4em;
+    font-weight: 900;
+    transition: all 0.15s;
+}
+
+.ritmo-stroke.down {
+    color: var(--accent);
+}
+
+.ritmo-stroke.up {
+    color: #4a9eff;
+}
+
+.ritmo-stroke.accent {
+    background-color: rgba(255, 107, 0, 0.15);
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 10px rgba(255, 107, 0, 0.4);
+}
+
+.ritmo-stroke .ritmo-beat-num {
+    font-size: 0.45em;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+.ritmo-stroke.accent .ritmo-beat-num {
+    color: var(--accent);
+}
+
+/* Animación de pulso activo */
+.ritmo-stroke.active {
+    background-color: var(--accent);
+    color: #000;
+    transform: scale(1.15);
+    box-shadow: 0 0 20px var(--accent);
+}
+
+.ritmo-stroke.active.down,
+.ritmo-stroke.active.up {
+    color: #000;
+}
+
+/* Botones de la tarjeta */
+.ritmo-card-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: auto;
+}
+
+.ritmo-card-actions button {
+    background-color: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ritmo-card-actions button:hover {
+    background: linear-gradient(135deg, var(--accent), #ff8533);
+    color: #000;
+}
+
+.ritmo-card-actions button.danger {
+    border-color: var(--red-mute);
+    color: var(--red-mute);
+}
+
+.ritmo-card-actions button.danger:hover {
+    background: var(--red-mute);
+    color: #fff;
+}
+
+/* Descripción y tip del patrón */
+.ritmo-card-desc {
+    color: var(--text-muted);
+    font-size: 0.85em;
+    line-height: 1.5;
+}
+
+.ritmo-card-tip {
+    background-color: rgba(255, 107, 0, 0.08);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    padding: 8px 12px;
+    font-size: 0.82em;
+    color: var(--text-main);
+    line-height: 1.5;
+    font-style: italic;
+}
+
+/* =====================================================
+   METRÓNOMO
+   ===================================================== */
+.metronomo-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 20px;
+    background-color: #0a0a0a;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.metronomo-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.metronomo-bpm-display {
+    font-size: 4em;
+    font-weight: 900;
+    color: var(--accent);
+    text-shadow: 0 0 30px rgba(255, 107, 0, 0.5);
+    line-height: 1;
+    min-width: 180px;
+    text-align: center;
+    font-family: "Segoe UI", Roboto, sans-serif;
+}
+
+.metronomo-bpm-label {
+    color: var(--text-muted);
+    font-size: 0.9em;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 4px;
+}
+
+.metronomo-beats {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin: 8px 0;
+}
+
+.metronomo-beat {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--card-bg);
+    border: 3px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4em;
+    font-weight: 900;
+    color: var(--text-muted);
+    transition: all 0.1s;
+}
+
+.metronomo-beat.active {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+    transform: scale(1.15);
+    box-shadow: 0 0 25px var(--accent);
+}
+
+.metronomo-beat.active.first-beat {
+    background-color: #ff3333;
+    border-color: #ff3333;
+    box-shadow: 0 0 30px #ff3333;
+}
+
+.metronomo-play-btn {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #ff8533);
+    color: #000;
+    border: none;
+    font-size: 1.6em;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 6px 20px rgba(255, 107, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.metronomo-play-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 30px rgba(255, 107, 0, 0.6);
+}
+
+.metronomo-play-btn.playing {
+    background: linear-gradient(135deg, #ff3333, #cc0000);
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 6px 20px rgba(255, 51, 51, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 6px 40px rgba(255, 51, 51, 0.8);
+    }
+}
+
+.metronomo-settings {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.metronomo-settings label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    color: var(--text-muted);
+    font-size: 0.85em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+.metronomo-settings select {
+    padding: 8px 12px;
+    background-color: var(--card-bg);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    min-width: 100px;
+}
+
+.metronomo-settings select:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.metronomo-tempo-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+}
+
+.metronomo-tempo-presets button {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.metronomo-tempo-presets button:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.metronomo-tempo-presets button.active {
+    background: linear-gradient(135deg, var(--accent), #ff8533);
+    color: #000;
+    border-color: var(--accent);
+}
+
+/* Info extra del metrónomo */
+.metronomo-info {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 14px 18px;
+    color: var(--text-muted);
+    font-size: 0.9em;
+    line-height: 1.6;
+    max-width: 600px;
+    text-align: center;
+}
+
+.metronomo-info strong {
+    color: var(--accent);
+}
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+@media (max-width: 600px) {
+    .ritmo-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .ritmo-controls label {
+        justify-content: space-between;
+    }
+
+    .ritmo-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .metronomo-bpm-display {
+        font-size: 3em;
+        min-width: 140px;
+    }
+
+    .metronomo-beat {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2em;
+    }
+
+    .metronomo-play-btn {
+        width: 70px;
+        height: 70px;
+        font-size: 1.4em;
+    }
+
+    .metronomo-beats {
+        gap: 10px;
+    }
+
+    .metronomo-settings {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
