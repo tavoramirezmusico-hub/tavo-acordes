@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rítmicas latinas · Tavo Acordes</title>
+    <meta name="description"
+        content="Patrones rítmicos latinos: bossa nova, salsa, bolero, cumbia y más, con diagrama y audio.">
+    <link rel="icon" href="../../assets/logo-512.png">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <header class="site-bar">
+        <a href="../../index.html" class="site-bar-logo"><img src="../../assets/logo-512.png" alt="Tavo Acordes"></a>
+        <div class="site-bar-text">
+            <div id="breadcrumb" class="breadcrumb"></div>
+            <h1>🌎 Rítmicas latinas</h1>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section id="ritmicas-latinas" class="card">
+            <h2>Rítmicas latinas</h2>
+            <p class="section-desc">
+                Patrones rítmicos de la música latina: <strong>bossa nova, salsa, bolero, cumbia y son</strong>. Cada
+                uno tiene su propio carácter y se apoya en la mano derecha con bajo alterno, acordes en contratiempo o
+                guajeos. Practica con metrónomo y acorde de fondo.
+            </p>
+
+            <div class="ritmo-wrap">
+
+                <!-- Controles / filtros -->
+                <div class="ritmo-controls">
+                    <label>Estilo:
+                        <select id="filtroEstilo">
+                            <option value="all">Todos</option>
+                            <option value="bossa">Bossa nova</option>
+                            <option value="salsa">Salsa</option>
+                            <option value="bolero">Bolero</option>
+                            <option value="cumbia">Cumbia</option>
+                            <option value="son">Son</option>
+                        </select>
+                    </label>
+                    <label>Acorde de fondo:
+                        <select id="acordeFondoLatino">
+                            <option value="C">C mayor</option>
+                            <option value="G">G mayor</option>
+                            <option value="D">D mayor</option>
+                            <option value="A">A mayor</option>
+                            <option value="E">E mayor</option>
+                            <option value="Am">Am</option>
+                            <option value="Em">Em</option>
+                            <option value="Dm">Dm</option>
+                        </select>
+                    </label>
+                </div>
+
+                <!-- Grid de patrones -->
+                <div class="ritmo-grid" id="patronesLatinosGrid">
+                    <p class="empty-state">Cargando rítmicas...</p>
+                </div>
+
+                <!-- Nota pedagógica -->
+                <div class="metronomo-info">
+                    <strong>💡 Consejo:</strong> las rítmicas latinas tienen mucho <em>sabor</em> y
+                    <em>contratiempo</em>. Empieza por la bossa nova, que es la más accesible, y ve sumando acentos poco
+                    a poco. Escucha mucha música original: es la mejor escuela.
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Tavo Acordes — App de guitarra, armonía y teoría musical.</p>
+    </footer>
+
+    <script src="../../js/nav.js"></script>
+    <script src="../../js/ritmo.js"></script>
+</body>
+
+</html>

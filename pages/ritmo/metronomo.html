@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metrónomo · Tavo Acordes</title>
+    <meta name="description"
+        content="Metrónomo interactivo con control de BPM, compás y acento en el primer pulso, con acorde de fondo opcional.">
+    <link rel="icon" href="../../assets/logo-512.png">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <header class="site-bar">
+        <a href="../../index.html" class="site-bar-logo"><img src="../../assets/logo-512.png" alt="Tavo Acordes"></a>
+        <div class="site-bar-text">
+            <div id="breadcrumb" class="breadcrumb"></div>
+            <h1>⏱️ Metrónomo</h1>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section id="metronomo" class="card">
+            <h2>Metrónomo interactivo</h2>
+            <p class="section-desc">
+                Marca el pulso, acentúa el primer tiempo de cada compás y practica tu rasgueo o arpegio con un acorde de
+                fondo opcional.
+            </p>
+
+            <div class="metronomo-wrap">
+
+                <!-- Display del BPM -->
+                <div>
+                    <div class="metronomo-display">
+                        <div class="metronomo-bpm-display" id="bpmDisplay">90</div>
+                    </div>
+                    <div class="metronomo-bpm-label">BPM</div>
+                </div>
+
+                <!-- Indicador de pulsos -->
+                <div class="metronomo-beats" id="beatsDisplay">
+                    <div class="metronomo-beat" data-beat="0">1</div>
+                    <div class="metronomo-beat" data-beat="1">2</div>
+                    <div class="metronomo-beat" data-beat="2">3</div>
+                    <div class="metronomo-beat" data-beat="3">4</div>
+                </div>
+
+                <!-- Botón Play/Pause -->
+                <button id="metronomoPlayBtn" class="metronomo-play-btn" aria-label="Iniciar metrónomo">
+                    <i class="fas fa-play"></i>
+                </button>
+
+                <!-- Ajustes del metrónomo -->
+                <div class="metronomo-settings">
+                    <label>Tempo
+                        <input type="range" id="bpmSlider" min="40" max="240" value="90" step="1">
+                    </label>
+                    <label>Compás
+                        <select id="compasSelect">
+                            <option value="4/4" selected>4/4</option>
+                            <option value="3/4">3/4</option>
+                            <option value="2/4">2/4</option>
+                            <option value="6/8">6/8</option>
+                            <option value="5/4">5/4</option>
+                            <option value="7/8">7/8</option>
+                        </select>
+                    </label>
+                    <label>Acorde de fondo
+                        <select id="acordeFondoMetro">
+                            <option value="none">Sin acorde</option>
+                            <option value="C">C mayor</option>
+                            <option value="G">G mayor</option>
+                            <option value="D">D mayor</option>
+                            <option value="A">A mayor</option>
+                            <option value="E">E mayor</option>
+                            <option value="Am">Am</option>
+                            <option value="Em">Em</option>
+                            <option value="Dm">Dm</option>
+                        </select>
+                    </label>
+                </div>
+
+                <!-- Presets de tempo -->
+                <div>
+                    <div class="metronomo-bpm-label" style="margin-bottom:10px;">Tempos frecuentes</div>
+                    <div class="metronomo-tempo-presets" id="tempoPresets">
+                        <button data-bpm="60">Largo · 60</button>
+                        <button data-bpm="70">Andante · 70</button>
+                        <button data-bpm="90" class="active">Moderato · 90</button>
+                        <button data-bpm="120">Allegro · 120</button>
+                        <button data-bpm="140">Vivace · 140</button>
+                        <button data-bpm="180">Presto · 180</button>
+                    </div>
+                </div>
+
+                <!-- Info extra -->
+                <div class="metronomo-info">
+                    <strong>💡 Consejo:</strong> empieza lento y aumenta 5 BPM cada vez que domines el patrón. Ajusta el
+                    <strong>acento en el primer pulso</strong> para sentir el compás. Si vas con acorde de fondo, el
+                    acorde se repite en cada pulso para acompañar tu rasgueo.
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Tavo Acordes — App de guitarra, armonía y teoría musical.</p>
+    </footer>
+
+    <script src="../../js/nav.js"></script>
+    <script src="../../js/ritmo.js"></script>
+</body>
+
+</html>

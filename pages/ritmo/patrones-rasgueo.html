@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patrones de rasgueo · Tavo Acordes</title>
+    <meta name="description"
+        content="Biblioteca de patrones de rasgueo clásicos: pop, rock, balada, funk y reggae, con audio y diagrama de flechas.">
+    <link rel="icon" href="../../assets/logo-512.png">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <header class="site-bar">
+        <a href="../../index.html" class="site-bar-logo"><img src="../../assets/logo-512.png" alt="Tavo Acordes"></a>
+        <div class="site-bar-text">
+            <div id="breadcrumb" class="breadcrumb"></div>
+            <h1>🥁 Patrones de rasgueo</h1>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section id="rasgueo" class="card">
+            <h2>Patrones de rasgueo</h2>
+            <p class="section-desc">
+                Elige un patrón para escucharlo con metrónomo y acorde de fondo. Haz clic en <strong>▶ Escuchar</strong>
+                y practica a la par. Cada tarjeta muestra el diagrama de flechas (↓ arriba, ↑ abajo) con los pulsos
+                acentuados.
+            </p>
+
+            <div class="ritmo-wrap">
+
+                <!-- Controles / filtros -->
+                <div class="ritmo-controls">
+                    <label>Género:
+                        <select id="filtroGenero">
+                            <option value="all">Todos</option>
+                            <option value="pop">Pop</option>
+                            <option value="rock">Rock</option>
+                            <option value="balada">Balada</option>
+                            <option value="funk">Funk</option>
+                            <option value="reggae">Reggae</option>
+                        </select>
+                    </label>
+                    <label>Nivel:
+                        <select id="filtroNivel">
+                            <option value="all">Todos</option>
+                            <option value="principiante">Principiante</option>
+                            <option value="intermedio">Intermedio</option>
+                            <option value="avanzado">Avanzado</option>
+                        </select>
+                    </label>
+                    <label>Acorde de fondo:
+                        <select id="acordeFondo">
+                            <option value="C">C mayor</option>
+                            <option value="G">G mayor</option>
+                            <option value="D">D mayor</option>
+                            <option value="A">A mayor</option>
+                            <option value="E">E mayor</option>
+                            <option value="Am">Am</option>
+                            <option value="Em">Em</option>
+                            <option value="Dm">Dm</option>
+                        </select>
+                    </label>
+                </div>
+
+                <!-- Grid de patrones -->
+                <div class="ritmo-grid" id="patronesGrid">
+                    <p class="empty-state">Cargando patrones...</p>
+                </div>
+
+                <!-- Nota pedagógica -->
+                <div class="metronomo-info">
+                    <strong>💡 Consejo:</strong> empieza siempre lento (60-70 BPM), memoriza el movimiento y sube poco a
+                    poco. Lo importante no es la velocidad, sino mantener el pulso constante.
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Tavo Acordes — App de guitarra, armonía y teoría musical.</p>
+    </footer>
+
+    <script src="../../js/nav.js"></script>
+    <script src="../../js/ritmo.js"></script>
+</body>
+
+</html>
