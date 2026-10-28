@@ -1,7 +1,6 @@
 // =====================================================
-// TAVO ACORDES - SCRIPT PRINCIPAL v14.2
-// Base de datos expandida (~180 acordes) + inversiones
-// + Mapa de tríadas y séptimas con cajones CAGED
+// TAVO ACORDES - SCRIPT PRINCIPAL v15.0
+// + Arpegios, Voicings e Inversiones
 // =====================================================
 
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -101,10 +100,9 @@ const LESSONS_DB = [
 ];
 
 // =====================================================
-// BASE DE DATOS DE ACORDES (EXPANDIDA ~180 acordes)
+// BASE DE DATOS DE ACORDES
 // =====================================================
 const CHORD_DB = {
-    // ===== MAYORES =====
     'C': [0, 3, 2, 0, 1, 0], 'C#': [null, 4, 6, 6, 6, 4], 'Db': [null, 4, 6, 6, 6, 4],
     'D': [null, null, 0, 2, 3, 2], 'D#': [null, 6, 8, 8, 8, 6], 'Eb': [null, 6, 8, 8, 8, 6],
     'E': [0, 2, 2, 1, 0, 0], 'F': [1, 3, 3, 2, 1, 1], 'F#': [2, 4, 4, 3, 2, 2],
@@ -112,7 +110,6 @@ const CHORD_DB = {
     'Ab': [4, 6, 6, 5, 4, 4], 'A': [null, 0, 2, 2, 2, 0], 'A#': [null, 1, 3, 3, 3, 1],
     'Bb': [null, 1, 3, 3, 3, 1], 'B': [null, 2, 4, 4, 4, 2],
 
-    // ===== MENORES =====
     'Cm': [null, 3, 5, 5, 4, 3], 'C#m': [null, 4, 6, 6, 5, 4], 'Dbm': [null, 4, 6, 6, 5, 4],
     'Dm': [null, null, 0, 2, 3, 1], 'D#m': [null, 6, 8, 8, 7, 6], 'Ebm': [null, 6, 8, 8, 7, 6],
     'Em': [0, 2, 2, 0, 0, 0], 'Fm': [1, 3, 3, 1, 1, 1], 'F#m': [2, 4, 4, 2, 2, 2],
@@ -120,7 +117,6 @@ const CHORD_DB = {
     'Abm': [4, 6, 6, 4, 4, 4], 'Am': [null, 0, 2, 2, 1, 0], 'A#m': [null, 1, 3, 3, 2, 1],
     'Bbm': [null, 1, 3, 3, 2, 1], 'Bm': [null, 2, 4, 4, 3, 2],
 
-    // ===== DOMINANTES 7 =====
     'C7': [null, 3, 2, 3, 1, 0], 'C#7': [null, 4, 6, 4, 6, 4], 'Db7': [null, 4, 6, 4, 6, 4],
     'D7': [null, null, 0, 2, 1, 2], 'D#7': [null, 6, 8, 6, 8, 6], 'Eb7': [null, 6, 8, 6, 8, 6],
     'E7': [0, 2, 0, 1, 0, 0], 'F7': [1, 3, 1, 2, 1, 1], 'F#7': [2, 4, 2, 3, 2, 2],
@@ -128,7 +124,6 @@ const CHORD_DB = {
     'Ab7': [4, 6, 4, 5, 4, 4], 'A7': [null, 0, 2, 0, 2, 0], 'A#7': [null, 1, 3, 1, 3, 1],
     'Bb7': [null, 1, 3, 1, 3, 1], 'B7': [null, 2, 1, 2, 0, 2],
 
-    // ===== MAJ7 =====
     'Cmaj7': [null, 3, 2, 0, 0, 0], 'C#maj7': [null, 4, 6, 5, 6, 4], 'Dbmaj7': [null, 4, 6, 5, 6, 4],
     'Dmaj7': [null, null, 0, 2, 2, 2], 'D#maj7': [null, 6, 8, 7, 8, 6], 'Ebmaj7': [null, 6, 8, 7, 8, 6],
     'Emaj7': [0, 2, 1, 1, 0, 0], 'Fmaj7': [1, 3, 2, 2, 1, 0], 'F#maj7': [2, 4, 3, 3, 2, 2],
@@ -136,7 +131,6 @@ const CHORD_DB = {
     'Abmaj7': [4, 6, 5, 5, 4, 4], 'Amaj7': [null, 0, 2, 1, 2, 0], 'A#maj7': [null, 1, 3, 2, 3, 1],
     'Bbmaj7': [null, 1, 3, 2, 3, 1], 'Bmaj7': [null, 2, 4, 3, 4, 2],
 
-    // ===== m7 =====
     'Cm7': [null, 3, 5, 3, 4, 3], 'C#m7': [null, 4, 6, 4, 5, 4], 'Dbm7': [null, 4, 6, 4, 5, 4],
     'Dm7': [null, null, 0, 2, 1, 1], 'D#m7': [null, 6, 8, 6, 7, 6], 'Ebm7': [null, 6, 8, 6, 7, 6],
     'Em7': [0, 2, 0, 0, 0, 0], 'Fm7': [1, 3, 1, 1, 1, 1], 'F#m7': [2, 4, 2, 2, 2, 2],
@@ -144,7 +138,6 @@ const CHORD_DB = {
     'Abm7': [4, 6, 4, 4, 4, 4], 'Am7': [null, 0, 2, 0, 1, 0], 'A#m7': [null, 1, 3, 1, 2, 1],
     'Bbm7': [null, 1, 3, 1, 2, 1], 'Bm7': [null, 2, 0, 2, 0, 2],
 
-    // ===== m7b5 (semidisminuidos) =====
     'Cm7b5': [null, 3, 4, 3, 4, null], 'C#m7b5': [null, 4, 5, 4, 5, null],
     'Dm7b5': [null, null, 0, 1, 1, 1], 'D#m7b5': [null, 6, 7, 6, 7, null],
     'Em7b5': [0, 1, 2, 0, 3, null], 'Fm7b5': [1, 2, 3, 1, 4, null],
@@ -152,148 +145,120 @@ const CHORD_DB = {
     'G#m7b5': [4, 5, 6, 4, 7, null], 'Am7b5': [null, 0, 1, 0, 1, null],
     'A#m7b5': [null, 1, 2, 1, 2, null], 'Bm7b5': [null, 2, 3, 2, 3, null],
 
-    // ===== SUS2 =====
     'Csus2': [null, 3, 0, 0, 1, 3], 'C#sus2': [null, 4, 6, 6, 4, 4], 'Dsus2': [null, null, 0, 2, 3, 0],
     'D#sus2': [null, 6, 8, 8, 6, 6], 'Esus2': [0, 2, 4, 4, 0, 0], 'Fsus2': [1, 3, 3, 0, 1, 1],
     'F#sus2': [2, 4, 4, 1, 2, 2], 'Gsus2': [3, 0, 0, 0, 3, 3], 'G#sus2': [4, 6, 6, 3, 4, 4],
     'Asus2': [null, 0, 2, 2, 0, 0], 'A#sus2': [null, 1, 3, 3, 1, 1], 'Bsus2': [null, 2, 4, 4, 2, 2],
 
-    // ===== SUS4 =====
     'Csus4': [null, 3, 3, 0, 1, 1], 'C#sus4': [null, 4, 6, 6, 7, 4], 'Dsus4': [null, null, 0, 2, 3, 3],
     'D#sus4': [null, 6, 8, 8, 9, 6], 'Esus4': [0, 2, 2, 2, 0, 0], 'Fsus4': [1, 3, 3, 3, 1, 1],
     'F#sus4': [2, 4, 4, 4, 2, 2], 'Gsus4': [3, 3, 0, 0, 1, 3], 'G#sus4': [4, 6, 6, 6, 4, 4],
     'Asus4': [null, 0, 2, 2, 3, 0], 'A#sus4': [null, 1, 3, 3, 4, 1], 'Bsus4': [null, 2, 4, 4, 5, 2],
 
-    // ===== 6 =====
     'C6': [null, 3, 2, 2, 1, 0], 'C#6': [null, 4, 6, 6, 6, 6], 'D6': [null, null, 0, 2, 0, 2],
     'D#6': [null, 6, 8, 8, 8, 8], 'E6': [0, 2, 2, 1, 2, 0], 'F6': [1, 3, 3, 2, 3, 1],
     'F#6': [2, 4, 4, 3, 4, 2], 'G6': [3, 2, 0, 0, 0, 0], 'G#6': [4, 6, 6, 5, 6, 4],
     'A6': [null, 0, 2, 2, 2, 2], 'A#6': [null, 1, 3, 3, 3, 3], 'B6': [null, 2, 4, 4, 4, 4],
 
-    // ===== m6 =====
     'Cm6': [null, 3, 5, 5, 4, 5], 'C#m6': [null, 4, 6, 6, 5, 6], 'Dm6': [null, null, 0, 2, 0, 1],
     'D#m6': [null, 6, 8, 8, 7, 8], 'Em6': [0, 2, 2, 0, 2, 0], 'Fm6': [1, 3, 3, 1, 3, 1],
     'F#m6': [2, 4, 4, 2, 4, 2], 'Gm6': [3, 5, 5, 3, 5, 3], 'G#m6': [4, 6, 6, 4, 6, 4],
     'Am6': [null, 0, 2, 2, 1, 2], 'A#m6': [null, 1, 3, 3, 2, 3], 'Bm6': [null, 2, 4, 4, 3, 4],
 
-    // ===== dim =====
     'Cdim': [null, 3, 4, 5, 4, null], 'C#dim': [null, 4, 5, 6, 5, null], 'Ddim': [null, null, 0, 1, 3, 1],
     'D#dim': [null, 6, 7, 8, 7, null], 'Edim': [0, 1, 2, 0, null, null], 'Fdim': [1, 2, 3, 1, null, null],
     'F#dim': [2, 3, 4, 2, null, null], 'Gdim': [3, 4, 5, 3, null, null], 'G#dim': [4, 5, 6, 4, null, null],
     'Adim': [null, 0, 1, 2, 1, null], 'A#dim': [null, 1, 2, 3, 2, null], 'Bdim': [null, 2, 3, 4, 3, null],
 
-    // ===== dim7 =====
     'Cdim7': [null, 3, 4, 2, 4, null], 'C#dim7': [null, 4, 5, 3, 5, null], 'Ddim7': [null, null, 0, 1, 0, 1],
     'D#dim7': [null, 6, 7, 5, 7, null], 'Edim7': [0, 1, 2, 0, 2, 0], 'Fdim7': [1, 2, 3, 1, 3, 1],
     'F#dim7': [2, 3, 4, 2, 4, 2], 'Gdim7': [3, 4, 5, 3, 5, 3], 'G#dim7': [4, 5, 6, 4, 6, 4],
     'Adim7': [null, 0, 1, 2, 1, 2], 'A#dim7': [null, 1, 2, 3, 2, 3], 'Bdim7': [null, 2, 3, 4, 3, 4],
 
-    // ===== aug =====
     'Caug': [null, 3, 2, 1, 1, 0], 'C#aug': [null, 4, 3, 2, 2, 1], 'Daug': [null, null, 0, 3, 3, 2],
     'D#aug': [null, 6, 5, 4, 4, 3], 'Eaug': [0, 3, 2, 1, 1, 0], 'Faug': [1, 4, 3, 2, 2, 1],
     'F#aug': [2, 5, 4, 3, 3, 2], 'Gaug': [3, 6, 5, 4, 4, 3], 'G#aug': [4, 7, 6, 5, 5, 4],
     'Aaug': [null, 0, 3, 2, 2, 1], 'A#aug': [null, 1, 4, 3, 3, 2], 'Baug': [null, 2, 5, 4, 4, 3],
 
-    // ===== add9 =====
     'Cadd9': [null, 3, 2, 0, 3, 0], 'C#add9': [null, 4, 6, 6, 4, 4], 'Dadd9': [null, null, 0, 2, 3, 0],
     'D#add9': [null, 6, 8, 8, 6, 6], 'Eadd9': [0, 2, 2, 1, 0, 2], 'Fadd9': [1, 3, 3, 2, 1, 3],
     'F#add9': [2, 4, 4, 3, 2, 4], 'Gadd9': [3, 2, 0, 2, 0, 3], 'G#add9': [4, 6, 6, 5, 4, 6],
     'Aadd9': [null, 0, 2, 4, 2, 0], 'A#add9': [null, 1, 3, 5, 3, 1], 'Badd9': [null, 2, 4, 6, 4, 2],
 
-    // ===== madd9 =====
     'Cmadd9': [null, 3, 5, 5, 3, 3], 'Dmadd9': [null, null, 0, 2, 3, 0], 'Emadd9': [0, 2, 2, 0, 0, 2],
     'Fmadd9': [1, 3, 3, 1, 1, 3], 'Gmadd9': [3, 5, 5, 3, 3, 5], 'Amadd9': [null, 0, 2, 2, 1, 0],
     'Bmadd9': [null, 2, 4, 4, 3, 2],
 
-    // ===== 9 =====
     'C9': [null, 3, 2, 3, 3, null], 'C#9': [null, 4, 6, 4, 6, 6], 'D9': [null, null, 0, 2, 1, 0],
     'D#9': [null, 6, 8, 6, 8, 8], 'E9': [0, 2, 0, 1, 0, 2], 'F9': [1, 3, 1, 2, 1, 3],
     'F#9': [2, 4, 2, 3, 2, 4], 'G9': [3, 2, 0, 2, 0, 1], 'G#9': [4, 6, 4, 5, 4, 6],
     'A9': [null, 0, 2, 0, 2, 2], 'A#9': [null, 1, 3, 1, 3, 3], 'B9': [null, 2, 1, 2, 2, 2],
 
-    // ===== maj9 =====
     'Cmaj9': [null, 3, 0, 0, 0, 0], 'Dmaj9': [null, null, 0, 2, 2, 0], 'Emaj9': [0, 2, 1, 1, 0, 2],
     'Fmaj9': [1, 3, 0, 2, 1, 0], 'Gmaj9': [3, 2, 0, 2, 0, 2], 'Amaj9': [null, 0, 2, 1, 2, 2],
     'Bmaj9': [null, 2, 4, 3, 4, 4],
 
-    // ===== m9 =====
     'Cm9': [null, 3, 5, 3, 3, 3], 'Dm9': [null, null, 0, 2, 1, 0], 'Em9': [0, 2, 0, 0, 0, 2],
     'Fm9': [1, 3, 1, 1, 1, 3], 'Gm9': [3, 5, 3, 3, 3, 5], 'Am9': [null, 0, 2, 0, 1, 0],
     'Bm9': [null, 2, 0, 2, 0, 2],
 
-    // ===== 7b9 =====
     'C7b9': [null, 3, 2, 3, 2, null], 'D7b9': [null, null, 0, 2, 1, 1], 'E7b9': [0, 2, 0, 1, 0, 1],
     'F7b9': [1, 3, 1, 2, 1, 2], 'G7b9': [3, 2, 0, 1, 0, 1], 'A7b9': [null, 0, 2, 0, 2, 1],
     'B7b9': [null, 2, 1, 2, 1, 2],
 
-    // ===== 7#9 =====
     'C7#9': [null, 3, 2, 3, 4, null], 'D7#9': [null, null, 0, 2, 1, 4], 'E7#9': [0, 2, 0, 1, 3, 0],
     'F7#9': [1, 3, 1, 2, 4, 1], 'G7#9': [3, 2, 0, 3, 0, 1], 'A7#9': [null, 0, 2, 0, 2, 3],
     'B7#9': [null, 2, 1, 2, 4, 2],
 
-    // ===== 13 =====
     'C13': [null, 3, 2, 3, 5, null], 'D13': [null, null, 0, 2, 1, 2], 'E13': [0, 2, 0, 1, 2, 0],
     'F13': [1, 3, 1, 2, 3, 1], 'G13': [3, 2, 0, 2, 0, 1], 'A13': [null, 0, 2, 0, 2, 2],
     'B13': [null, 2, 1, 2, 2, 2],
 
-    // ===== 7b5 =====
     'C7b5': [null, 3, 2, 3, 2, 1], 'D7b5': [null, null, 0, 2, 1, 0], 'E7b5': [0, 2, 0, 1, 3, 0],
     'F7b5': [1, 3, 1, 2, 2, 1], 'G7b5': [3, 2, 0, 3, 0, 1], 'A7b5': [null, 0, 2, 0, 3, 0],
     'B7b5': [null, 2, 1, 2, 4, 2],
 
-    // ===== 7#5 =====
     'C7#5': [null, 3, 2, 3, 1, 2], 'D7#5': [null, null, 0, 2, 1, 3], 'E7#5': [0, 2, 0, 1, 2, 3],
     'F7#5': [1, 3, 1, 2, 4, 2], 'G7#5': [3, 2, 0, 3, 3, 1], 'A7#5': [null, 0, 2, 0, 2, 3],
     'B7#5': [null, 2, 1, 2, 4, 4],
 
-    // ===== 7sus4 =====
     'C7sus4': [null, 3, 3, 3, 1, 1], 'D7sus4': [null, null, 0, 2, 1, 3], 'E7sus4': [0, 2, 0, 2, 0, 0],
     'F7sus4': [1, 3, 1, 3, 1, 1], 'G7sus4': [3, 3, 0, 0, 1, 1], 'A7sus4': [null, 0, 2, 0, 3, 0],
     'B7sus4': [null, 2, 4, 2, 0, 0],
 
-    // ===== 5 (Power) =====
     'C5': [null, 3, 5, 5, null, null], 'D5': [null, null, 0, 2, 3, null],
     'E5': [0, 2, 2, null, null, null], 'F5': [1, 3, 3, null, null, null],
     'G5': [3, 5, 5, null, null, null], 'A5': [null, 0, 2, 2, null, null],
     'B5': [null, 2, 4, 4, null, null],
 
-    // ===== INVERSIONES Y BAJOS ALTERNATIVOS =====
-    // C con bajo alternativo
     'C/E': [0, 3, 2, 0, 1, 0], 'C/G': [3, 3, 2, 0, 1, 0],
     'C/B': [null, 3, 2, 0, 0, 0], 'C/F': [1, 3, 2, 0, 1, 0],
     'C/A': [null, 0, 2, 0, 1, 0], 'C/D': [null, null, 0, 2, 3, 0],
 
-    // D con bajo alternativo
     'D/F#': [2, 0, 0, 2, 3, 2], 'D/A': [null, 0, 0, 2, 3, 2],
     'D/C': [null, 3, 0, 2, 3, 2], 'D/B': [null, 2, 0, 2, 3, 2],
     'D/G': [3, 0, 0, 2, 3, 2], 'D/E': [0, 0, 0, 2, 3, 2],
 
-    // E con bajo alternativo
     'E/G#': [4, 2, 2, 1, 0, 0], 'E/B': [null, 2, 2, 1, 0, 0],
     'E/D': [null, 2, 2, 1, 0, 0], 'E/C#': [null, 4, 2, 1, 0, 0],
     'E/A': [null, 0, 2, 1, 0, 0], 'E/F#': [2, 2, 2, 1, 0, 0],
 
-    // F con bajo alternativo
     'F/A': [null, 0, 3, 2, 1, 1], 'F/C': [null, 3, 3, 2, 1, 1],
     'F/E': [0, 3, 3, 2, 1, 1], 'F/D': [null, null, 0, 2, 1, 1],
     'F/G': [3, 3, 3, 2, 1, 1], 'F/Bb': [null, 1, 3, 2, 1, 1],
 
-    // G con bajo alternativo
     'G/B': [null, 2, 0, 0, 0, 3], 'G/D': [null, null, 0, 0, 0, 3],
     'G/F': [1, 2, 0, 0, 0, 3], 'G/E': [0, 2, 0, 0, 0, 3],
     'G/A': [null, 0, 0, 0, 0, 3], 'G/C': [null, 3, 0, 0, 0, 3],
 
-    // A con bajo alternativo
     'A/C#': [null, 4, 2, 2, 2, 0], 'A/E': [0, 0, 2, 2, 2, 0],
     'A/G': [3, 0, 2, 2, 2, 0], 'A/F#': [2, 0, 2, 2, 2, 0],
     'A/B': [null, 2, 2, 2, 2, 0], 'A/D': [null, null, 0, 2, 2, 0],
 
-    // B con bajo alternativo
     'B/D#': [null, 6, 4, 4, 4, 2], 'B/F#': [2, 2, 4, 4, 4, 2],
     'B/A': [null, 0, 4, 4, 4, 2], 'B/G#': [4, 2, 4, 4, 4, 2],
     'B/C#': [null, 4, 4, 4, 4, 2], 'B/E': [0, 2, 4, 4, 4, 2],
 
-    // Inversiones de menores
     'Am/C': [null, 3, 2, 2, 1, 0], 'Am/E': [0, 0, 2, 2, 1, 0],
     'Am/G': [3, 0, 2, 2, 1, 0], 'Am/F': [1, 0, 2, 2, 1, 0],
     'Am/D': [null, null, 0, 2, 1, 0], 'Am/B': [null, 2, 2, 2, 1, 0],
@@ -304,24 +269,19 @@ const CHORD_DB = {
     'Dm/F': [1, null, 0, 2, 3, 1], 'Dm/A': [null, 0, 0, 2, 3, 1],
     'Dm/C': [null, 3, 0, 2, 3, 1], 'Dm/G': [3, null, 0, 2, 3, 1],
 
-    // Inversiones de séptimas
     'G7/B': [null, 2, 0, 0, 0, 1], 'G7/F': [1, 2, 0, 0, 0, 1],
     'D7/F#': [2, null, 0, 2, 1, 2], 'D7/C': [null, 3, 0, 2, 1, 2],
     'C7/E': [0, 3, 2, 3, 1, 0], 'C7/Bb': [null, 1, 2, 3, 1, 0],
 
-    // Cmaj7 inversiones
     'Cmaj7/E': [0, 3, 2, 0, 0, 0], 'Cmaj7/B': [null, 2, 2, 0, 0, 0],
     'Cmaj7/G': [3, 3, 2, 0, 0, 0],
 
-    // Am7 inversiones
     'Am7/G': [3, 0, 2, 0, 1, 0], 'Am7/C': [null, 3, 2, 0, 1, 0],
     'Am7/E': [0, 0, 2, 0, 1, 0],
 
-    // Fmaj7 inversiones
     'Fmaj7/A': [null, 0, 3, 2, 1, 0], 'Fmaj7/C': [null, 3, 3, 2, 1, 0],
     'Fmaj7/E': [0, 3, 2, 2, 1, 0],
 
-    // Dm7 inversiones
     'Dm7/F': [1, null, 0, 2, 1, 1], 'Dm7/A': [null, 0, 0, 2, 1, 1],
     'Dm7/C': [null, 3, 0, 2, 1, 1],
 };
@@ -369,6 +329,9 @@ window.onload = function () {
     initKeyNavigator();
     buildChordPicker();
     initTriadMap();
+    initArpegios();       // ← NUEVO
+    initVoicings();       // ← NUEVO
+    initInversiones();    // ← NUEVO
 };
 
 // =====================================================
@@ -2393,7 +2356,6 @@ function initTriadMap() {
 
     const ctx = canvas.getContext('2d');
 
-    // Dimensiones del mástil
     const STRING_COUNT = 6;
     const FRET_COUNT = 12;
     const STRING_SPACING = 48;
@@ -2407,36 +2369,26 @@ function initTriadMap() {
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
 
-    // Estado local
     let currentType = 'major';
     let currentRoot = 'C';
     let cagedActiveLocal = false;
-    let highlightedCaged = 'all'; // 'all' | 'C' | 'A' | 'G' | 'E' | 'D'
+    let highlightedCaged = 'all';
 
-    const ROOT_INDEX = {
-        'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11
-    };
-
+    const ROOT_INDEX = { 'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11 };
     const OPEN_STRING_MIDI = [40, 45, 50, 55, 59, 64];
 
     const midiToPitchClass = (midi) => (midi % 12 + 12) % 12;
     const pitchClassToName = (pc) => NOTES[pc];
 
-    const CHORD_INTERVALS = {
-        major: [0, 4, 7],
-        minor: [0, 3, 7],
-        '7': [0, 4, 7, 10]
-    };
+    const CHORD_INTERVALS = { major: [0, 4, 7], minor: [0, 3, 7], '7': [0, 4, 7, 10] };
 
-    // Colores desde CSS
     const COLORS = {
         root: getComputedStyle(document.documentElement).getPropertyValue('--root-color').trim() || '#ff6b00',
         third: getComputedStyle(document.documentElement).getPropertyValue('--third-color').trim() || '#4a9eff',
         fifth: getComputedStyle(document.documentElement).getPropertyValue('--fifth-color').trim() || '#4caf50',
         seventh: getComputedStyle(document.documentElement).getPropertyValue('--seventh-color').trim() || '#9c27b0',
         other: '#3498db',
-        accent: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#ff6b00',
-        border: getComputedStyle(document.documentElement).getPropertyValue('--border-color').trim() || '#333333'
+        accent: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#ff6b00'
     };
 
     if (!CanvasRenderingContext2D.prototype.roundRect) {
@@ -2456,29 +2408,17 @@ function initTriadMap() {
         };
     }
 
-    // Devuelve el rango [inicio, fin] de cada cajón según la fundamental.
-    // La raíz C define el cajón C en trastes 0-3, y los demás se desplazan.
     function getCagedRanges() {
-        const rootIdx = ROOT_INDEX[currentRoot];
-        // Desplazamiento base: C está en 0, D en 2, E en 4, etc.
-        const offset = rootIdx;
-        // Cada cajón tiene un ancho de 3-4 trastes y se solapa con el siguiente
+        const offset = ROOT_INDEX[currentRoot];
         const baseRanges = [
-            { name: 'C', start: 0, end: 3 },
-            { name: 'A', start: 2, end: 5 },
-            { name: 'G', start: 4, end: 7 },
-            { name: 'E', start: 7, end: 10 },
+            { name: 'C', start: 0, end: 3 }, { name: 'A', start: 2, end: 5 },
+            { name: 'G', start: 4, end: 7 }, { name: 'E', start: 7, end: 10 },
             { name: 'D', start: 9, end: 12 }
         ];
-        // Aplicamos el offset modular sobre 12
         return baseRanges.map(r => {
-            const start = (r.start + offset) % 12;
-            const end = (r.end + offset) % 12;
-            // Si el rango se sale del mástil, lo ajustamos (rango 0-12)
-            let s = start;
-            let e = end;
-            if (e < s) e = 12; // envolver
-            // Ajustamos para no salirnos del mástil (0-12)
+            let s = (r.start + offset) % 12;
+            let e = (r.end + offset) % 12;
+            if (e < s) e = 12;
             if (s > 12) s = s % 12;
             if (e > 12) e = 12;
             return { name: r.name, start: s, end: e };
@@ -2493,7 +2433,6 @@ function initTriadMap() {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Fondo del mástil
         ctx.fillStyle = '#2a1f1a';
         ctx.shadowColor = '#00000060';
         ctx.shadowBlur = 8;
@@ -2505,28 +2444,20 @@ function initTriadMap() {
         ctx.shadowBlur = 0;
         ctx.shadowOffsetY = 0;
 
-        // Trastes
         for (let f = 0; f <= FRET_COUNT; f++) {
             const x = LEFT_MARGIN + f * FRET_SPACING;
-            if (f === 0 || f === 12) {
-                ctx.lineWidth = 5;
-                ctx.strokeStyle = '#d4c9b8';
-            } else {
-                ctx.lineWidth = 2.5;
-                ctx.strokeStyle = '#b0a28b';
-            }
+            if (f === 0 || f === 12) { ctx.lineWidth = 5; ctx.strokeStyle = '#d4c9b8'; }
+            else { ctx.lineWidth = 2.5; ctx.strokeStyle = '#b0a28b'; }
             ctx.beginPath();
             ctx.moveTo(x, TOP_MARGIN - 12);
             ctx.lineTo(x, TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING + 12);
             ctx.stroke();
         }
 
-        // Cuerdas
         for (let s = 0; s < STRING_COUNT; s++) {
             const y = TOP_MARGIN + s * STRING_SPACING;
-            const thickness = 5.0 - (s * 0.7);
             ctx.beginPath();
-            ctx.lineWidth = thickness;
+            ctx.lineWidth = 5.0 - (s * 0.7);
             ctx.strokeStyle = '#d9d0c0';
             ctx.shadowColor = '#00000080';
             ctx.shadowBlur = 6;
@@ -2539,17 +2470,14 @@ function initTriadMap() {
         ctx.shadowBlur = 0;
         ctx.shadowOffsetY = 0;
 
-        // Números de trastes
         ctx.font = 'bold 13px "Segoe UI", Roboto, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
         for (let f = 1; f <= FRET_COUNT; f++) {
-            const x = LEFT_MARGIN + (f - 0.5) * FRET_SPACING;
             ctx.fillStyle = '#b7c1d4';
-            ctx.fillText(f.toString(), x, TOP_MARGIN - 16);
+            ctx.fillText(f.toString(), LEFT_MARGIN + (f - 0.5) * FRET_SPACING, TOP_MARGIN - 16);
         }
 
-        // Marcadores
         const markerFrets = [3, 5, 7, 9, 12];
         ctx.fillStyle = '#e5e9f0';
         ctx.shadowBlur = 8;
@@ -2557,31 +2485,21 @@ function initTriadMap() {
         markerFrets.forEach(f => {
             const x = LEFT_MARGIN + (f - 0.5) * FRET_SPACING;
             if (f === 12) {
-                ctx.beginPath();
-                ctx.arc(x - 8, TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING / 2, 5, 0, 2 * Math.PI);
-                ctx.fill();
-                ctx.beginPath();
-                ctx.arc(x + 8, TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING / 2, 5, 0, 2 * Math.PI);
-                ctx.fill();
+                ctx.beginPath(); ctx.arc(x - 8, TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING / 2, 5, 0, 2 * Math.PI); ctx.fill();
+                ctx.beginPath(); ctx.arc(x + 8, TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING / 2, 5, 0, 2 * Math.PI); ctx.fill();
             } else {
-                ctx.beginPath();
-                ctx.arc(x, TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING / 2, 5, 0, 2 * Math.PI);
-                ctx.fill();
+                ctx.beginPath(); ctx.arc(x, TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING / 2, 5, 0, 2 * Math.PI); ctx.fill();
             }
         });
         ctx.shadowColor = 'transparent';
         ctx.shadowBlur = 0;
 
-        // Nombres de cuerdas
         ctx.font = 'bold 13px "Segoe UI", Roboto, sans-serif';
         ctx.fillStyle = '#d8dee9';
         ctx.textAlign = 'right';
         ctx.textBaseline = 'middle';
         const stringNames = ['E', 'A', 'D', 'G', 'B', 'E'];
-        for (let s = 0; s < STRING_COUNT; s++) {
-            const y = TOP_MARGIN + s * STRING_SPACING;
-            ctx.fillText(stringNames[s], LEFT_MARGIN - 20, y);
-        }
+        for (let s = 0; s < STRING_COUNT; s++) ctx.fillText(stringNames[s], LEFT_MARGIN - 20, TOP_MARGIN + s * STRING_SPACING);
 
         ctx.font = '10px "Segoe UI", sans-serif';
         ctx.fillStyle = '#7b8a9e';
@@ -2603,14 +2521,12 @@ function initTriadMap() {
             const width = x2 - x1;
             const centerX = (x1 + x2) / 2;
 
-            // Zona coloreada
             ctx.save();
             ctx.globalAlpha = isDimmed ? 0.08 : 0.18;
             ctx.fillStyle = COLORS.accent;
             ctx.fillRect(x1, boardTopY, width, boardBottomY - boardTopY);
             ctx.restore();
 
-            // Borde punteado
             ctx.save();
             ctx.setLineDash([6, 4]);
             ctx.lineWidth = isDimmed ? 1 : 2;
@@ -2618,7 +2534,6 @@ function initTriadMap() {
             ctx.strokeRect(x1, boardTopY, width, boardBottomY - boardTopY);
             ctx.restore();
 
-            // Etiqueta clickeable
             ctx.save();
             const labelY = boardTopY - 14;
             const labelWidth = 64;
@@ -2634,22 +2549,12 @@ function initTriadMap() {
             ctx.textBaseline = 'middle';
             ctx.fillText(`Caja ${range.name}`, centerX, labelY);
 
-            // Guardamos el área de la etiqueta para detectar clics
             if (!range._labelRect) range._labelRect = {};
-            range._labelRect = {
-                x: centerX - labelWidth / 2,
-                y: labelY - labelHeight / 2,
-                w: labelWidth,
-                h: labelHeight
-            };
+            range._labelRect = { x: centerX - labelWidth / 2, y: labelY - labelHeight / 2, w: labelWidth, h: labelHeight };
             ctx.restore();
         });
 
-        // Guardamos las etiquetas para detectar clics después
-        canvas._cagedLabels = ranges.map(r => ({
-            name: r.name,
-            rect: r._labelRect
-        }));
+        canvas._cagedLabels = ranges.map(r => ({ name: r.name, rect: r._labelRect }));
     }
 
     function drawChordNotes() {
@@ -2673,7 +2578,6 @@ function initTriadMap() {
                 const midi = openMidi + f;
                 const pc = midiToPitchClass(midi);
                 const diff = (pc - rootPC + 12) % 12;
-
                 const intervalIndex = intervals.indexOf(diff);
                 if (intervalIndex === -1) continue;
 
@@ -2685,33 +2589,25 @@ function initTriadMap() {
                 else if (role === 'seventh') color = COLORS.seventh;
                 else color = COLORS.other;
 
-                // ¿Está dentro del cajón resaltado?
                 let inHighlightedCaged = highlightedCaged === 'all';
                 if (!inHighlightedCaged && cagedActiveLocal) {
                     const targetRange = ranges.find(r => r.name === highlightedCaged);
                     if (targetRange) {
                         const fMod = f % 12;
-                        // Comprobar si el traste cae dentro del rango (con wrap)
                         let inRange = false;
-                        if (targetRange.start <= targetRange.end) {
-                            inRange = fMod >= targetRange.start && fMod <= targetRange.end;
-                        } else {
-                            inRange = fMod >= targetRange.start || fMod <= targetRange.end;
-                        }
-                        // El traste 0 (al aire) siempre se considera parte de la caja C
+                        if (targetRange.start <= targetRange.end) inRange = fMod >= targetRange.start && fMod <= targetRange.end;
+                        else inRange = fMod >= targetRange.start || fMod <= targetRange.end;
                         if (f === 0 && highlightedCaged === 'C') inRange = true;
                         inHighlightedCaged = inRange;
                     }
                 }
 
                 const dimmed = cagedActiveLocal && highlightedCaged !== 'all' && !inHighlightedCaged;
-
                 const noteX = (f === 0) ? LEFT_MARGIN - 26 : LEFT_MARGIN + (f - 0.5) * FRET_SPACING;
                 const y = TOP_MARGIN + s * STRING_SPACING;
 
                 ctx.save();
                 ctx.globalAlpha = dimmed ? 0.18 : 1;
-
                 ctx.beginPath();
                 ctx.arc(noteX, y, 15, 0, 2 * Math.PI);
                 ctx.fillStyle = color;
@@ -2733,7 +2629,6 @@ function initTriadMap() {
                 ctx.fillText(noteName, noteX, y);
                 ctx.shadowColor = 'transparent';
                 ctx.shadowBlur = 0;
-
                 ctx.restore();
             }
         }
@@ -2741,9 +2636,7 @@ function initTriadMap() {
 
     function render() {
         drawFretboard();
-        if (cagedActiveLocal) {
-            drawCagedBoxes();
-        }
+        if (cagedActiveLocal) drawCagedBoxes();
         drawChordNotes();
 
         const typeNames = { major: 'mayor', minor: 'menor', '7': 'séptima' };
@@ -2772,7 +2665,6 @@ function initTriadMap() {
             });
         });
 
-        // Botón CAGED
         const cagedToggle = document.getElementById('triadCagedToggle');
         const cagedInfo = document.getElementById('triadCagedInfo');
         const cagedLabels = document.getElementById('triadCagedLabels');
@@ -2788,7 +2680,6 @@ function initTriadMap() {
             });
         }
 
-        // Botones de filtro por cajón
         const cagedFilterButtons = document.querySelectorAll('#triadCagedLabels button');
         cagedFilterButtons.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -2799,7 +2690,6 @@ function initTriadMap() {
             });
         });
 
-        // Clic en etiquetas del canvas
         canvas.addEventListener('click', (e) => {
             if (!cagedActiveLocal) return;
             const rect = canvas.getBoundingClientRect();
@@ -2812,13 +2702,8 @@ function initTriadMap() {
                 for (const lbl of canvas._cagedLabels) {
                     const r = lbl.rect;
                     if (mx >= r.x && mx <= r.x + r.w && my >= r.y && my <= r.y + r.h) {
-                        // Alternar: si ya estaba seleccionado, volver a "all"
-                        if (highlightedCaged === lbl.name) {
-                            highlightedCaged = 'all';
-                        } else {
-                            highlightedCaged = lbl.name;
-                        }
-                        // Sincronizar los botones de filtro
+                        if (highlightedCaged === lbl.name) highlightedCaged = 'all';
+                        else highlightedCaged = lbl.name;
                         cagedFilterButtons.forEach(b => {
                             b.classList.toggle('active', b.dataset.caged === highlightedCaged);
                         });
@@ -2829,12 +2714,8 @@ function initTriadMap() {
             }
         });
 
-        // Cambiar cursor sobre etiquetas
         canvas.addEventListener('mousemove', (e) => {
-            if (!cagedActiveLocal) {
-                canvas.style.cursor = 'default';
-                return;
-            }
+            if (!cagedActiveLocal) { canvas.style.cursor = 'default'; return; }
             const rect = canvas.getBoundingClientRect();
             const scaleX = canvas.width / rect.width;
             const scaleY = canvas.height / rect.height;
@@ -2845,13 +2726,885 @@ function initTriadMap() {
             if (canvas._cagedLabels) {
                 for (const lbl of canvas._cagedLabels) {
                     const r = lbl.rect;
-                    if (mx >= r.x && mx <= r.x + r.w && my >= r.y && my <= r.y + r.h) {
-                        overLabel = true;
-                        break;
-                    }
+                    if (mx >= r.x && mx <= r.x + r.w && my >= r.y && my <= r.y + r.h) { overLabel = true; break; }
                 }
             }
             canvas.style.cursor = overLabel ? 'pointer' : 'default';
+        });
+    }
+
+    initControls();
+    render();
+}
+
+// =====================================================
+// ARPEGIOS
+// =====================================================
+function initArpegios() {
+    const canvas = document.getElementById('arpCanvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+
+    const STRING_COUNT = 6;
+    const FRET_COUNT = 12;
+    const STRING_SPACING = 48;
+    const FRET_SPACING = 66;
+    const LEFT_MARGIN = 90;
+    const TOP_MARGIN = 55;
+    const BOTTOM_MARGIN = 40;
+
+    canvas.width = LEFT_MARGIN + FRET_COUNT * FRET_SPACING + 40;
+    canvas.height = TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING + BOTTOM_MARGIN;
+
+    let currentType = 'major';
+    let currentRoot = 'C';
+    let cagedActiveLocal = false;
+    let highlightedCaged = 'all';
+
+    const ROOT_INDEX = { 'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11 };
+    const OPEN_STRING_MIDI = [40, 45, 50, 55, 59, 64];
+
+    const midiToPitchClass = (midi) => (midi % 12 + 12) % 12;
+    const pitchClassToName = (pc) => NOTES[pc];
+
+    const CHORD_INTERVALS = { major: [0, 4, 7], minor: [0, 3, 7], '7': [0, 4, 7, 10] };
+    const INTERVAL_LABELS = { 0: '1', 3: 'b3', 4: '3', 7: '5', 10: 'b7' };
+
+    const COLORS = {
+        root: getComputedStyle(document.documentElement).getPropertyValue('--root-color').trim() || '#ff6b00',
+        third: getComputedStyle(document.documentElement).getPropertyValue('--third-color').trim() || '#4a9eff',
+        fifth: getComputedStyle(document.documentElement).getPropertyValue('--fifth-color').trim() || '#4caf50',
+        seventh: getComputedStyle(document.documentElement).getPropertyValue('--seventh-color').trim() || '#9c27b0',
+        accent: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#ff6b00'
+    };
+
+    if (!CanvasRenderingContext2D.prototype.roundRect) {
+        CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+            if (w < 2 * r) r = w / 2;
+            if (h < 2 * r) r = h / 2;
+            this.moveTo(x + r, y);
+            this.lineTo(x + w - r, y);
+            this.quadraticCurveTo(x + w, y, x + w, y + r);
+            this.lineTo(x + w, y + h - r);
+            this.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+            this.lineTo(x + r, y + h);
+            this.quadraticCurveTo(x, y + h, x, y + h - r);
+            this.lineTo(x, y + r);
+            this.quadraticCurveTo(x, y, x + r, y);
+            return this;
+        };
+    }
+
+    function getCagedRanges() {
+        const offset = ROOT_INDEX[currentRoot];
+        const baseRanges = [
+            { name: 'C', start: 0, end: 3 }, { name: 'A', start: 2, end: 5 },
+            { name: 'G', start: 4, end: 7 }, { name: 'E', start: 7, end: 10 },
+            { name: 'D', start: 9, end: 12 }
+        ];
+        return baseRanges.map(r => {
+            let s = (r.start + offset) % 12;
+            let e = (r.end + offset) % 12;
+            if (e < s) e = 12;
+            if (s > 12) s = s % 12;
+            if (e > 12) e = 12;
+            return { name: r.name, start: s, end: e };
+        });
+    }
+
+    function drawFretboard() {
+        const boardX = LEFT_MARGIN;
+        const boardY = TOP_MARGIN - 8;
+        const boardWidth = FRET_COUNT * FRET_SPACING;
+        const boardHeight = (STRING_COUNT - 1) * STRING_SPACING + 16;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#2a1f1a';
+        ctx.shadowColor = '#00000060';
+        ctx.shadowBlur = 8;
+        ctx.shadowOffsetY = 3;
+        ctx.beginPath();
+        ctx.roundRect(boardX, boardY, boardWidth, boardHeight, 16);
+        ctx.fill();
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetY = 0;
+
+        for (let f = 0; f <= FRET_COUNT; f++) {
+            const x = LEFT_MARGIN + f * FRET_SPACING;
+            ctx.lineWidth = (f === 0 || f === 12) ? 5 : 2.5;
+            ctx.strokeStyle = (f === 0 || f === 12) ? '#d4c9b8' : '#b0a28b';
+            ctx.beginPath();
+            ctx.moveTo(x, TOP_MARGIN - 12);
+            ctx.lineTo(x, TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING + 12);
+            ctx.stroke();
+        }
+
+        for (let s = 0; s < STRING_COUNT; s++) {
+            const y = TOP_MARGIN + s * STRING_SPACING;
+            ctx.beginPath();
+            ctx.lineWidth = 5.0 - (s * 0.7);
+            ctx.strokeStyle = '#d9d0c0';
+            ctx.moveTo(LEFT_MARGIN - 10, y);
+            ctx.lineTo(LEFT_MARGIN + FRET_COUNT * FRET_SPACING + 10, y);
+            ctx.stroke();
+        }
+
+        ctx.font = 'bold 13px "Segoe UI", Roboto, sans-serif';
+        ctx.fillStyle = '#b7c1d4';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        for (let f = 1; f <= FRET_COUNT; f++) {
+            ctx.fillText(f.toString(), LEFT_MARGIN + (f - 0.5) * FRET_SPACING, TOP_MARGIN - 16);
+        }
+
+        const markerFrets = [3, 5, 7, 9, 12];
+        ctx.fillStyle = '#e5e9f0';
+        markerFrets.forEach(f => {
+            const x = LEFT_MARGIN + (f - 0.5) * FRET_SPACING;
+            if (f === 12) {
+                ctx.beginPath(); ctx.arc(x - 8, TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING / 2, 5, 0, 2 * Math.PI); ctx.fill();
+                ctx.beginPath(); ctx.arc(x + 8, TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING / 2, 5, 0, 2 * Math.PI); ctx.fill();
+            } else {
+                ctx.beginPath(); ctx.arc(x, TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING / 2, 5, 0, 2 * Math.PI); ctx.fill();
+            }
+        });
+
+        ctx.font = 'bold 13px "Segoe UI", Roboto, sans-serif';
+        ctx.fillStyle = '#d8dee9';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        const stringNames = ['E', 'A', 'D', 'G', 'B', 'E'];
+        for (let s = 0; s < STRING_COUNT; s++) ctx.fillText(stringNames[s], LEFT_MARGIN - 20, TOP_MARGIN + s * STRING_SPACING);
+
+        ctx.font = '10px "Segoe UI", sans-serif';
+        ctx.fillStyle = '#7b8a9e';
+        ctx.textAlign = 'left';
+        ctx.fillText('6ª cuerda (grave) ↑', 10, 20);
+    }
+
+    function drawCagedBoxes() {
+        const ranges = getCagedRanges();
+        const boardTopY = TOP_MARGIN - 12;
+        const boardBottomY = TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING + 12;
+
+        ranges.forEach(range => {
+            const isDimmed = highlightedCaged !== 'all' && highlightedCaged !== range.name;
+            const x1 = LEFT_MARGIN + range.start * FRET_SPACING;
+            const x2 = LEFT_MARGIN + range.end * FRET_SPACING;
+            const width = x2 - x1;
+            const centerX = (x1 + x2) / 2;
+
+            ctx.save();
+            ctx.globalAlpha = isDimmed ? 0.08 : 0.18;
+            ctx.fillStyle = COLORS.accent;
+            ctx.fillRect(x1, boardTopY, width, boardBottomY - boardTopY);
+            ctx.restore();
+
+            ctx.save();
+            ctx.setLineDash([6, 4]);
+            ctx.lineWidth = isDimmed ? 1 : 2;
+            ctx.strokeStyle = isDimmed ? '#555' : COLORS.accent;
+            ctx.strokeRect(x1, boardTopY, width, boardBottomY - boardTopY);
+            ctx.restore();
+
+            ctx.save();
+            const labelY = boardTopY - 14;
+            const labelWidth = 64;
+            const labelHeight = 20;
+            ctx.fillStyle = isDimmed ? '#333' : COLORS.accent;
+            ctx.beginPath();
+            ctx.roundRect(centerX - labelWidth / 2, labelY - labelHeight / 2, labelWidth, labelHeight, 10);
+            ctx.fill();
+            ctx.fillStyle = isDimmed ? '#888' : '#000';
+            ctx.font = 'bold 11px "Segoe UI", Roboto, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(`Caja ${range.name}`, centerX, labelY);
+            if (!range._labelRect) range._labelRect = {};
+            range._labelRect = { x: centerX - labelWidth / 2, y: labelY - labelHeight / 2, w: labelWidth, h: labelHeight };
+            ctx.restore();
+        });
+        canvas._cagedLabels = ranges.map(r => ({ name: r.name, rect: r._labelRect }));
+    }
+
+    function drawNotes() {
+        const rootPC = ROOT_INDEX[currentRoot];
+        const intervals = CHORD_INTERVALS[currentType];
+        const ranges = getCagedRanges();
+
+        const intervalRoles = [];
+        intervals.forEach(semitones => {
+            let role = 'other';
+            if (semitones === 0) role = 'root';
+            else if (semitones === 3 || semitones === 4) role = 'third';
+            else if (semitones === 7) role = 'fifth';
+            else if (semitones === 10) role = 'seventh';
+            intervalRoles.push(role);
+        });
+
+        for (let s = 0; s < STRING_COUNT; s++) {
+            const openMidi = OPEN_STRING_MIDI[s];
+            for (let f = 0; f <= FRET_COUNT; f++) {
+                const midi = openMidi + f;
+                const pc = midiToPitchClass(midi);
+                const diff = (pc - rootPC + 12) % 12;
+                const intervalIndex = intervals.indexOf(diff);
+                if (intervalIndex === -1) continue;
+
+                const role = intervalRoles[intervalIndex];
+                let color;
+                if (role === 'root') color = COLORS.root;
+                else if (role === 'third') color = COLORS.third;
+                else if (role === 'fifth') color = COLORS.fifth;
+                else if (role === 'seventh') color = COLORS.seventh;
+                else color = COLORS.other;
+
+                let inHighlightedCaged = highlightedCaged === 'all';
+                if (!inHighlightedCaged && cagedActiveLocal) {
+                    const targetRange = ranges.find(r => r.name === highlightedCaged);
+                    if (targetRange) {
+                        const fMod = f % 12;
+                        let inRange = false;
+                        if (targetRange.start <= targetRange.end) inRange = fMod >= targetRange.start && fMod <= targetRange.end;
+                        else inRange = fMod >= targetRange.start || fMod <= targetRange.end;
+                        if (f === 0 && highlightedCaged === 'C') inRange = true;
+                        inHighlightedCaged = inRange;
+                    }
+                }
+
+                const dimmed = cagedActiveLocal && highlightedCaged !== 'all' && !inHighlightedCaged;
+                const noteX = (f === 0) ? LEFT_MARGIN - 26 : LEFT_MARGIN + (f - 0.5) * FRET_SPACING;
+                const y = TOP_MARGIN + s * STRING_SPACING;
+
+                ctx.save();
+                ctx.globalAlpha = dimmed ? 0.18 : 1;
+                ctx.beginPath();
+                ctx.arc(noteX, y, 15, 0, 2 * Math.PI);
+                ctx.fillStyle = color;
+                ctx.shadowColor = dimmed ? 'transparent' : color + 'c0';
+                ctx.shadowBlur = dimmed ? 0 : 18;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+                ctx.strokeStyle = dimmed ? '#555' : '#ffffffd0';
+                ctx.lineWidth = 2.5;
+                ctx.stroke();
+
+                const noteName = pitchClassToName(pc);
+                ctx.font = 'bold 12px "Segoe UI", Roboto, sans-serif';
+                ctx.fillStyle = dimmed ? '#888' : '#ffffff';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(noteName, noteX, y);
+
+                // Etiqueta del intervalo debajo
+                if (!dimmed) {
+                    ctx.font = 'bold 10px "Segoe UI", Roboto, sans-serif';
+                    ctx.fillStyle = color;
+                    ctx.fillText(INTERVAL_LABELS[diff] || '', noteX, y + 22);
+                }
+
+                ctx.restore();
+            }
+        }
+    }
+
+    function renderNotesList() {
+        const container = document.getElementById('arpNotesList');
+        if (!container) return;
+
+        const rootPC = ROOT_INDEX[currentRoot];
+        const intervals = CHORD_INTERVALS[currentType];
+
+        const roleColors = {
+            root: COLORS.root, third: COLORS.third, fifth: COLORS.fifth, seventh: COLORS.seventh
+        };
+        const roleNames = {
+            root: 'Raíz', third: 'Tercera', fifth: 'Quinta', seventh: 'Séptima'
+        };
+
+        let html = '';
+        intervals.forEach((semitones, idx) => {
+            const pc = (rootPC + semitones) % 12;
+            const noteName = NOTES[pc];
+            let role = 'other';
+            if (semitones === 0) role = 'root';
+            else if (semitones === 3 || semitones === 4) role = 'third';
+            else if (semitones === 7) role = 'fifth';
+            else if (semitones === 10) role = 'seventh';
+
+            const color = roleColors[role] || '#777';
+            const intervalLabel = INTERVAL_LABELS[semitones] || String(semitones);
+
+            html += `
+                <div class="arp-note-pill" style="background: ${color};">
+                    <span class="arp-note-num">${idx + 1}</span>
+                    ${noteName} <span style="opacity:0.7; font-weight:400;">(${intervalLabel})</span>
+                    <span style="font-size:0.75em; margin-left:4px; opacity:0.8;">${roleNames[role] || ''}</span>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    function playArpeggio() {
+        const rootPC = ROOT_INDEX[currentRoot];
+        const intervals = CHORD_INTERVALS[currentType];
+        intervals.forEach((semitones, idx) => {
+            const noteName = NOTES[(rootPC + semitones) % 12];
+            setTimeout(() => playNote(noteName), idx * 350);
+        });
+    }
+
+    function render() {
+        drawFretboard();
+        if (cagedActiveLocal) drawCagedBoxes();
+        drawNotes();
+        renderNotesList();
+    }
+
+    function initControls() {
+        const typeButtons = document.querySelectorAll('#arpTypeGroup button');
+        typeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                typeButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentType = btn.dataset.type;
+                render();
+            });
+        });
+
+        const rootButtons = document.querySelectorAll('#arpRootGroup button');
+        rootButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                rootButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentRoot = btn.dataset.root;
+                render();
+            });
+        });
+
+        const playBtn = document.getElementById('arpPlayBtn');
+        if (playBtn) playBtn.addEventListener('click', playArpeggio);
+
+        const cagedToggle = document.getElementById('arpCagedToggle');
+        const cagedInfo = document.getElementById('arpCagedInfo');
+        const cagedLabels = document.getElementById('arpCagedLabels');
+
+        if (cagedToggle) {
+            cagedToggle.addEventListener('click', () => {
+                cagedActiveLocal = !cagedActiveLocal;
+                cagedToggle.classList.toggle('active', cagedActiveLocal);
+                if (cagedInfo) cagedInfo.classList.toggle('visible', cagedActiveLocal);
+                if (cagedLabels) cagedLabels.style.display = cagedActiveLocal ? 'flex' : 'none';
+                if (!cagedActiveLocal) highlightedCaged = 'all';
+                render();
+            });
+        }
+
+        const cagedFilterButtons = document.querySelectorAll('#arpCagedLabels button');
+        cagedFilterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                cagedFilterButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                highlightedCaged = btn.dataset.caged;
+                render();
+            });
+        });
+
+        canvas.addEventListener('click', (e) => {
+            if (!cagedActiveLocal) return;
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            const mx = (e.clientX - rect.left) * scaleX;
+            const my = (e.clientY - rect.top) * scaleY;
+            if (canvas._cagedLabels) {
+                for (const lbl of canvas._cagedLabels) {
+                    const r = lbl.rect;
+                    if (mx >= r.x && mx <= r.x + r.w && my >= r.y && my <= r.y + r.h) {
+                        highlightedCaged = highlightedCaged === lbl.name ? 'all' : lbl.name;
+                        cagedFilterButtons.forEach(b => {
+                            b.classList.toggle('active', b.dataset.caged === highlightedCaged);
+                        });
+                        render();
+                        return;
+                    }
+                }
+            }
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (!cagedActiveLocal) { canvas.style.cursor = 'default'; return; }
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            const mx = (e.clientX - rect.left) * scaleX;
+            const my = (e.clientY - rect.top) * scaleY;
+            let overLabel = false;
+            if (canvas._cagedLabels) {
+                for (const lbl of canvas._cagedLabels) {
+                    const r = lbl.rect;
+                    if (mx >= r.x && mx <= r.x + r.w && my >= r.y && my <= r.y + r.h) { overLabel = true; break; }
+                }
+            }
+            canvas.style.cursor = overLabel ? 'pointer' : 'default';
+        });
+    }
+
+    initControls();
+    render();
+}
+
+// =====================================================
+// VOICINGS
+// =====================================================
+function initVoicings() {
+    const grid = document.getElementById('voicingsGrid');
+    if (!grid) return;
+
+    let currentType = 'major';
+    let currentRoot = 'C';
+
+    const ROOT_INDEX = { 'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11 };
+    const CHORD_INTERVALS = { major: [0, 4, 7], minor: [0, 3, 7], '7': [0, 4, 7, 10] };
+
+    // Voicings predefinidos por forma (trastes por cuerda de 6ª a 1ª).
+    // Cada forma es relativa: se transpone según la fundamental.
+    const VOICING_SHAPES = {
+        major: {
+            'Abierto': { baseRoot: 'C', frets: [0, 3, 2, 0, 1, 0], desc: 'Forma abierta en primera posición' },
+            'Cejilla': { baseRoot: 'E', frets: [0, 2, 2, 1, 0, 0], desc: 'Forma E con cejilla móvil' },
+            'Drop 2': { baseRoot: 'C', frets: [null, 3, 2, 0, 1, null], desc: '4 notas, la 2ª más aguda bajada una octava' },
+            'Drop 3': { baseRoot: 'C', frets: [null, 3, 2, 0, null, null], desc: '4 notas, la 3ª más aguda bajada una octava' }
+        },
+        minor: {
+            'Abierto': { baseRoot: 'A', frets: [null, 0, 2, 2, 1, 0], desc: 'Forma abierta de La menor' },
+            'Cejilla': { baseRoot: 'E', frets: [0, 2, 2, 0, 0, 0], desc: 'Forma Em con cejilla móvil' },
+            'Drop 2': { baseRoot: 'A', frets: [null, 0, 2, 2, 1, null], desc: '4 notas, la 2ª más aguda bajada una octava' },
+            'Drop 3': { baseRoot: 'A', frets: [null, 0, 2, 2, null, null], desc: '4 notas, la 3ª más aguda bajada una octava' }
+        },
+        '7': {
+            'Abierto': { baseRoot: 'E', frets: [0, 2, 0, 1, 0, 0], desc: 'Forma abierta de Mi7' },
+            'Cejilla': { baseRoot: 'E', frets: [0, 2, 0, 1, 0, 0], desc: 'Forma E7 con cejilla móvil' },
+            'Drop 2': { baseRoot: 'C', frets: [null, 3, 2, 3, 1, null], desc: '4 notas, la 2ª más aguda bajada una octava' },
+            'Drop 3': { baseRoot: 'C', frets: [null, 3, 2, 3, null, null], desc: '4 notas, la 3ª más aguda bajada una octava' }
+        }
+    };
+
+    function transposeFrets(frets, baseRoot, targetRoot) {
+        const baseIdx = ROOT_INDEX[baseRoot];
+        const targetIdx = ROOT_INDEX[targetRoot];
+        const offset = (targetIdx - baseIdx + 12) % 12;
+        return frets.map(f => (f === null ? null : f + offset));
+    }
+
+    function drawVoicingSVG(frets, chordName) {
+        const width = 220, height = 240;
+        const marginLeft = 40, marginTop = 40, marginRight = 20, marginBottom = 20;
+        const drawWidth = width - marginLeft - marginRight;
+        const drawHeight = height - marginTop - marginBottom;
+        const stringSpacing = drawWidth / 5;
+        const fretSpacing = drawHeight / 5;
+
+        // Detectar el traste más bajo para "mover" el diagrama
+        const validFrets = frets.filter(f => f !== null && f > 0);
+        const minFret = validFrets.length > 0 ? Math.min(...validFrets) : 0;
+        const startFret = minFret > 4 ? minFret - 1 : 0;
+        const visibleFrets = 5;
+
+        let svg = `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet">`;
+
+        // Fondo
+        svg += `<rect x="0" y="0" width="${width}" height="${height}" fill="#2a1f1a" rx="8" />`;
+
+        // Trastes verticales
+        for (let f = 0; f <= visibleFrets; f++) {
+            const x = marginLeft + f * fretSpacing;
+            svg += `<line x1="${x}" y1="${marginTop}" x2="${x}" y2="${height - marginBottom}" stroke="#777" stroke-width="${f === 0 ? 4 : 2}" />`;
+        }
+
+        // Cuerdas horizontales (6ª arriba)
+        for (let s = 0; s < 6; s++) {
+            const y = marginTop + s * stringSpacing;
+            svg += `<line x1="${marginLeft}" y1="${y}" x2="${marginLeft + visibleFrets * fretSpacing}" y2="${y}" stroke="#ccc" stroke-width="${4 - (s * 0.5)}" />`;
+        }
+
+        // Números de traste a la izquierda
+        for (let f = 1; f <= visibleFrets; f++) {
+            const y = marginTop + (f - 0.5) * stringSpacing;
+            const actualFret = startFret + f;
+            svg += `<text x="${marginLeft - 8}" y="${y}" fill="#888" font-size="10" text-anchor="end" dominant-baseline="middle">${actualFret}</text>`;
+        }
+
+        // Marcar cejilla si startFret > 0
+        if (startFret > 0) {
+            svg += `<text x="${marginLeft - 8}" y="${marginTop + 8}" fill="#ff6b00" font-size="10" font-weight="bold" text-anchor="end">${startFret + 1}fr</text>`;
+        }
+
+        // Notas
+        for (let s = 0; s < 6; s++) {
+            const fret = frets[s];
+            const y = marginTop + s * stringSpacing;
+            if (fret === null) {
+                // X = cuerda silenciada
+                svg += `<text x="${marginLeft - 15}" y="${y}" fill="#ff3333" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle">X</text>`;
+            } else if (fret === 0) {
+                // 0 = cuerda al aire
+                svg += `<circle cx="${marginLeft - 15}" cy="${y}" r="7" fill="transparent" stroke="#ff6b00" stroke-width="2" />`;
+            } else {
+                const relativeFret = fret - startFret;
+                if (relativeFret >= 0 && relativeFret <= visibleFrets) {
+                    const x = marginLeft + (relativeFret - 0.5) * fretSpacing;
+                    svg += `<circle cx="${x}" cy="${y}" r="10" fill="#ff6b00" stroke="#000" stroke-width="2" />`;
+                }
+            }
+        }
+
+        svg += `</svg>`;
+        return svg;
+    }
+
+    function render() {
+        const shapes = VOICING_SHAPES[currentType];
+        if (!shapes) return;
+
+        grid.innerHTML = '';
+
+        Object.entries(shapes).forEach(([name, shape]) => {
+            const transposedFrets = transposeFrets(shape.frets, shape.baseRoot, currentRoot);
+            const quality = currentType === 'major' ? '' : (currentType === 'minor' ? 'm' : '7');
+            const chordName = currentRoot + quality;
+
+            const card = document.createElement('div');
+            card.className = 'voicing-card';
+
+            const header = document.createElement('div');
+            header.className = 'voicing-card-header';
+            header.innerHTML = `
+                <div>
+                    <div class="voicing-card-title">${name}</div>
+                    <div class="voicing-card-sub">${chordName} · ${shape.desc}</div>
+                </div>
+            `;
+            card.appendChild(header);
+
+            const body = document.createElement('div');
+            body.className = 'voicing-card-body';
+            body.innerHTML = drawVoicingSVG(transposedFrets, chordName);
+            card.appendChild(body);
+
+            const actions = document.createElement('div');
+            actions.className = 'voicing-card-actions';
+            const playBtn = document.createElement('button');
+            playBtn.innerHTML = '<i class="fas fa-play"></i> Escuchar';
+            playBtn.onclick = () => {
+                transposedFrets.forEach((fret, s) => {
+                    if (fret !== null) {
+                        const noteName = getNoteName(s, fret);
+                        setTimeout(() => playNote(noteName), s * 90);
+                    }
+                });
+            };
+            actions.appendChild(playBtn);
+            card.appendChild(actions);
+
+            grid.appendChild(card);
+        });
+    }
+
+    function initControls() {
+        const typeButtons = document.querySelectorAll('#voiTypeGroup button');
+        typeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                typeButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentType = btn.dataset.type;
+                render();
+            });
+        });
+
+        const rootButtons = document.querySelectorAll('#voiRootGroup button');
+        rootButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                rootButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentRoot = btn.dataset.root;
+                render();
+            });
+        });
+    }
+
+    initControls();
+    render();
+}
+
+// =====================================================
+// INVERSIONES
+// =====================================================
+function initInversiones() {
+    const canvas = document.getElementById('invCanvas');
+    const tbody = document.getElementById('invTableBody');
+    const summary = document.getElementById('invSummary');
+    if (!canvas || !tbody) return;
+
+    const ctx = canvas.getContext('2d');
+    const STRING_COUNT = 6;
+    const FRET_COUNT = 12;
+    const STRING_SPACING = 48;
+    const FRET_SPACING = 66;
+    const LEFT_MARGIN = 90;
+    const TOP_MARGIN = 55;
+    const BOTTOM_MARGIN = 40;
+
+    canvas.width = LEFT_MARGIN + FRET_COUNT * FRET_SPACING + 40;
+    canvas.height = TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING + BOTTOM_MARGIN;
+
+    let currentType = 'major';
+    let currentRoot = 'C';
+
+    const ROOT_INDEX = { 'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11 };
+    const OPEN_STRING_MIDI = [40, 45, 50, 55, 59, 64];
+
+    const midiToPitchClass = (midi) => (midi % 12 + 12) % 12;
+
+    const CHORD_INTERVALS = { major: [0, 4, 7], minor: [0, 3, 7], '7': [0, 4, 7, 10] };
+
+    const COLORS = {
+        root: getComputedStyle(document.documentElement).getPropertyValue('--root-color').trim() || '#ff6b00',
+        third: getComputedStyle(document.documentElement).getPropertyValue('--third-color').trim() || '#4a9eff',
+        fifth: getComputedStyle(document.documentElement).getPropertyValue('--fifth-color').trim() || '#4caf50',
+        seventh: getComputedStyle(document.documentElement).getPropertyValue('--seventh-color').trim() || '#9c27b0'
+    };
+
+    if (!CanvasRenderingContext2D.prototype.roundRect) {
+        CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+            if (w < 2 * r) r = w / 2;
+            if (h < 2 * r) r = h / 2;
+            this.moveTo(x + r, y);
+            this.lineTo(x + w - r, y);
+            this.quadraticCurveTo(x + w, y, x + w, y + r);
+            this.lineTo(x + w, y + h - r);
+            this.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+            this.lineTo(x + r, y + h);
+            this.quadraticCurveTo(x, y + h, x, y + h - r);
+            this.lineTo(x, y + r);
+            this.quadraticCurveTo(x, y, x + r, y);
+            return this;
+        };
+    }
+
+    function drawFretboard() {
+        const boardX = LEFT_MARGIN;
+        const boardY = TOP_MARGIN - 8;
+        const boardWidth = FRET_COUNT * FRET_SPACING;
+        const boardHeight = (STRING_COUNT - 1) * STRING_SPACING + 16;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#2a1f1a';
+        ctx.shadowColor = '#00000060';
+        ctx.shadowBlur = 8;
+        ctx.shadowOffsetY = 3;
+        ctx.beginPath();
+        ctx.roundRect(boardX, boardY, boardWidth, boardHeight, 16);
+        ctx.fill();
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetY = 0;
+
+        for (let f = 0; f <= FRET_COUNT; f++) {
+            const x = LEFT_MARGIN + f * FRET_SPACING;
+            ctx.lineWidth = (f === 0 || f === 12) ? 5 : 2.5;
+            ctx.strokeStyle = (f === 0 || f === 12) ? '#d4c9b8' : '#b0a28b';
+            ctx.beginPath();
+            ctx.moveTo(x, TOP_MARGIN - 12);
+            ctx.lineTo(x, TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING + 12);
+            ctx.stroke();
+        }
+
+        for (let s = 0; s < STRING_COUNT; s++) {
+            const y = TOP_MARGIN + s * STRING_SPACING;
+            ctx.beginPath();
+            ctx.lineWidth = 5.0 - (s * 0.7);
+            ctx.strokeStyle = '#d9d0c0';
+            ctx.moveTo(LEFT_MARGIN - 10, y);
+            ctx.lineTo(LEFT_MARGIN + FRET_COUNT * FRET_SPACING + 10, y);
+            ctx.stroke();
+        }
+
+        ctx.font = 'bold 13px "Segoe UI", Roboto, sans-serif';
+        ctx.fillStyle = '#b7c1d4';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        for (let f = 1; f <= FRET_COUNT; f++) {
+            ctx.fillText(f.toString(), LEFT_MARGIN + (f - 0.5) * FRET_SPACING, TOP_MARGIN - 16);
+        }
+
+        const markerFrets = [3, 5, 7, 9, 12];
+        ctx.fillStyle = '#e5e9f0';
+        markerFrets.forEach(f => {
+            const x = LEFT_MARGIN + (f - 0.5) * FRET_SPACING;
+            if (f === 12) {
+                ctx.beginPath(); ctx.arc(x - 8, TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING / 2, 5, 0, 2 * Math.PI); ctx.fill();
+                ctx.beginPath(); ctx.arc(x + 8, TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING / 2, 5, 0, 2 * Math.PI); ctx.fill();
+            } else {
+                ctx.beginPath(); ctx.arc(x, TOP_MARGIN + (STRING_COUNT - 1) * STRING_SPACING / 2, 5, 0, 2 * Math.PI); ctx.fill();
+            }
+        });
+
+        ctx.font = 'bold 13px "Segoe UI", Roboto, sans-serif';
+        ctx.fillStyle = '#d8dee9';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        const stringNames = ['E', 'A', 'D', 'G', 'B', 'E'];
+        for (let s = 0; s < STRING_COUNT; s++) ctx.fillText(stringNames[s], LEFT_MARGIN - 20, TOP_MARGIN + s * STRING_SPACING);
+
+        ctx.font = '10px "Segoe UI", sans-serif';
+        ctx.fillStyle = '#7b8a9e';
+        ctx.textAlign = 'left';
+        ctx.fillText('6ª cuerda (grave) ↑', 10, 20);
+    }
+
+    function drawNotes() {
+        const rootPC = ROOT_INDEX[currentRoot];
+        const intervals = CHORD_INTERVALS[currentType];
+
+        const intervalRoles = [];
+        intervals.forEach(semitones => {
+            let role = 'other';
+            if (semitones === 0) role = 'root';
+            else if (semitones === 3 || semitones === 4) role = 'third';
+            else if (semitones === 7) role = 'fifth';
+            else if (semitones === 10) role = 'seventh';
+            intervalRoles.push(role);
+        });
+
+        for (let s = 0; s < STRING_COUNT; s++) {
+            const openMidi = OPEN_STRING_MIDI[s];
+            for (let f = 0; f <= FRET_COUNT; f++) {
+                const midi = openMidi + f;
+                const pc = midiToPitchClass(midi);
+                const diff = (pc - rootPC + 12) % 12;
+                const intervalIndex = intervals.indexOf(diff);
+                if (intervalIndex === -1) continue;
+
+                const role = intervalRoles[intervalIndex];
+                let color;
+                if (role === 'root') color = COLORS.root;
+                else if (role === 'third') color = COLORS.third;
+                else if (role === 'fifth') color = COLORS.fifth;
+                else if (role === 'seventh') color = COLORS.seventh;
+                else color = '#777';
+
+                const noteX = (f === 0) ? LEFT_MARGIN - 26 : LEFT_MARGIN + (f - 0.5) * FRET_SPACING;
+                const y = TOP_MARGIN + s * STRING_SPACING;
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(noteX, y, 15, 0, 2 * Math.PI);
+                ctx.fillStyle = color;
+                ctx.shadowColor = color + 'c0';
+                ctx.shadowBlur = 18;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+                ctx.strokeStyle = '#ffffffd0';
+                ctx.lineWidth = 2.5;
+                ctx.stroke();
+
+                const noteName = NOTES[pc];
+                ctx.font = 'bold 12px "Segoe UI", Roboto, sans-serif';
+                ctx.fillStyle = '#ffffff';
+                ctx.shadowColor = '#00000080';
+                ctx.shadowBlur = 6;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(noteName, noteX, y);
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+                ctx.restore();
+            }
+        }
+    }
+
+    function renderTable() {
+        const rootPC = ROOT_INDEX[currentRoot];
+        const intervals = CHORD_INTERVALS[currentType];
+        const quality = currentType === 'major' ? '' : (currentType === 'minor' ? 'm' : '7');
+        const baseName = currentRoot + quality;
+
+        // Construir las inversiones: 0 = fundamental, 1 = 1ª, 2 = 2ª, 3 = 3ª
+        const inversions = [];
+        for (let i = 0; i < intervals.length; i++) {
+            const bassSemitones = intervals[i];
+            const bassNote = NOTES[(rootPC + bassSemitones) % 12];
+            const invName = i === 0 ? 'Fundamental' : `${i}ª inversión`;
+            const chordName = i === 0 ? baseName : `${baseName}/${bassNote}`;
+            const orderedNotes = [];
+            for (let j = 0; j < intervals.length; j++) {
+                const semitones = intervals[(i + j) % intervals.length];
+                orderedNotes.push(NOTES[(rootPC + semitones) % 12]);
+            }
+            inversions.push({ invName, bassNote, chordName, orderedNotes, index: i });
+        }
+
+        // Actualizar resumen
+        if (summary) {
+            summary.innerHTML = `<strong>${baseName}</strong> · ${inversions.length} inversiones posibles`;
+        }
+
+        // Renderizar tabla
+        tbody.innerHTML = '';
+        inversions.forEach(inv => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><strong>${inv.invName}</strong></td>
+                <td>${inv.bassNote}</td>
+                <td>${inv.chordName}</td>
+                <td>${inv.orderedNotes.join(' - ')}</td>
+                <td><button class="inv-play-btn" data-index="${inv.index}"><i class="fas fa-play"></i></button></td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        // Asignar listeners de audio
+        tbody.querySelectorAll('.inv-play-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const idx = parseInt(btn.dataset.index);
+                const inv = inversions[idx];
+                inv.orderedNotes.forEach((noteName, i) => {
+                    setTimeout(() => playNote(noteName), i * 200);
+                });
+            });
+        });
+    }
+
+    function render() {
+        drawFretboard();
+        drawNotes();
+        renderTable();
+    }
+
+    function initControls() {
+        const typeButtons = document.querySelectorAll('#invTypeGroup button');
+        typeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                typeButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentType = btn.dataset.type;
+                render();
+            });
+        });
+
+        const rootButtons = document.querySelectorAll('#invRootGroup button');
+        rootButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                rootButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentRoot = btn.dataset.root;
+                render();
+            });
         });
     }
 
