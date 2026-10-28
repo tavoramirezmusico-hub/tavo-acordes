@@ -255,36 +255,23 @@ footer {
     border-radius: 5px;
 }
 
-/* ===== HEADER ===== */
-@keyframes logoGlow {
-
-    0%,
-    100% {
-        box-shadow: 0 0 25px rgba(255, 107, 0, 0.4);
-    }
-
-    50% {
-        box-shadow: 0 0 45px rgba(255, 107, 0, 0.7);
-    }
-}
-
-@keyframes logoFloat {
-
-    0%,
-    100% {
-        transform: translateY(0) scale(1);
-    }
-
-    50% {
-        transform: translateY(-6px) scale(1.02);
-    }
-}
-
+/* ===== HEADER (HERO CON IMAGEN) ===== */
 .main-header {
     text-align: center;
-    padding: 40px 20px 30px;
-    background-color: #1a1a1a;
+    padding: 80px 20px 60px;
+    background-image:
+        linear-gradient(rgba(13, 13, 13, 0.45), rgba(13, 13, 13, 0.85)),
+        url('../assets/hero-bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     border-bottom: 2px solid var(--accent);
+    position: relative;
+    min-height: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .logo-container {
@@ -294,24 +281,29 @@ footer {
 }
 
 .logo-img {
-    width: 200px;
+    width: 180px;
     height: auto;
     border-radius: 50%;
     border: 3px solid var(--accent);
-    animation: logoGlow 4s ease-in-out infinite, logoFloat 6s ease-in-out infinite;
-    transition: transform 0.4s ease;
+    box-shadow: 0 0 35px rgba(255, 107, 0, 0.6);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
     will-change: transform;
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .logo-img:hover {
     transform: scale(1.08) rotate(4deg);
-    animation-play-state: paused;
+    box-shadow: 0 0 50px rgba(255, 107, 0, 0.9);
 }
 
 .subtitle {
-    color: var(--text-muted);
-    font-size: 1em;
-    letter-spacing: 2px;
+    color: var(--text-main);
+    font-size: 1.1em;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 15px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 107, 0, 0.4);
+    font-weight: 500;
 }
 
 /* ===== CONTENEDOR ===== */
@@ -3126,7 +3118,6 @@ body.menu-open .menu-toggle {
 
 /* =====================================================
    MAPA DE TRÍADAS Y SÉPTIMAS — CAJONES CAGED (nuevo)
-   Añadir al final de css/styles.css
    ===================================================== */
 
 /* Contenedor de la leyenda CAGED debajo del canvas */
@@ -3237,7 +3228,6 @@ body.menu-open .menu-toggle {
 
 /* =====================================================
    ARPEGIOS Y VOICINGS (nuevo)
-   Añadir al final de css/styles.css
    ===================================================== */
 
 /* Contenedor común de las 3 páginas */
@@ -3610,7 +3600,6 @@ body.menu-open .menu-toggle {
 
 /* =====================================================
    RITMO Y RASGUEO (nuevo)
-   Añadir al final de css/styles.css
    ===================================================== */
 
 /* Contenedor común de las 3 páginas */
@@ -4062,7 +4051,7 @@ body.menu-open .menu-toggle {
 }
 
 /* =====================================================
-   RESPONSIVE
+   RESPONSIVE (RITMO)
    ===================================================== */
 @media (max-width: 600px) {
     .ritmo-controls {
